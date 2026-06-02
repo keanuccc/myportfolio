@@ -79,7 +79,7 @@ export default function Contact() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            className="flex-1 px-5 py-4 rounded-lg bg-white dark:bg-[#1B2731] border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-marrsgreen dark:focus:ring-carrigreen text-lg"
+            className="flex-1 px-5 py-4 rounded-lg bg-white dark:bg-[#1B2731] border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-marrsgreen dark:focus:ring-carrigreen text-lg transition-all duration-300"
           />
           <input
             type="email"
@@ -87,7 +87,7 @@ export default function Contact() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="flex-1 px-5 py-4 rounded-lg bg-white dark:bg-[#1B2731] border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-marrsgreen dark:focus:ring-carrigreen text-lg"
+            className="flex-1 px-5 py-4 rounded-lg bg-white dark:bg-[#1B2731] border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-marrsgreen dark:focus:ring-carrigreen text-lg transition-all duration-300"
           />
         </div>
         <textarea
@@ -96,14 +96,14 @@ export default function Contact() {
           onChange={(e) => setMessage(e.target.value)}
           required
           rows={5}
-          className="w-full px-5 py-4 rounded-lg bg-white dark:bg-[#1B2731] border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-marrsgreen dark:focus:ring-carrigreen text-lg resize-none"
+          className="w-full px-5 py-4 rounded-lg bg-white dark:bg-[#1B2731] border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-marrsgreen dark:focus:ring-carrigreen text-lg resize-none transition-all duration-300"
         />
 
         <div>
           <button
             type="submit"
             disabled={loading}
-            className="bg-marrsgreen hover:bg-marrslight active:bg-marrsdark dark:hover:bg-carrilight dark:active:bg-carridark dark:bg-carrigreen text-bglight dark:text-bgdark py-4 px-14 rounded-lg text-xl font-medium outline-marrsgreen dark:outline-carrigreen focus-visible:outline-double outline-offset-2 inline-block shadow-lg hover:shadow-xl transition-shadow disabled:opacity-60 disabled:cursor-not-allowed"
+            className="bg-gradient-to-r from-marrsgreen to-marrslight dark:from-carrigreen dark:to-carrilight hover:bg-marrslight active:bg-marrsdark dark:hover:bg-carrilight dark:active:bg-carridark text-bglight dark:text-bgdark py-4 px-14 rounded-lg text-xl font-medium outline-marrsgreen dark:outline-carrigreen focus-visible:outline-double outline-offset-2 inline-block shadow-lg hover:shadow-xl hover:shadow-marrsgreen/20 dark:hover:shadow-carrigreen/20 transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {loading ? "Sending..." : "Send Message"}
           </button>
