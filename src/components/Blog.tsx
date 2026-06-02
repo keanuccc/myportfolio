@@ -5,30 +5,39 @@ import { useEffect, useRef } from "react";
 const posts = [
   {
     title: "大语言模型在产品中的落地实践",
-    date: "2026-05-15",
+    date: "2026年5月15日",
     description:
       "分享我在多个项目中将 LLM 融入产品的经验，包括 Prompt 工程、RAG 架构选型、以及如何评估 AI 功能的 ROI。",
     tags: ["LLM", "Product", "AI"],
-    accent: "border-l-marrsgreen dark:border-l-carrigreen",
+    imageColor: "#9FD0E3",
     slug: "llm-in-product-practice",
   },
   {
     title: "AI 产品经理的核心能力模型",
-    date: "2026-04-20",
+    date: "2026年4月20日",
     description:
       "探讨一名优秀的 AI 产品经理需要具备哪些核心能力——技术理解力、数据思维、用户洞察和商业判断力缺一不可。",
     tags: ["Career", "AI PM", "Thinking"],
-    accent: "border-l-blue-500",
+    imageColor: "#B4BEE0",
     slug: "ai-pm-core-competencies",
   },
   {
     title: "从 A/B 测试看 AI 产品的迭代方法论",
-    date: "2026-03-10",
+    date: "2026年3月10日",
     description:
       "AI 产品的迭代与传统互联网产品有何不同？本文结合实际案例，探讨数据驱动的 AI 产品迭代方法论。",
     tags: ["Methodology", "Data", "Growth"],
-    accent: "border-l-purple-500",
+    imageColor: "#A6CECE",
     slug: "ai-product-ab-testing",
+  },
+  {
+    title: "如何从零打造一个成功的 AI 产品",
+    date: "2026年2月5日",
+    description:
+      "从需求分析、技术选型、MVP 打造到规模化增长，系统性地分享 AI 产品从 0 到 1 的完整方法论。",
+    tags: ["AI Product", "Strategy", "Growth"],
+    imageColor: "#C5E4E7",
+    slug: "build-ai-product-from-scratch",
   },
 ];
 
@@ -60,62 +69,96 @@ export default function Blog() {
   }, []);
 
   return (
-    <section id="blog" className="section" ref={sectionRef}>
-      <div className="text-center mb-4">
+    <section id="blog" className="section md:px-10" ref={sectionRef}>
+      <div className="text-center">
         <span>
           <h2 className="section-heading">Blog</h2>
         </span>
       </div>
-      <span className="text-center block mb-14 text-2xl text-slate-600 dark:text-slate-300">
+      <div className="text-center mb-8 text-lg text-slate-600 dark:text-slate-300">
         我偶尔写一些关于 AI 产品、技术趋势和职业思考的文章
-      </span>
+      </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {posts.map((post, index) => (
-          <article
+          <div
             key={index}
-            className={`blog-card bg-white dark:bg-carddark rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer border-l-4 ${post.accent} border border-transparent hover:border-r-marrsgreen/20 dark:hover:border-r-carrigreen/20 hover:border-b-marrsgreen/20 dark:hover:border-b-carrigreen/20 hover:border-t-marrsgreen/20 dark:hover:border-t-carrigreen/20`}
+            className="blog-card sm:min-w-[17rem] transition translate-y-2 hover:-translate-y-0 max-w-md bg-gray-100 dark:bg-carddark p-4 rounded shadow-md hover:shadow-xl w-full"
           >
-            <div className="flex items-center gap-2 mb-4 text-sm text-slate-500 dark:text-slate-400">
+            {/* Image + Title */}
+            <div className="flex flex-col-reverse">
+              <div className="mb-2 overflow-hidden h-14">
+                <a
+                  className="blog-title link inline-block outline-none dark:outline-none focus-within:underline"
+                  href="#"
+                >
+                  <h3 className="text-lg sm:text-md font-medium line-clamp-2">
+                    {post.title}
+                  </h3>
+                </a>
+              </div>
+              <div
+                className="blog-image relative w-full h-48 md:h-40 mb-3 rounded overflow-hidden"
+                style={{ backgroundColor: post.imageColor }}
+              >
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-4xl font-bold text-white/30">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Date */}
+            <div className="italic text-sm mb-1 text-carddark dark:text-gray-300 flex items-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
+                className="h-4 w-4 mr-2"
                 fill="none"
+                viewBox="0 0 24 24"
                 stroke="currentColor"
+                aria-hidden="true"
                 strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
               >
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                <line x1="16" y1="2" x2="16" y2="6" />
-                <line x1="8" y1="2" x2="8" y2="6" />
-                <line x1="3" y1="10" x2="21" y2="10" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                />
               </svg>
-              <time dateTime={post.date}>{post.date}</time>
+              <div className="relative">
+                <span className="sr-only">Posted on: </span>
+                {post.date}
+              </div>
             </div>
 
-            <h3 className="text-marrsgreen dark:text-carrigreen text-3xl font-bold mb-4 line-clamp-2">
-              {post.title}
-            </h3>
-
-            <p className="text-slate-600 dark:text-slate-300 text-lg leading-relaxed mb-6 line-clamp-3">
+            {/* Description */}
+            <p className="blog-text dark:text-gray-300 text-base sm:text-sm overflow-hidden text-ellipsis line-clamp-4 leading-7 sm:leading-6">
               {post.description}
             </p>
-
-            <div className="flex flex-wrap gap-2">
-              {post.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-base bg-gradient-to-r from-marrsgreen/10 to-carrigreen/10 dark:from-marrsgreen/20 dark:to-carrigreen/20 text-marrsgreen dark:text-carrigreen py-1.5 px-3.5 rounded-lg font-medium"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </article>
+          </div>
         ))}
+      </div>
+
+      {/* Read all link */}
+      <div className="mt-6 text-center">
+        <a className="link text-lg font-medium text-marrsgreen dark:text-carrigreen hover:underline" href="#">
+          Read all blog posts{" "}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6 inline-block"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M13 7l5 5m0 0l-5 5m5-5H6"
+            />
+          </svg>
+        </a>
       </div>
     </section>
   );
