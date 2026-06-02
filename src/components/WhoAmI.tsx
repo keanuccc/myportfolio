@@ -55,16 +55,16 @@ export default function WhoAmI() {
   return (
     <div className="about-panel bg-white dark:bg-[#1B2731] relative min-h-screen flex items-center">
       <section id="whoami" className="section w-full" ref={sectionRef}>
-        <div className="text-center">
+        <div className="text-center mb-12">
           <span>
             <h2 className="section-heading">Who am I?</h2>
           </span>
         </div>
 
-        <div className="md:grid grid-rows-5 lg:grid-rows-6 grid-cols-5">
-          {/* Profile photo area */}
-          <div className="col-start-1 col-end-3 row-start-1 row-end-4 lg:row-end-7 lg:col-start-1 lg:col-end-3 flex justify-center items-center py-4 lg:mb-[20%]">
-            <div className="relative w-72">
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
+          {/* Left: Profile photo + intro */}
+          <div className="lg:w-2/5 flex flex-col items-center">
+            <div className="relative w-64 md:w-72">
               {/* Decorative SVG */}
               <svg
                 width="96"
@@ -78,8 +78,8 @@ export default function WhoAmI() {
               </svg>
 
               {/* Profile picture placeholder */}
-              <div className="profile-picture overflow-hidden md:overflow-visible rounded-md md:shadow-2xl">
-                <div className="w-full aspect-square bg-gradient-to-br from-marrsgreen/10 to-carrigreen/10 dark:from-carrigreen/10 dark:to-marrsgreen/10 rounded-md flex items-center justify-center border border-marrsgreen/20 dark:border-carrigreen/20">
+              <div className="profile-picture overflow-hidden md:overflow-visible rounded-xl md:shadow-2xl">
+                <div className="w-full aspect-square bg-gradient-to-br from-marrsgreen/10 to-carrigreen/10 dark:from-carrigreen/10 dark:to-marrsgreen/10 rounded-xl flex items-center justify-center border border-marrsgreen/20 dark:border-carrigreen/20">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="80"
@@ -120,37 +120,39 @@ export default function WhoAmI() {
                 <path d="M11.6799 5.68002C11.6799 8.65002 9.27994 11.05 6.30994 11.05C3.33994 11.05 0.939941 8.65002 0.939941 5.68002C0.939941 2.71002 3.33994 0.309998 6.30994 0.309998C9.27994 0.309998 11.6799 2.71002 11.6799 5.68002Z" />
               </svg>
             </div>
+
+            {/* Bio text under photo */}
+            <p className="mt-8 text-center lg:text-left text-lg leading-relaxed text-slate-700 dark:text-slate-300 about-intro max-w-sm">
+              拥有 4 年以上 AI 产品管理经验，深度参与过多个从 0 到 1 的 AI
+              产品项目。擅长将复杂的 AI
+              技术转化为用户可感知的产品价值，具备出色的跨部门协作能力和数据驱动决策思维。
+            </p>
           </div>
 
-          {/* Bio text */}
-          <p className="col-start-1 col-end-3 row-start-4 row-end-6 lg:row-start-1 lg:row-end-2 lg:col-start-3 lg:col-end-6 lg:ml-8 lg:mt-auto about-intro">
-            拥有 4 年以上 AI 产品管理经验，深度参与过多个从 0 到 1 的 AI
-            产品项目。擅长将复杂的 AI
-            技术转化为用户可感知的产品价值，具备出色的跨部门协作能力和数据驱动决策思维。在技术理解力、用户洞察力和商业判断力之间找到最佳平衡点。
-          </p>
-
-          {/* Education */}
-          <div className="col-start-3 col-end-6 row-start-1 row-end-6 lg:row-start-2 lg:row-end-7 md:ml-8 place-content-end">
-            <p className="edu-bg my-4">教育背景</p>
+          {/* Right: Education */}
+          <div className="lg:w-3/5">
+            <p className="edu-bg text-xl font-medium mb-6 text-slate-800 dark:text-slate-200">
+              教育背景
+            </p>
 
             {education.map((edu, i) => (
-              <div key={i} className="edu-group mb-4">
+              <div key={i} className="edu-group mb-8">
                 <div className="overflow-hidden">
-                  <h3 className="edu-heading text-marrsgreen dark:text-carrigreen text-lg font-medium">
+                  <h3 className="edu-heading text-marrsgreen dark:text-carrigreen text-xl font-semibold">
                     {edu.title}
                   </h3>
                 </div>
                 <div className="overflow-hidden">
-                  <span className="edu-info text-slate-500 dark:text-slate-200 italic">
+                  <span className="edu-info text-slate-500 dark:text-slate-300 italic text-base">
                     {edu.school}
                   </span>
                 </div>
                 <ul
                   role="list"
-                  className="marker:text-marrsgreen dark:marker:text-carrigreen list-disc pl-6 space-y-1 mt-1"
+                  className="marker:text-marrsgreen dark:marker:text-carrigreen list-disc pl-6 space-y-2 mt-2"
                 >
                   {edu.details.map((detail, j) => (
-                    <li key={j} className="edu-list">
+                    <li key={j} className="edu-list text-base">
                       {detail}
                     </li>
                   ))}

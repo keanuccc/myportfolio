@@ -69,84 +69,57 @@ export default function Projects() {
   }, []);
 
   return (
-    <section id="projects" className="section min-h-screen flex flex-col justify-center" ref={sectionRef}>
-      <div className="project-title text-center">
+    <section
+      id="projects"
+      className="section min-h-screen flex flex-col justify-center"
+      ref={sectionRef}
+    >
+      <div className="text-center mb-4">
         <span>
           <h2 className="section-heading">Featured Projects</h2>
         </span>
       </div>
-      <span className="project-desc text-center block mb-4">
+      <span className="project-desc text-center block mb-12 text-lg text-slate-600 dark:text-slate-300">
         &ldquo;Talk is cheap. Show me the code&rdquo;? 作为 AI PM，我更想说：
         <br />
         &ldquo;Show me the impact.&rdquo; 以下是我主导的部分 AI 产品项目
       </span>
 
-      <div className="flex flex-wrap">
+      <div className="grid md:grid-cols-2 gap-8">
         {projects.map((project, index) => (
-          <div
-            key={index}
-            className="md:basis-1/2 md:px-8 py-2 md:py-4"
-          >
-            <div className="project-card project-card-${index}">
+          <div key={index}>
+            <div className="project-card">
               <div className="overflow-hidden">
                 <div
-                  className="project-image relative aspect-[16/9]"
+                  className="project-image relative aspect-[16/10]"
                   style={{ backgroundColor: project.color }}
                 >
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-4xl font-bold text-white/30">
+                    <span className="text-5xl font-bold text-white/30">
                       {String(index + 1).padStart(2, "0")}
                     </span>
                   </div>
                 </div>
               </div>
 
-              <div className="overflow-hidden">
-                <div className="project-text flex items-center justify-between">
-                  <h3 className="text-marrsgreen dark:text-carrigreen text-lg my-1 font-medium">
+              <div className="p-5">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-marrsgreen dark:text-carrigreen text-xl font-semibold">
                     {project.title}
                   </h3>
-                  <div className="flex items-center space-x-5 sm:space-x-3 my-2 sm:my-0 mr-[0.1rem]">
-                    {/* Star icon */}
-                    <a
-                      target="_blank"
-                      rel="noreferrer"
-                      title={`Check ${project.title}`}
-                      className="flex items-center group"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="scale-75 group-hover:-rotate-12"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        fill="none"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path
-                          stroke="none"
-                          d="M0 0h24v24H0z"
-                          fill="none"
-                        />
-                        <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" />
-                      </svg>
-                    </a>
-                    {/* GitHub link */}
+                  <div className="flex items-center gap-3">
                     <a
                       href={project.github}
                       title={`See ${project.title} on Github`}
                       target="_blank"
                       rel="noreferrer"
-                      className="focus-visible:outline-marrsgreen dark:focus-visible:outline-carrigreen mr-1 rounded-full"
+                      className="focus-visible:outline-marrsgreen dark:focus-visible:outline-carrigreen rounded-full"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        className="scale-150 sm:scale-125 opacity-75 hover:-rotate-12 fill-black dark:fill-bglight"
+                        width="22"
+                        height="22"
+                        className="opacity-70 hover:opacity-100 hover:-rotate-12 transition-all fill-black dark:fill-bglight"
                       >
                         <path
                           fillRule="evenodd"
@@ -155,17 +128,16 @@ export default function Projects() {
                         />
                       </svg>
                     </a>
-                    {/* External link */}
                     <a
                       href={project.demo}
                       title={`See live demo of ${project.title}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="focus-visible:outline-marrsgreen dark:focus-visible:outline-carrigreen mr-8 rounded-full"
+                      className="focus-visible:outline-marrsgreen dark:focus-visible:outline-carrigreen rounded-full"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-7 w-7 scale-125 sm:scale-100 bg-cardlight dark:bg-carddark hover:bg-gray-300 dark:hover:bg-gray-600 rounded-full p-1 hover:-rotate-12"
+                        className="h-6 w-6 bg-cardlight dark:bg-carddark hover:bg-gray-300 dark:hover:bg-gray-600 rounded-full p-1 hover:-rotate-12 transition-all"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -180,25 +152,25 @@ export default function Projects() {
                     </a>
                   </div>
                 </div>
-              </div>
 
-              <div className="overflow-hidden">
-                <p className="project-desc">{project.description}</p>
-              </div>
+                <p className="project-desc text-base leading-relaxed text-slate-600 dark:text-slate-300 mb-4">
+                  {project.description}
+                </p>
 
-              <ul
-                aria-label={`Tech Stack used in ${project.title}`}
-                className="flex flex-wrap mt-2 mb-4 md:mt-2 md:mb-6 text-sm overflow-hidden"
-              >
-                {project.tags.map((tag) => (
-                  <li
-                    key={tag}
-                    className="project-tags mr-2 my-1 bg-[#E2EFEF] dark:bg-carddark py-1 px-2 rounded"
-                  >
-                    {tag}
-                  </li>
-                ))}
-              </ul>
+                <ul
+                  aria-label={`Tech Stack used in ${project.title}`}
+                  className="flex flex-wrap gap-2"
+                >
+                  {project.tags.map((tag) => (
+                    <li
+                      key={tag}
+                      className="text-sm bg-[#E2EFEF] dark:bg-bgdark text-marrsgreen dark:text-carrigreen py-1 px-3 rounded-md"
+                    >
+                      {tag}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         ))}

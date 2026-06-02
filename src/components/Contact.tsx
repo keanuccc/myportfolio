@@ -1,36 +1,41 @@
 export default function Contact() {
   return (
-    <section id="contact" className="section text-center min-h-screen flex flex-col justify-center">
-      <div>
+    <section
+      id="contact"
+      className="section text-center min-h-screen flex flex-col justify-center"
+    >
+      <div className="mb-6">
         <span>
           <h2 className="section-heading">Contact</h2>
         </span>
       </div>
-      <p className="my-4 max-w-xl mx-auto text-slate-600 dark:text-slate-300">
+      <p className="my-4 max-w-2xl mx-auto text-lg leading-relaxed text-slate-600 dark:text-slate-300">
         无论是 AI 产品合作、技术交流，还是职业机会探讨，都欢迎随时联系我。
       </p>
 
-      <a
-        role="button"
-        className="bg-marrsgreen hover:bg-marrslight active:bg-marrsdark dark:hover:bg-carrilight dark:active:bg-carridark dark:bg-carrigreen text-bglight dark:text-bgdark py-3 px-6 rounded lg:text-xl outline-marrsgreen dark:outline-carrigreen focus-visible:outline-double outline-offset-2 inline-block text-lg font-medium"
-        href="mailto:your@email.com"
-      >
-        Say Hello
-      </a>
+      <div className="mt-4 mb-10">
+        <a
+          role="button"
+          className="bg-marrsgreen hover:bg-marrslight active:bg-marrsdark dark:hover:bg-carrilight dark:active:bg-carridark dark:bg-carrigreen text-bglight dark:text-bgdark py-4 px-10 rounded-lg text-xl font-medium outline-marrsgreen dark:outline-carrigreen focus-visible:outline-double outline-offset-2 inline-block shadow-lg hover:shadow-xl transition-shadow"
+          href="mailto:your@email.com"
+        >
+          Say Hello
+        </a>
+      </div>
 
-      <div className="flex justify-center items-center gap-6 mt-8">
+      <div className="flex justify-center items-center gap-8 mt-4">
         {/* GitHub */}
         <a
           href="https://github.com/yourusername"
           target="_blank"
           rel="noreferrer"
           title="GitHub"
-          className="text-slate-600 dark:text-slate-300 hover:text-marrsgreen dark:hover:text-carrigreen transition-colors"
+          className="text-slate-500 dark:text-slate-400 hover:text-marrsgreen dark:hover:text-carrigreen transition-colors hover:scale-110 transform"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="28"
-            height="28"
+            width="32"
+            height="32"
             viewBox="0 0 24 24"
             fill="currentColor"
           >
@@ -44,12 +49,12 @@ export default function Contact() {
           target="_blank"
           rel="noreferrer"
           title="LinkedIn"
-          className="text-slate-600 dark:text-slate-300 hover:text-marrsgreen dark:hover:text-carrigreen transition-colors"
+          className="text-slate-500 dark:text-slate-400 hover:text-marrsgreen dark:hover:text-carrigreen transition-colors hover:scale-110 transform"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="28"
-            height="28"
+            width="32"
+            height="32"
             viewBox="0 0 24 24"
             fill="currentColor"
           >
@@ -63,12 +68,12 @@ export default function Contact() {
           target="_blank"
           rel="noreferrer"
           title="Twitter"
-          className="text-slate-600 dark:text-slate-300 hover:text-marrsgreen dark:hover:text-carrigreen transition-colors"
+          className="text-slate-500 dark:text-slate-400 hover:text-marrsgreen dark:hover:text-carrigreen transition-colors hover:scale-110 transform"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="28"
-            height="28"
+            width="32"
+            height="32"
             viewBox="0 0 24 24"
             fill="currentColor"
           >

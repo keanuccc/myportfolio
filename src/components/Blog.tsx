@@ -57,23 +57,27 @@ export default function Blog() {
   }, []);
 
   return (
-    <section id="blog" className="section min-h-screen flex flex-col justify-center" ref={sectionRef}>
-      <div className="text-center">
+    <section
+      id="blog"
+      className="section min-h-screen flex flex-col justify-center"
+      ref={sectionRef}
+    >
+      <div className="text-center mb-4">
         <span>
           <h2 className="section-heading">Blog</h2>
         </span>
       </div>
-      <span className="text-center block mb-8 text-slate-600 dark:text-slate-300">
+      <span className="text-center block mb-12 text-lg text-slate-600 dark:text-slate-300">
         我偶尔写一些关于 AI 产品、技术趋势和职业思考的文章
       </span>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {posts.map((post, index) => (
           <article
             key={index}
-            className="blog-card bg-white dark:bg-carddark rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer border border-transparent hover:border-marrsgreen/20 dark:hover:border-carrigreen/20"
+            className="blog-card bg-white dark:bg-carddark rounded-xl p-8 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer border border-transparent hover:border-marrsgreen/20 dark:hover:border-carrigreen/20"
           >
-            <div className="flex items-center gap-2 mb-3 text-sm text-slate-500 dark:text-slate-400">
+            <div className="flex items-center gap-2 mb-4 text-sm text-slate-500 dark:text-slate-400">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -93,11 +97,11 @@ export default function Blog() {
               <time dateTime={post.date}>{post.date}</time>
             </div>
 
-            <h3 className="text-marrsgreen dark:text-carrigreen text-lg font-medium mb-2 line-clamp-2">
+            <h3 className="text-marrsgreen dark:text-carrigreen text-xl font-semibold mb-3 line-clamp-2">
               {post.title}
             </h3>
 
-            <p className="text-slate-600 dark:text-slate-300 text-sm mb-4 line-clamp-3">
+            <p className="text-slate-600 dark:text-slate-300 text-base leading-relaxed mb-5 line-clamp-3">
               {post.description}
             </p>
 
@@ -105,7 +109,7 @@ export default function Blog() {
               {post.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="text-xs bg-[#E2EFEF] dark:bg-bgdark text-marrsgreen dark:text-carrigreen py-0.5 px-2 rounded"
+                  className="text-sm bg-[#E2EFEF] dark:bg-bgdark text-marrsgreen dark:text-carrigreen py-1 px-3 rounded-md"
                 >
                   {tag}
                 </span>
