@@ -36,9 +36,26 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
-      <div className="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-md w-96">
-        <h1 className="text-2xl font-bold text-center mb-6 text-gray-900 dark:text-white">
+    <div className="min-h-screen flex items-center justify-center relative overflow-hidden admin-bg">
+      {/* Animated gradient orbs */}
+      <div aria-hidden="true" className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-marrsgreen/10 dark:bg-carrigreen/8 blur-[120px] orb-animate" />
+        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-carrigreen/8 dark:bg-marrsgreen/6 blur-[100px] orb-animate-delayed" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full bg-[#FF9D00]/5 blur-[80px] orb-animate" />
+      </div>
+
+      {/* Grid pattern overlay */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 opacity-[0.02] dark:opacity-[0.04]"
+        style={{
+          backgroundImage: "linear-gradient(rgba(43,122,75,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(43,122,75,0.5) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
+      />
+
+      <div className="admin-glass p-10 rounded-2xl shadow-2xl w-[420px] relative z-10 border border-white/30 dark:border-carrigreen/10">
+        <h1 className="text-2xl font-bold text-center mb-6 gradient-text">
           Admin Login
         </h1>
 
@@ -55,7 +72,7 @@ export default function LoginPage() {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+              className="admin-input"
               required
             />
           </div>
@@ -69,11 +86,15 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+            className="btn-brand w-full py-3 text-lg"
           >
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
+
+        <p className="mt-6 text-center text-xs text-gray-400 dark:text-gray-500">
+          Secured with encryption
+        </p>
       </div>
     </div>
   );
