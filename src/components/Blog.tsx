@@ -63,8 +63,8 @@ export default function Blog() {
   useEffect(() => {
     const updateCardsPerView = () => {
       const w = window.innerWidth;
-      if (w < 640) setCardsPerView(1);
-      else if (w < 1024) setCardsPerView(2);
+      if (w < 768) setCardsPerView(1);
+      else if (w < 1280) setCardsPerView(2);
       else setCardsPerView(3);
     };
     updateCardsPerView();
@@ -192,11 +192,11 @@ export default function Blog() {
             {posts.map((post, index) => (
               <div
                 key={index}
-                className="shrink-0 px-5"
+                className="shrink-0 px-6"
                 style={{ width: `${100 / cardsPerView}%` }}
               >
                 <div
-                  className="blog-card h-full transition-all duration-500 bg-gray-100 dark:bg-carddark p-4 rounded shadow-md hover:shadow-xl cursor-pointer"
+                  className="blog-card h-full transition-all duration-500 bg-gray-100 dark:bg-carddark p-6 rounded-xl shadow-lg hover:shadow-2xl cursor-pointer"
                   onMouseEnter={() => setIsHovered(index)}
                   onMouseLeave={() => setIsHovered(null)}
                   style={{
@@ -208,7 +208,7 @@ export default function Blog() {
                 >
                   {/* Image */}
                   <div
-                    className="relative h-48 md:h-40 overflow-hidden"
+                    className="relative h-56 overflow-hidden"
                     style={{ backgroundColor: post.imageColor }}
                   >
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -233,11 +233,11 @@ export default function Blog() {
 
                   {/* Content */}
                   <div>
-                    <h3 className="text-lg sm:text-md font-medium text-marrsgreen dark:text-carrigreen mb-2 line-clamp-2 h-14">
+                    <h3 className="text-xl font-semibold text-marrsgreen dark:text-carrigreen mb-2 line-clamp-2 h-14">
                       {post.title}
                     </h3>
 
-                    <div className="flex items-center gap-2 mb-1 text-sm text-slate-500 dark:text-slate-400 italic">
+                    <div className="flex items-center gap-2 mb-3 text-sm text-slate-500 dark:text-slate-400 italic">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-4 w-4"
@@ -255,7 +255,7 @@ export default function Blog() {
                       <span>{post.date}</span>
                     </div>
 
-                    <p className="text-base sm:text-sm text-slate-600 dark:text-slate-300 line-clamp-4 leading-7 sm:leading-6">
+                    <p className="text-base text-slate-600 dark:text-slate-300 line-clamp-4 leading-7">
                       {post.description}
                     </p>
 
