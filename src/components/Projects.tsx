@@ -8,7 +8,7 @@ const projects = [
     description:
       "主导设计并落地的企业级 AI 智能客服产品，基于大语言模型实现多轮对话、意图识别和知识库检索，将人工客服工作量降低 60%。",
     tags: ["LLM", "RAG", "NLU", "Product Strategy"],
-    color: "#9FD0E3",
+    gradient: "from-blue-400 to-cyan-300",
     github: "#",
     demo: "#",
   },
@@ -17,7 +17,7 @@ const projects = [
     description:
       "从 0 到 1 打造的 AIGC 内容创作平台，支持文案、图片、视频脚本等多种内容类型的智能生成，月活跃用户突破 10 万。",
     tags: ["AIGC", "Prompt Engineering", "Growth", "UX"],
-    color: "#B4BEE0",
+    gradient: "from-purple-400 to-pink-300",
     github: "#",
     demo: "#",
   },
@@ -26,7 +26,7 @@ const projects = [
     description:
       "负责电商场景下的个性化推荐系统产品化工作，通过 A/B 测试持续优化推荐策略，使转化率提升 25%，GMV 增长 18%。",
     tags: ["Recommendation", "A/B Testing", "Data Analysis", "ML"],
-    color: "#A6CECE",
+    gradient: "from-emerald-400 to-teal-300",
     github: "#",
     demo: "#",
   },
@@ -35,7 +35,7 @@ const projects = [
     description:
       "设计并推动内部数据标注平台建设，支持文本、图像、语音多模态标注任务，标注效率提升 3 倍，为模型训练提供高质量数据支撑。",
     tags: ["Data Pipeline", "Annotation", "Quality Control", "Ops"],
-    color: "#C5E4E7",
+    gradient: "from-orange-400 to-amber-300",
     github: "#",
     demo: "#",
   },
@@ -69,11 +69,7 @@ export default function Projects() {
   }, []);
 
   return (
-    <section
-      id="projects"
-      className="section"
-      ref={sectionRef}
-    >
+    <section id="projects" className="section" ref={sectionRef}>
       <div className="text-center mb-4">
         <span>
           <h2 className="section-heading">Featured Projects</h2>
@@ -88,23 +84,28 @@ export default function Projects() {
       <div className="grid md:grid-cols-2 gap-10">
         {projects.map((project, index) => (
           <div key={index}>
-            <div className="project-card">
+            <div className="project-card group">
+              {/* Gradient image area */}
               <div className="overflow-hidden">
                 <div
-                  className="project-image relative aspect-[16/10]"
-                  style={{ backgroundColor: project.color }}
+                  className={`project-image relative aspect-[16/10] bg-gradient-to-br ${project.gradient}`}
                 >
+                  <div className="absolute inset-0 bg-black/10 group-hover:bg-black/5 transition-colors duration-500" />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-5xl font-bold text-white/30">
+                    <span className="text-6xl font-bold text-white/20 group-hover:text-white/30 transition-colors duration-500">
                       {String(index + 1).padStart(2, "0")}
                     </span>
+                  </div>
+                  {/* Floating tag on image */}
+                  <div className="absolute top-4 left-4 bg-white/20 backdrop-blur-sm text-white text-sm px-3 py-1 rounded-full">
+                    {project.tags[0]}
                   </div>
                 </div>
               </div>
 
-              <div className="p-6">
+              <div className="p-7">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-marrsgreen dark:text-carrigreen text-2xl font-semibold">
+                  <h3 className="text-marrsgreen dark:text-carrigreen text-2xl font-bold">
                     {project.title}
                   </h3>
                   <div className="flex items-center gap-3">
@@ -119,7 +120,7 @@ export default function Projects() {
                         xmlns="http://www.w3.org/2000/svg"
                         width="22"
                         height="22"
-                        className="opacity-70 hover:opacity-100 hover:-rotate-12 transition-all fill-black dark:fill-bglight"
+                        className="opacity-60 hover:opacity-100 hover:-rotate-12 transition-all fill-black dark:fill-bglight"
                       >
                         <path
                           fillRule="evenodd"
@@ -137,7 +138,7 @@ export default function Projects() {
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6 bg-cardlight dark:bg-carddark hover:bg-gray-300 dark:hover:bg-gray-600 rounded-full p-1 hover:-rotate-12 transition-all"
+                        className="h-6 w-6 bg-cardlight dark:bg-bgdark hover:bg-marrsgreen hover:text-white dark:hover:bg-carrigreen dark:hover:text-bgdark rounded-full p-1 hover:-rotate-12 transition-all"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -164,7 +165,7 @@ export default function Projects() {
                   {project.tags.map((tag) => (
                     <li
                       key={tag}
-                      className="text-sm bg-[#E2EFEF] dark:bg-bgdark text-marrsgreen dark:text-carrigreen py-1 px-3 rounded-md"
+                      className="text-sm bg-gradient-to-r from-marrsgreen/10 to-carrigreen/10 dark:from-marrsgreen/20 dark:to-carrigreen/20 text-marrsgreen dark:text-carrigreen py-1.5 px-3.5 rounded-lg font-medium"
                     >
                       {tag}
                     </li>

@@ -40,14 +40,14 @@
     background: rgba(27, 39, 49, 0.85);
   }
 
-  /* Section heading */
+  /* Section heading - bigger, more decorative */
   .section-heading {
-    @apply text-3xl md:text-4xl font-semibold inline-block relative;
+    @apply text-4xl md:text-5xl font-bold inline-block relative tracking-tight;
   }
 
   .section-heading::after {
     content: "";
-    @apply block w-12 h-1 bg-marrsgreen dark:bg-carrigreen mx-auto mt-2 rounded;
+    @apply block w-16 h-1.5 bg-gradient-to-r from-marrsgreen to-carrigreen mx-auto mt-3 rounded-full;
   }
 
   /* Section spacing */
@@ -62,7 +62,12 @@
 
   /* Project card */
   .project-card {
-    @apply bg-cardlight dark:bg-carddark rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden;
+    @apply bg-cardlight dark:bg-carddark rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden;
+  }
+
+  /* Section wave divider */
+  .wave-divider {
+    @apply w-full overflow-hidden leading-none;
   }
 }
 
@@ -163,7 +168,7 @@
 .project-card {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out, box-shadow 0.5s ease-out;
 }
 
 .project-card.visible {
@@ -181,4 +186,16 @@
 .blog-card.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* Skill card animation */
+.skill-card {
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+}
+
+.skill-card.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }

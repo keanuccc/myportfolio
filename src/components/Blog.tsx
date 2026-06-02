@@ -9,6 +9,7 @@ const posts = [
     description:
       "分享我在多个项目中将 LLM 融入产品的经验，包括 Prompt 工程、RAG 架构选型、以及如何评估 AI 功能的 ROI。",
     tags: ["LLM", "Product", "AI"],
+    accent: "border-l-marrsgreen dark:border-l-carrigreen",
     slug: "llm-in-product-practice",
   },
   {
@@ -17,6 +18,7 @@ const posts = [
     description:
       "探讨一名优秀的 AI 产品经理需要具备哪些核心能力——技术理解力、数据思维、用户洞察和商业判断力缺一不可。",
     tags: ["Career", "AI PM", "Thinking"],
+    accent: "border-l-blue-500",
     slug: "ai-pm-core-competencies",
   },
   {
@@ -25,6 +27,7 @@ const posts = [
     description:
       "AI 产品的迭代与传统互联网产品有何不同？本文结合实际案例，探讨数据驱动的 AI 产品迭代方法论。",
     tags: ["Methodology", "Data", "Growth"],
+    accent: "border-l-purple-500",
     slug: "ai-product-ab-testing",
   },
 ];
@@ -57,11 +60,7 @@ export default function Blog() {
   }, []);
 
   return (
-    <section
-      id="blog"
-      className="section"
-      ref={sectionRef}
-    >
+    <section id="blog" className="section" ref={sectionRef}>
       <div className="text-center mb-4">
         <span>
           <h2 className="section-heading">Blog</h2>
@@ -75,7 +74,7 @@ export default function Blog() {
         {posts.map((post, index) => (
           <article
             key={index}
-            className="blog-card bg-white dark:bg-carddark rounded-xl p-10 shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer border border-transparent hover:border-marrsgreen/20 dark:hover:border-carrigreen/20"
+            className={`blog-card bg-white dark:bg-carddark rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer border-l-4 ${post.accent} border border-transparent hover:border-r-marrsgreen/20 dark:hover:border-r-carrigreen/20 hover:border-b-marrsgreen/20 dark:hover:border-b-carrigreen/20 hover:border-t-marrsgreen/20 dark:hover:border-t-carrigreen/20`}
           >
             <div className="flex items-center gap-2 mb-4 text-sm text-slate-500 dark:text-slate-400">
               <svg
@@ -97,11 +96,11 @@ export default function Blog() {
               <time dateTime={post.date}>{post.date}</time>
             </div>
 
-            <h3 className="text-marrsgreen dark:text-carrigreen text-2xl font-semibold mb-4 line-clamp-2">
+            <h3 className="text-marrsgreen dark:text-carrigreen text-2xl font-bold mb-4 line-clamp-2">
               {post.title}
             </h3>
 
-            <p className="text-slate-600 dark:text-slate-300 text-lg leading-relaxed mb-6 line-clamp-3">
+            <p className="text-slate-600 dark:text-slate-300 text-base leading-relaxed mb-6 line-clamp-3">
               {post.description}
             </p>
 
@@ -109,7 +108,7 @@ export default function Blog() {
               {post.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="text-sm bg-[#E2EFEF] dark:bg-bgdark text-marrsgreen dark:text-carrigreen py-1 px-3 rounded-md"
+                  className="text-sm bg-gradient-to-r from-marrsgreen/10 to-carrigreen/10 dark:from-marrsgreen/20 dark:to-carrigreen/20 text-marrsgreen dark:text-carrigreen py-1 px-3 rounded-lg font-medium"
                 >
                   {tag}
                 </span>

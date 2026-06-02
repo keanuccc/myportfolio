@@ -23,6 +23,39 @@ const education = [
   },
 ];
 
+const skills = [
+  {
+    icon: "🧠",
+    title: "AI/ML 认知",
+    desc: "深入理解 LLM、NLP、CV 等 AI 技术原理与边界",
+  },
+  {
+    icon: "📊",
+    title: "数据驱动",
+    desc: "擅长 A/B 测试、漏斗分析、指标体系搭建",
+  },
+  {
+    icon: "🎯",
+    title: "产品战略",
+    desc: "从 0 到 1 产品规划，定义 AI 产品路线图",
+  },
+  {
+    icon: "🤝",
+    title: "跨团队协作",
+    desc: "高效协调算法、工程、设计、业务多方资源",
+  },
+  {
+    icon: "💡",
+    title: "用户洞察",
+    desc: "深度用户调研，将需求转化为可落地的 AI 方案",
+  },
+  {
+    icon: "🚀",
+    title: "商业化落地",
+    desc: "关注 ROI，推动 AI 产品从 MVP 到规模化增长",
+  },
+];
+
 export default function WhoAmI() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -32,12 +65,12 @@ export default function WhoAmI() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const elements = entry.target.querySelectorAll(
-              ".edu-heading, .edu-info, .edu-list, .edu-bg, .about-intro"
+              ".edu-heading, .edu-info, .edu-list, .edu-bg, .about-intro, .skill-card"
             );
             elements.forEach((el, i) => {
               setTimeout(() => {
                 el.classList.add("visible");
-              }, i * 100);
+              }, i * 80);
             });
           }
         });
@@ -53,16 +86,18 @@ export default function WhoAmI() {
   }, []);
 
   return (
-    <div className="about-panel bg-white dark:bg-[#1B2731] relative">
+    <div className="about-panel bg-white dark:bg-[#1B2731] relative min-h-screen flex items-center">
       <section id="whoami" className="section w-full" ref={sectionRef}>
-        <div className="text-center mb-12">
+        {/* Heading */}
+        <div className="text-center mb-16">
           <span>
             <h2 className="section-heading">Who am I?</h2>
           </span>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
-          {/* Left: Profile photo + intro */}
+        {/* Top: Photo + Bio */}
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center mb-20">
+          {/* Left: Profile photo */}
           <div className="lg:w-2/5 flex flex-col items-center">
             <div className="relative w-72 md:w-80">
               {/* Decorative SVG */}
@@ -78,8 +113,8 @@ export default function WhoAmI() {
               </svg>
 
               {/* Profile picture placeholder */}
-              <div className="profile-picture overflow-hidden md:overflow-visible rounded-xl md:shadow-2xl">
-                <div className="w-full aspect-square bg-gradient-to-br from-marrsgreen/10 to-carrigreen/10 dark:from-carrigreen/10 dark:to-marrsgreen/10 rounded-xl flex items-center justify-center border border-marrsgreen/20 dark:border-carrigreen/20">
+              <div className="profile-picture overflow-hidden md:overflow-visible rounded-2xl md:shadow-2xl">
+                <div className="w-full aspect-square bg-gradient-to-br from-marrsgreen/10 to-carrigreen/10 dark:from-carrigreen/10 dark:to-marrsgreen/10 rounded-2xl flex items-center justify-center border border-marrsgreen/20 dark:border-carrigreen/20">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="80"
@@ -120,43 +155,65 @@ export default function WhoAmI() {
                 <path d="M11.6799 5.68002C11.6799 8.65002 9.27994 11.05 6.30994 11.05C3.33994 11.05 0.939941 8.65002 0.939941 5.68002C0.939941 2.71002 3.33994 0.309998 6.30994 0.309998C9.27994 0.309998 11.6799 2.71002 11.6799 5.68002Z" />
               </svg>
             </div>
-
-            {/* Bio text under photo */}
-            <p className="mt-10 text-center lg:text-left text-xl leading-relaxed text-slate-700 dark:text-slate-300 about-intro max-w-md">
-              拥有 4 年以上 AI 产品管理经验，深度参与过多个从 0 到 1 的 AI
-              产品项目。擅长将复杂的 AI
-              技术转化为用户可感知的产品价值，具备出色的跨部门协作能力和数据驱动决策思维。
-            </p>
           </div>
 
-          {/* Right: Education */}
+          {/* Right: Bio + Education */}
           <div className="lg:w-3/5">
-            <p className="edu-bg text-2xl font-medium mb-8 text-slate-800 dark:text-slate-200">
+            <p className="about-intro text-xl leading-relaxed text-slate-700 dark:text-slate-300 mb-10">
+              拥有 4 年以上 AI 产品管理经验，深度参与过多个从 0 到 1 的 AI
+              产品项目。擅长将复杂的 AI
+              技术转化为用户可感知的产品价值，具备出色的跨部门协作能力和数据驱动决策思维。在技术理解力、用户洞察力和商业判断力之间找到最佳平衡点。
+            </p>
+
+            <p className="edu-bg text-2xl font-medium mb-6 text-slate-800 dark:text-slate-200">
               教育背景
             </p>
 
             {education.map((edu, i) => (
-              <div key={i} className="edu-group mb-10">
+              <div key={i} className="edu-group mb-8">
                 <div className="overflow-hidden">
-                  <h3 className="edu-heading text-marrsgreen dark:text-carrigreen text-2xl font-semibold">
+                  <h3 className="edu-heading text-marrsgreen dark:text-carrigreen text-xl font-semibold">
                     {edu.title}
                   </h3>
                 </div>
                 <div className="overflow-hidden">
-                  <span className="edu-info text-slate-500 dark:text-slate-300 italic text-lg">
+                  <span className="edu-info text-slate-500 dark:text-slate-300 italic">
                     {edu.school}
                   </span>
                 </div>
                 <ul
                   role="list"
-                  className="marker:text-marrsgreen dark:marker:text-carrigreen list-disc pl-6 space-y-2 mt-2"
+                  className="marker:text-marrsgreen dark:marker:text-carrigreen list-disc pl-6 space-y-1.5 mt-2"
                 >
                   {edu.details.map((detail, j) => (
-                    <li key={j} className="edu-list text-lg">
+                    <li key={j} className="edu-list text-base">
                       {detail}
                     </li>
                   ))}
                 </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom: Skills grid */}
+        <div className="mt-8">
+          <p className="text-center text-2xl font-medium mb-10 text-slate-800 dark:text-slate-200">
+            核心能力
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+            {skills.map((skill, i) => (
+              <div
+                key={i}
+                className="skill-card bg-gradient-to-br from-white to-slate-50 dark:from-carddark dark:to-bgdark rounded-2xl p-6 border border-slate-100 dark:border-slate-700/50 hover:border-marrsgreen/30 dark:hover:border-carrigreen/30 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+              >
+                <span className="text-3xl block mb-3">{skill.icon}</span>
+                <h4 className="text-lg font-semibold text-marrsgreen dark:text-carrigreen mb-2">
+                  {skill.title}
+                </h4>
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                  {skill.desc}
+                </p>
               </div>
             ))}
           </div>
