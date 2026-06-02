@@ -62,11 +62,11 @@ export default function Header() {
       </a>
 
       <header className="md:flex">
-        <div className="main-nav lower-glassmorphism bg-bglight dark:bg-bgdark z-30 top-0 shadow-sm fixed duration-400 px-4 sm:px-8 h-16 w-full">
+        <div className="main-nav lower-glassmorphism bg-bglight dark:bg-bgdark z-30 top-0 shadow-sm fixed duration-400 px-4 sm:px-8 h-20 w-full">
           <div className="w-full h-full mx-auto max-w-[1400px] flex items-center justify-between px-6 sm:px-10 md:px-16 lg:px-24">
             {/* Logo */}
             <a
-              className="text-xl sm:text-2xl md:hover:text-marrsgreen dark:md:hover:text-carrigreen focus-visible:outline-marrsgreen dark:focus-visible:outline-carrigreen font-semibold"
+              className="text-2xl sm:text-3xl md:hover:text-marrsgreen dark:md:hover:text-carrigreen focus-visible:outline-marrsgreen dark:focus-visible:outline-carrigreen font-bold"
               href="/"
             >
               YourName
@@ -81,7 +81,7 @@ export default function Header() {
                     <li key={link.href}>
                       <a
                         href={link.href}
-                        className="text-base md:text-xl flex flex-col items-center w-[4.5rem] md:w-auto dark:fill-textlight md:mr-6 md:hover:text-marrsgreen md:dark:hover:text-carrigreen link-outline"
+                        className="text-base md:text-2xl flex flex-col items-center w-[4.5rem] md:w-auto dark:fill-textlight md:mr-8 md:hover:text-marrsgreen md:dark:hover:text-carrigreen link-outline"
                       >
                         <span className="md:hidden">
                           {icons[link.icon as keyof typeof icons]}
@@ -99,7 +99,7 @@ export default function Header() {
                 title="Toggles light & dark theme"
                 aria-live="polite"
                 onClick={toggleTheme}
-                className="w-8 h-8 ml-1 rounded-lg flex justify-center items-center link-outline"
+                className="w-10 h-10 ml-2 rounded-lg flex justify-center items-center link-outline"
               >
                 {/* Sun icon (shown in dark mode) */}
                 <svg
