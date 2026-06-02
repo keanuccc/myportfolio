@@ -71,7 +71,7 @@ export default function Projects() {
   return (
     <section
       id="projects"
-      className="section min-h-screen flex flex-col justify-center"
+      className="section"
       ref={sectionRef}
     >
       <div className="text-center mb-4">
@@ -79,13 +79,13 @@ export default function Projects() {
           <h2 className="section-heading">Featured Projects</h2>
         </span>
       </div>
-      <span className="project-desc text-center block mb-12 text-lg text-slate-600 dark:text-slate-300">
+      <span className="project-desc text-center block mb-14 text-xl text-slate-600 dark:text-slate-300">
         &ldquo;Talk is cheap. Show me the code&rdquo;? 作为 AI PM，我更想说：
         <br />
         &ldquo;Show me the impact.&rdquo; 以下是我主导的部分 AI 产品项目
       </span>
 
-      <div className="grid md:grid-cols-2 gap-8">
+      <div className="grid md:grid-cols-2 gap-10">
         {projects.map((project, index) => (
           <div key={index}>
             <div className="project-card">
@@ -102,9 +102,9 @@ export default function Projects() {
                 </div>
               </div>
 
-              <div className="p-5">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="text-marrsgreen dark:text-carrigreen text-xl font-semibold">
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-marrsgreen dark:text-carrigreen text-2xl font-semibold">
                     {project.title}
                   </h3>
                   <div className="flex items-center gap-3">
@@ -153,7 +153,7 @@ export default function Projects() {
                   </div>
                 </div>
 
-                <p className="project-desc text-base leading-relaxed text-slate-600 dark:text-slate-300 mb-4">
+                <p className="project-desc text-lg leading-relaxed text-slate-600 dark:text-slate-300 mb-5">
                   {project.description}
                 </p>
 

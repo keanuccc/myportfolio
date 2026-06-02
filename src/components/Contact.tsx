@@ -9,14 +9,14 @@ export default function Contact() {
           <h2 className="section-heading">Contact</h2>
         </span>
       </div>
-      <p className="my-4 max-w-2xl mx-auto text-lg leading-relaxed text-slate-600 dark:text-slate-300">
+      <p className="my-6 max-w-2xl mx-auto text-xl leading-relaxed text-slate-600 dark:text-slate-300">
         无论是 AI 产品合作、技术交流，还是职业机会探讨，都欢迎随时联系我。
       </p>
 
       <div className="mt-4 mb-10">
         <a
           role="button"
-          className="bg-marrsgreen hover:bg-marrslight active:bg-marrsdark dark:hover:bg-carrilight dark:active:bg-carridark dark:bg-carrigreen text-bglight dark:text-bgdark py-4 px-10 rounded-lg text-xl font-medium outline-marrsgreen dark:outline-carrigreen focus-visible:outline-double outline-offset-2 inline-block shadow-lg hover:shadow-xl transition-shadow"
+          className="bg-marrsgreen hover:bg-marrslight active:bg-marrsdark dark:hover:bg-carrilight dark:active:bg-carridark dark:bg-carrigreen text-bglight dark:text-bgdark py-5 px-14 rounded-lg text-2xl font-medium outline-marrsgreen dark:outline-carrigreen focus-visible:outline-double outline-offset-2 inline-block shadow-lg hover:shadow-xl transition-shadow"
           href="mailto:your@email.com"
         >
           Say Hello

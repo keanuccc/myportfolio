@@ -53,7 +53,7 @@ export default function WhoAmI() {
   }, []);
 
   return (
-    <div className="about-panel bg-white dark:bg-[#1B2731] relative min-h-screen flex items-center">
+    <div className="about-panel bg-white dark:bg-[#1B2731] relative">
       <section id="whoami" className="section w-full" ref={sectionRef}>
         <div className="text-center mb-12">
           <span>
@@ -61,10 +61,10 @@ export default function WhoAmI() {
           </span>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
           {/* Left: Profile photo + intro */}
           <div className="lg:w-2/5 flex flex-col items-center">
-            <div className="relative w-64 md:w-72">
+            <div className="relative w-72 md:w-80">
               {/* Decorative SVG */}
               <svg
                 width="96"
@@ -122,7 +122,7 @@ export default function WhoAmI() {
             </div>
 
             {/* Bio text under photo */}
-            <p className="mt-8 text-center lg:text-left text-lg leading-relaxed text-slate-700 dark:text-slate-300 about-intro max-w-sm">
+            <p className="mt-10 text-center lg:text-left text-xl leading-relaxed text-slate-700 dark:text-slate-300 about-intro max-w-md">
               拥有 4 年以上 AI 产品管理经验，深度参与过多个从 0 到 1 的 AI
               产品项目。擅长将复杂的 AI
               技术转化为用户可感知的产品价值，具备出色的跨部门协作能力和数据驱动决策思维。
@@ -131,19 +131,19 @@ export default function WhoAmI() {
 
           {/* Right: Education */}
           <div className="lg:w-3/5">
-            <p className="edu-bg text-xl font-medium mb-6 text-slate-800 dark:text-slate-200">
+            <p className="edu-bg text-2xl font-medium mb-8 text-slate-800 dark:text-slate-200">
               教育背景
             </p>
 
             {education.map((edu, i) => (
-              <div key={i} className="edu-group mb-8">
+              <div key={i} className="edu-group mb-10">
                 <div className="overflow-hidden">
-                  <h3 className="edu-heading text-marrsgreen dark:text-carrigreen text-xl font-semibold">
+                  <h3 className="edu-heading text-marrsgreen dark:text-carrigreen text-2xl font-semibold">
                     {edu.title}
                   </h3>
                 </div>
                 <div className="overflow-hidden">
-                  <span className="edu-info text-slate-500 dark:text-slate-300 italic text-base">
+                  <span className="edu-info text-slate-500 dark:text-slate-300 italic text-lg">
                     {edu.school}
                   </span>
                 </div>
@@ -152,7 +152,7 @@ export default function WhoAmI() {
                   className="marker:text-marrsgreen dark:marker:text-carrigreen list-disc pl-6 space-y-2 mt-2"
                 >
                   {edu.details.map((detail, j) => (
-                    <li key={j} className="edu-list text-base">
+                    <li key={j} className="edu-list text-lg">
                       {detail}
                     </li>
                   ))}
