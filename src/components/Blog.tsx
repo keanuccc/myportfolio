@@ -121,7 +121,7 @@ export default function Blog() {
           <h2 className="section-heading">Blog</h2>
         </span>
       </div>
-      <div className="text-center mb-10 text-xl text-slate-600 dark:text-slate-300">
+      <div className="text-center mb-12 text-2xl text-slate-600 dark:text-slate-300">
         我偶尔写一些关于 AI 产品、技术趋势和职业思考的文章
       </div>
 
@@ -132,7 +132,7 @@ export default function Blog() {
           onClick={prev}
           disabled={currentIndex === 0}
           aria-label="Previous articles"
-          className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-20 w-12 h-12 rounded-full bg-white dark:bg-carddark shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl ${
+          className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-20 w-14 h-14 rounded-full bg-white dark:bg-carddark shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl ${
             currentIndex === 0
               ? "opacity-0 pointer-events-none"
               : "opacity-0 group-hover/carousel:opacity-100"
@@ -159,7 +159,7 @@ export default function Blog() {
           onClick={next}
           disabled={currentIndex >= maxIndex}
           aria-label="Next articles"
-          className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-20 w-12 h-12 rounded-full bg-white dark:bg-carddark shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl ${
+          className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-20 w-14 h-14 rounded-full bg-white dark:bg-carddark shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl ${
             currentIndex >= maxIndex
               ? "opacity-0 pointer-events-none"
               : "opacity-0 group-hover/carousel:opacity-100"
@@ -192,11 +192,11 @@ export default function Blog() {
             {posts.map((post, index) => (
               <div
                 key={index}
-                className="shrink-0 px-4"
+                className="shrink-0 px-5"
                 style={{ width: `${100 / cardsPerView}%` }}
               >
                 <div
-                  className="blog-card h-full transition-all duration-500 bg-gray-100 dark:bg-carddark rounded-xl overflow-hidden shadow-md hover:shadow-2xl cursor-pointer"
+                  className="blog-card h-full transition-all duration-500 bg-gray-100 dark:bg-carddark rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl cursor-pointer"
                   onMouseEnter={() => setIsHovered(index)}
                   onMouseLeave={() => setIsHovered(null)}
                   style={{
@@ -208,12 +208,12 @@ export default function Blog() {
                 >
                   {/* Image */}
                   <div
-                    className="relative h-48 overflow-hidden"
+                    className="relative h-64 overflow-hidden"
                     style={{ backgroundColor: post.imageColor }}
                   >
                     <div className="absolute inset-0 flex items-center justify-center">
                       <span
-                        className="text-5xl font-bold text-white/30 transition-transform duration-500"
+                        className="text-7xl font-bold text-white/30 transition-transform duration-500"
                         style={{
                           transform:
                             isHovered === index ? "scale(1.2)" : "scale(1)",
@@ -232,12 +232,12 @@ export default function Blog() {
                   </div>
 
                   {/* Content */}
-                  <div className="p-5">
-                    <h3 className="text-xl font-semibold text-marrsgreen dark:text-carrigreen mb-2 line-clamp-2 h-14">
+                  <div className="p-7">
+                    <h3 className="text-2xl font-bold text-marrsgreen dark:text-carrigreen mb-3 line-clamp-2 h-16">
                       {post.title}
                     </h3>
 
-                    <div className="flex items-center gap-2 mb-3 text-sm text-slate-500 dark:text-slate-400">
+                    <div className="flex items-center gap-2 mb-4 text-base text-slate-500 dark:text-slate-400">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-4 w-4"
@@ -255,7 +255,7 @@ export default function Blog() {
                       <span>{post.date}</span>
                     </div>
 
-                    <p className="text-base text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-3 h-[4.5rem]">
+                    <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-3 h-[5.25rem]">
                       {post.description}
                     </p>
 
@@ -270,7 +270,7 @@ export default function Blog() {
                             : "translateY(10px)",
                       }}
                     >
-                      <span className="inline-flex items-center gap-1 text-marrsgreen dark:text-carrigreen font-medium text-sm">
+                      <span className="inline-flex items-center gap-1.5 text-marrsgreen dark:text-carrigreen font-semibold text-base">
                         Read more
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -295,7 +295,7 @@ export default function Blog() {
         </div>
 
         {/* Dot indicators */}
-        <div className="flex justify-center items-center gap-2.5 mt-8">
+        <div className="flex justify-center items-center gap-3 mt-10">
           {Array.from({ length: totalPages }, (_, i) => (
             <button
               key={i}
@@ -303,8 +303,8 @@ export default function Blog() {
               aria-label={`Go to page ${i + 1}`}
               className={`rounded-full transition-all duration-300 ${
                 i === currentIndex
-                  ? "w-8 h-3 bg-marrsgreen dark:bg-carrigreen"
-                  : "w-3 h-3 bg-slate-300 dark:bg-slate-600 hover:bg-marrsgreen/50 dark:hover:bg-carrigreen/50"
+                  ? "w-10 h-3.5 bg-marrsgreen dark:bg-carrigreen"
+                  : "w-3.5 h-3.5 bg-slate-300 dark:bg-slate-600 hover:bg-marrsgreen/50 dark:hover:bg-carrigreen/50"
               }`}
             />
           ))}
@@ -312,9 +312,9 @@ export default function Blog() {
       </div>
 
       {/* Read all link */}
-      <div className="mt-8 text-center">
+      <div className="mt-10 text-center">
         <a
-          className="link text-xl font-medium text-marrsgreen dark:text-carrigreen hover:underline inline-flex items-center gap-2"
+          className="link text-2xl font-medium text-marrsgreen dark:text-carrigreen hover:underline inline-flex items-center gap-2"
           href="#"
         >
           Read all blog posts
