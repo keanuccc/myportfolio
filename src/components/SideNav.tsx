@@ -41,7 +41,7 @@ export default function SideNav() {
   return (
     <nav
       aria-label="Page sections"
-      className="fixed right-6 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col items-end gap-3"
+      className="fixed right-8 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col items-end gap-5"
     >
       {sections.map(({ id, label }) => {
         const isActive = activeSection === id;
@@ -49,12 +49,12 @@ export default function SideNav() {
           <a
             key={id}
             href={`#${id}`}
-            className="group flex items-center gap-3"
+            className="group flex items-center gap-4"
             title={label}
           >
             {/* Label tooltip */}
             <span
-              className={`text-sm font-medium whitespace-nowrap transition-all duration-300 ${
+              className={`text-base font-medium whitespace-nowrap transition-all duration-300 ${
                 isActive
                   ? "opacity-100 translate-x-0 text-marrsgreen dark:text-carrigreen"
                   : "opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 text-slate-500 dark:text-slate-400"
@@ -67,8 +67,8 @@ export default function SideNav() {
             <span
               className={`block rounded-full transition-all duration-300 ${
                 isActive
-                  ? "w-3 h-3 bg-marrsgreen dark:bg-carrigreen ring-2 ring-marrsgreen/30 dark:ring-carrigreen/30"
-                  : "w-2 h-2 bg-slate-400 dark:bg-slate-600 group-hover:bg-marrsgreen dark:group-hover:bg-carrigreen group-hover:w-2.5 group-hover:h-2.5"
+                  ? "w-4 h-4 bg-marrsgreen dark:bg-carrigreen ring-2 ring-marrsgreen/30 dark:ring-carrigreen/30"
+                  : "w-3 h-3 bg-slate-400 dark:bg-slate-600 group-hover:bg-marrsgreen dark:group-hover:bg-carrigreen group-hover:w-3.5 group-hover:h-3.5"
               }`}
             />
           </a>
