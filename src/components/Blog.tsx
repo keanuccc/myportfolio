@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 const posts = [
   {
@@ -55,7 +55,37 @@ const posts = [
 
 export default function Blog() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [cardsPerView, setCardsPerView] = useState(3);
+  const [isHovered, setIsHovered] = useState<number | null>(null);
 
+  // Determine cards per view based on screen width
+  useEffect(() => {
+    const updateCardsPerView = () => {
+      const w = window.innerWidth;
+      if (w < 640) setCardsPerView(1);
+      else if (w < 1024) setCardsPerView(2);
+      else setCardsPerView(3);
+    };
+    updateCardsPerView();
+    window.addEventListener("resize", updateCardsPerView);
+    return () => window.removeEventListener("resize", updateCardsPerView);
+  }, []);
+
+  const maxIndex = Math.max(0, posts.length - cardsPerView);
+
+  const prev = useCallback(() => {
+    setCurrentIndex((i) => Math.max(0, i - 1));
+  }, []);
+
+  const next = useCallback(() => {
+    setCurrentIndex((i) => Math.min(maxIndex, i + 1));
+  }, [maxIndex]);
+
+  // Total pages for dots
+  const totalPages = maxIndex + 1;
+
+  // Intersection observer for fade-in
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -81,80 +111,212 @@ export default function Blog() {
   }, []);
 
   return (
-    <section id="blog" className="section max-w-6xl mx-auto" ref={sectionRef}>
+    <section
+      id="blog"
+      className="section min-h-screen flex flex-col justify-center max-w-7xl mx-auto"
+      ref={sectionRef}
+    >
       <div className="text-center">
         <span>
           <h2 className="section-heading">Blog</h2>
         </span>
       </div>
-      <div className="text-center mb-12 text-xl text-slate-600 dark:text-slate-300">
+      <div className="text-center mb-10 text-xl text-slate-600 dark:text-slate-300">
         我偶尔写一些关于 AI 产品、技术趋势和职业思考的文章
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-        {posts.map((post, index) => (
-          <div
-            key={index}
-            className="blog-card transition translate-y-2 hover:-translate-y-0 bg-gray-100 dark:bg-carddark p-5 rounded-lg shadow-md hover:shadow-xl w-full"
+      {/* Carousel container */}
+      <div className="relative group/carousel">
+        {/* Left arrow */}
+        <button
+          onClick={prev}
+          disabled={currentIndex === 0}
+          aria-label="Previous articles"
+          className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-20 w-12 h-12 rounded-full bg-white dark:bg-carddark shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl ${
+            currentIndex === 0
+              ? "opacity-0 pointer-events-none"
+              : "opacity-0 group-hover/carousel:opacity-100"
+          }`}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-marrsgreen dark:text-carrigreen"
           >
-            {/* Image + Title */}
-            <div className="flex flex-col-reverse">
-              <div className="mb-3 overflow-hidden h-16">
-                <a
-                  className="blog-title link inline-block outline-none dark:outline-none focus-within:underline"
-                  href="#"
-                >
-                  <h3 className="text-xl font-medium line-clamp-2">
-                    {post.title}
-                  </h3>
-                </a>
-              </div>
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+
+        {/* Right arrow */}
+        <button
+          onClick={next}
+          disabled={currentIndex >= maxIndex}
+          aria-label="Next articles"
+          className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-20 w-12 h-12 rounded-full bg-white dark:bg-carddark shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl ${
+            currentIndex >= maxIndex
+              ? "opacity-0 pointer-events-none"
+              : "opacity-0 group-hover/carousel:opacity-100"
+          }`}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-marrsgreen dark:text-carrigreen"
+          >
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </button>
+
+        {/* Cards viewport */}
+        <div className="overflow-hidden px-2">
+          <div
+            className="flex transition-transform duration-500 ease-out"
+            style={{
+              transform: `translateX(-${currentIndex * (100 / cardsPerView)}%)`,
+            }}
+          >
+            {posts.map((post, index) => (
               <div
-                className="blog-image relative w-full h-52 mb-4 rounded-lg overflow-hidden"
-                style={{ backgroundColor: post.imageColor }}
+                key={index}
+                className="shrink-0 px-4"
+                style={{ width: `${100 / cardsPerView}%` }}
               >
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="text-5xl font-bold text-white/30">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
+                <div
+                  className="blog-card h-full transition-all duration-500 bg-gray-100 dark:bg-carddark rounded-xl overflow-hidden shadow-md hover:shadow-2xl cursor-pointer"
+                  onMouseEnter={() => setIsHovered(index)}
+                  onMouseLeave={() => setIsHovered(null)}
+                  style={{
+                    transform:
+                      isHovered === index
+                        ? "translateY(-8px) scale(1.02)"
+                        : "translateY(0) scale(1)",
+                  }}
+                >
+                  {/* Image */}
+                  <div
+                    className="relative h-48 overflow-hidden"
+                    style={{ backgroundColor: post.imageColor }}
+                  >
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span
+                        className="text-5xl font-bold text-white/30 transition-transform duration-500"
+                        style={{
+                          transform:
+                            isHovered === index ? "scale(1.2)" : "scale(1)",
+                        }}
+                      >
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                    </div>
+                    {/* Hover overlay */}
+                    <div
+                      className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent transition-opacity duration-500"
+                      style={{
+                        opacity: isHovered === index ? 1 : 0,
+                      }}
+                    />
+                  </div>
+
+                  {/* Content */}
+                  <div className="p-5">
+                    <h3 className="text-xl font-semibold text-marrsgreen dark:text-carrigreen mb-2 line-clamp-2 h-14">
+                      {post.title}
+                    </h3>
+
+                    <div className="flex items-center gap-2 mb-3 text-sm text-slate-500 dark:text-slate-400">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
+                      <span>{post.date}</span>
+                    </div>
+
+                    <p className="text-base text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-3 h-[4.5rem]">
+                      {post.description}
+                    </p>
+
+                    {/* Read more link that appears on hover */}
+                    <div
+                      className="mt-4 transition-all duration-300"
+                      style={{
+                        opacity: isHovered === index ? 1 : 0,
+                        transform:
+                          isHovered === index
+                            ? "translateY(0)"
+                            : "translateY(10px)",
+                      }}
+                    >
+                      <span className="inline-flex items-center gap-1 text-marrsgreen dark:text-carrigreen font-medium text-sm">
+                        Read more
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            {/* Date */}
-            <div className="italic text-base mb-2 text-carddark dark:text-gray-300 flex items-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 mr-2"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-                strokeWidth="2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                />
-              </svg>
-              <div className="relative">
-                <span className="sr-only">Posted on: </span>
-                {post.date}
-              </div>
-            </div>
-
-            {/* Description */}
-            <p className="blog-text dark:text-gray-300 text-lg overflow-hidden text-ellipsis line-clamp-4 leading-8">
-              {post.description}
-            </p>
+            ))}
           </div>
-        ))}
+        </div>
+
+        {/* Dot indicators */}
+        <div className="flex justify-center items-center gap-2.5 mt-8">
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentIndex(i)}
+              aria-label={`Go to page ${i + 1}`}
+              className={`rounded-full transition-all duration-300 ${
+                i === currentIndex
+                  ? "w-8 h-3 bg-marrsgreen dark:bg-carrigreen"
+                  : "w-3 h-3 bg-slate-300 dark:bg-slate-600 hover:bg-marrsgreen/50 dark:hover:bg-carrigreen/50"
+              }`}
+            />
+          ))}
+        </div>
       </div>
 
       {/* Read all link */}
-      <div className="mt-10 text-center">
-        <a className="link text-xl font-medium text-marrsgreen dark:text-carrigreen hover:underline inline-flex items-center gap-2" href="#">
+      <div className="mt-8 text-center">
+        <a
+          className="link text-xl font-medium text-marrsgreen dark:text-carrigreen hover:underline inline-flex items-center gap-2"
+          href="#"
+        >
           Read all blog posts
           <svg
             xmlns="http://www.w3.org/2000/svg"
