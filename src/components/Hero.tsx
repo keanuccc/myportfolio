@@ -2,15 +2,49 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center px-6 sm:px-10 md:px-16 lg:px-24"
+      className="relative min-h-screen flex items-center px-6 sm:px-10 md:px-16 lg:px-24 overflow-hidden"
     >
-      {/* Background decorative text */}
-      <span
+      {/* === Background layers === */}
+
+      {/* Layer 1: Base gradient */}
+      <div
         aria-hidden="true"
-        className="bg-text absolute -top-20 rotate-12 text-gray-100 dark:text-[#1f2e3a] text-[8rem] lg:text-[10rem] scale-150 tracking-widest font-bold select-none pointer-events-none text-center z-0 whitespace-nowrap"
+        className="absolute inset-0 z-0
+          bg-gradient-to-br from-[#e8f5ee] via-bglight to-[#e0eff8]
+          dark:from-[#0a1a12] dark:via-bgdark dark:to-[#0d1a24]"
+      />
+
+      {/* Layer 2: Soft blurred orbs */}
+      <div aria-hidden="true" className="absolute inset-0 z-0 overflow-hidden">
+        {/* Top-left green orb */}
+        <div className="absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full bg-marrsgreen/[0.07] dark:bg-carrigreen/[0.05] blur-[100px]" />
+        {/* Center-right teal orb */}
+        <div className="absolute top-1/3 -right-20 w-[400px] h-[400px] rounded-full bg-carrigreen/[0.06] dark:bg-marrsgreen/[0.04] blur-[120px]" />
+        {/* Bottom-center warm orb */}
+        <div className="absolute -bottom-32 left-1/3 w-[350px] h-[350px] rounded-full bg-[#FF9D00]/[0.04] dark:bg-[#FF9D00]/[0.03] blur-[100px]" />
+      </div>
+
+      {/* Layer 3: Subtle grid pattern */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 z-0 opacity-[0.03] dark:opacity-[0.05]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(43,122,75,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(43,122,75,0.5) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
+      />
+
+      {/* Background decorative text */}
+      <div
+        aria-hidden="true"
+        className="bg-text absolute inset-0 flex flex-col justify-center items-center text-marrsgreen/[0.03] dark:text-carrigreen/[0.03] font-bold select-none pointer-events-none z-0 leading-none overflow-hidden rotate-12 scale-125"
       >
-        AI PRODUCT MANAGER STRATEGIST INNOVATOR
-      </span>
+        <p className="text-[7rem] md:text-[10rem] lg:text-[14rem] tracking-widest">AI PRODUCT</p>
+        <p className="text-[7rem] md:text-[10rem] lg:text-[14rem] tracking-[0.2em]">MANAGER</p>
+        <p className="text-[7rem] md:text-[10rem] lg:text-[14rem] tracking-[0.25em]">STRATEGIST</p>
+        <p className="text-[7rem] md:text-[10rem] lg:text-[14rem] tracking-[0.3em]">INNOVATOR</p>
+      </div>
 
       <div className="w-full max-w-7xl mx-auto flex flex-col-reverse lg:flex-row-reverse items-center gap-8 lg:gap-12 py-16">
         {/* Illustration - takes up significant vertical space */}

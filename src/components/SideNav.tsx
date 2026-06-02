@@ -41,7 +41,7 @@ export default function SideNav() {
   return (
     <nav
       aria-label="Page sections"
-      className="fixed right-8 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col items-end gap-5"
+      className="fixed left-16 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col items-start gap-8"
     >
       {sections.map(({ id, label }) => {
         const isActive = activeSection === id;
@@ -52,25 +52,25 @@ export default function SideNav() {
             className="group flex items-center gap-4"
             title={label}
           >
+            {/* Diamond shape */}
+            <span
+              className={`block transition-all duration-300 ${
+                isActive
+                  ? "w-5 h-5 bg-marrsgreen dark:bg-carrigreen rotate-0 rounded-sm"
+                  : "w-4 h-4 bg-slate-400 dark:bg-slate-600 rotate-45 group-hover:rotate-0 group-hover:bg-marrsgreen dark:group-hover:bg-carrigreen group-hover:w-5 group-hover:h-5 group-hover:rounded-sm"
+              }`}
+            />
+
             {/* Label tooltip */}
             <span
               className={`text-base font-medium whitespace-nowrap transition-all duration-300 ${
                 isActive
                   ? "opacity-100 translate-x-0 text-marrsgreen dark:text-carrigreen"
-                  : "opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 text-slate-500 dark:text-slate-400"
+                  : "opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 text-slate-500 dark:text-slate-400"
               }`}
             >
               {label}
             </span>
-
-            {/* Diamond shape */}
-            <span
-              className={`block transition-all duration-300 ${
-                isActive
-                  ? "w-4 h-4 bg-marrsgreen dark:bg-carrigreen rotate-45 group-hover:rotate-0 group-hover:rounded-sm"
-                  : "w-3 h-3 bg-slate-400 dark:bg-slate-600 rotate-45 group-hover:rotate-0 group-hover:bg-marrsgreen dark:group-hover:bg-carrigreen group-hover:w-4 group-hover:h-4 group-hover:rounded-sm"
-              }`}
-            />
           </a>
         );
       })}

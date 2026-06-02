@@ -165,7 +165,61 @@ export default function WhoAmI() {
 
       </section>
 
-      {/* Decorative dots - light */}
+      {/* Decorative dots - right side light */}
+      <span
+        aria-hidden="true"
+        className="bg-svg hidden lg:inline-block absolute bottom-96 -right-4 dark:hidden"
+      >
+        <svg
+          width="149"
+          height="225"
+          viewBox="0 0 149 225"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {Array.from({ length: 12 }, (_, row) =>
+            Array.from({ length: 7 }, (_, col) => (
+              <circle
+                key={`r-${row}-${col}`}
+                cx={col * 24 + 5}
+                cy={row * 20 + 5}
+                r="2"
+                fill="#2b7a4b"
+                opacity="0.85"
+              />
+            ))
+          )}
+        </svg>
+      </span>
+
+      {/* Decorative dots - right side dark */}
+      <span
+        aria-hidden="true"
+        className="bg-svg absolute bottom-96 -right-4 hidden lg:dark:inline-block"
+      >
+        <svg
+          width="149"
+          height="225"
+          viewBox="0 0 149 225"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {Array.from({ length: 12 }, (_, row) =>
+            Array.from({ length: 7 }, (_, col) => (
+              <circle
+                key={`r-${row}-${col}`}
+                cx={col * 24 + 5}
+                cy={row * 20 + 5}
+                r="2"
+                fill="#58d5a3"
+                opacity="0.85"
+              />
+            ))
+          )}
+        </svg>
+      </span>
+
+      {/* Decorative dots - left side light */}
       <span
         aria-hidden="true"
         className="bg-svg hidden lg:inline-block absolute bottom-12 -left-12 dark:hidden"
