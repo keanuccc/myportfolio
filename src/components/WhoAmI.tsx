@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Profile } from "@/lib/types";
 
 const education = [
   {
@@ -25,6 +26,16 @@ const education = [
 
 export default function WhoAmI() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
+
+  useEffect(() => {
+    fetch("/api/profile")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.profile) setProfile(data.profile);
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -79,23 +90,31 @@ export default function WhoAmI() {
                 <path d="M79.2202 0.959991L62.7802 17.32L46.3301 0.959991L29.8902 17.32L13.4501 0.959991L0.410156 13.94L0.400146 17.58L13.4501 4.58999L29.8902 20.95L46.3301 4.58999L62.7802 20.95L79.2202 4.58999L93.7302 19.02L95.5402 17.19L79.2202 0.959991Z" />
               </svg>
 
-              {/* Profile picture placeholder */}
+              {/* Profile picture */}
               <div className="profile-picture overflow-hidden md:overflow-visible rounded-2xl md:shadow-2xl">
-                <div className="w-full aspect-square bg-gradient-to-br from-marrsgreen/10 to-carrigreen/10 dark:from-carrigreen/10 dark:to-marrsgreen/10 rounded-2xl flex items-center justify-center border border-marrsgreen/20 dark:border-carrigreen/20">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="80"
-                    height="80"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1"
-                    className="text-marrsgreen/40 dark:text-carrigreen/40"
-                  >
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                    <circle cx="12" cy="7" r="4" />
-                  </svg>
-                </div>
+                {profile?.whoami.avatar ? (
+                  <img
+                    src={profile.whoami.avatar}
+                    alt="Profile"
+                    className="w-full aspect-square object-cover rounded-2xl border border-marrsgreen/20 dark:border-carrigreen/20"
+                  />
+                ) : (
+                  <div className="w-full aspect-square bg-gradient-to-br from-marrsgreen/10 to-carrigreen/10 dark:from-carrigreen/10 dark:to-marrsgreen/10 rounded-2xl flex items-center justify-center border border-marrsgreen/20 dark:border-carrigreen/20">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="80"
+                      height="80"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1"
+                      className="text-marrsgreen/40 dark:text-carrigreen/40"
+                    >
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                      <circle cx="12" cy="7" r="4" />
+                    </svg>
+                  </div>
+                )}
               </div>
 
               {/* Decorative cross */}
@@ -127,9 +146,8 @@ export default function WhoAmI() {
           {/* Right: Bio + Education */}
           <div className="lg:w-3/5">
             <p className="about-intro text-2xl leading-relaxed text-slate-700 dark:text-slate-300 mb-10">
-              拥有 4 年以上 AI 产品管理经验，深度参与过多个从 0 到 1 的 AI
-              产品项目。擅长将复杂的 AI
-              技术转化为用户可感知的产品价值，具备出色的跨部门协作能力和数据驱动决策思维。在技术理解力、用户洞察力和商业判断力之间找到最佳平衡点。
+              {profile?.whoami.bio ||
+                "拥有 4 年以上 AI 产品管理经验，深度参与过多个从 0 到 1 的 AI 产品项目。擅长将复杂的 AI 技术转化为用户可感知的产品价值，具备出色的跨部门协作能力和数据驱动决策思维。在技术理解力、用户洞察力和商业判断力之间找到最佳平衡点。"}
             </p>
 
             <p className="edu-bg text-3xl font-medium mb-6 text-slate-800 dark:text-slate-200">

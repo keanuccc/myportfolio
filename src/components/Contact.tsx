@@ -1,4 +1,58 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { Profile } from "@/lib/types";
+
 export default function Contact() {
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetch("/api/profile")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.profile) setProfile(data.profile);
+      })
+      .catch(() => {});
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setSuccess(false);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Failed to send message");
+      }
+
+      setSuccess(true);
+      setName("");
+      setEmail("");
+      setMessage("");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const socialLinks = profile?.contact.socialLinks || [];
+  const contactEmail = profile?.contact.email || "your@email.com";
+
   return (
     <section
       id="contact"
@@ -13,11 +67,62 @@ export default function Contact() {
         无论是 AI 产品合作、技术交流，还是职业机会探讨，都欢迎随时联系我。
       </p>
 
-      <div className="mt-4 mb-10">
+      {/* Contact Form */}
+      <form
+        onSubmit={handleSubmit}
+        className="max-w-2xl mx-auto w-full mt-4 mb-10 space-y-5"
+      >
+        <div className="flex flex-col sm:flex-row gap-5">
+          <input
+            type="text"
+            placeholder="Your Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            className="flex-1 px-5 py-4 rounded-lg bg-white dark:bg-[#1B2731] border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-marrsgreen dark:focus:ring-carrigreen text-lg"
+          />
+          <input
+            type="email"
+            placeholder="Your Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="flex-1 px-5 py-4 rounded-lg bg-white dark:bg-[#1B2731] border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-marrsgreen dark:focus:ring-carrigreen text-lg"
+          />
+        </div>
+        <textarea
+          placeholder="Your Message"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          required
+          rows={5}
+          className="w-full px-5 py-4 rounded-lg bg-white dark:bg-[#1B2731] border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-marrsgreen dark:focus:ring-carrigreen text-lg resize-none"
+        />
+
+        <div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-marrsgreen hover:bg-marrslight active:bg-marrsdark dark:hover:bg-carrilight dark:active:bg-carridark dark:bg-carrigreen text-bglight dark:text-bgdark py-4 px-14 rounded-lg text-xl font-medium outline-marrsgreen dark:outline-carrigreen focus-visible:outline-double outline-offset-2 inline-block shadow-lg hover:shadow-xl transition-shadow disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {loading ? "Sending..." : "Send Message"}
+          </button>
+        </div>
+
+        {success && (
+          <p className="text-marrsgreen dark:text-carrigreen text-lg">
+            Message sent successfully!
+          </p>
+        )}
+        {error && <p className="text-red-500 text-lg">{error}</p>}
+      </form>
+
+      {/* Fallback mailto link */}
+      <div className="mb-10">
         <a
           role="button"
           className="bg-marrsgreen hover:bg-marrslight active:bg-marrsdark dark:hover:bg-carrilight dark:active:bg-carridark dark:bg-carrigreen text-bglight dark:text-bgdark py-5 px-14 rounded-lg text-2xl font-medium outline-marrsgreen dark:outline-carrigreen focus-visible:outline-double outline-offset-2 inline-block shadow-lg hover:shadow-xl transition-shadow"
-          href="mailto:your@email.com"
+          href={`mailto:${contactEmail}`}
         >
           Say Hello
         </a>
@@ -26,7 +131,10 @@ export default function Contact() {
       <div className="flex justify-center items-center gap-8 mt-4">
         {/* GitHub */}
         <a
-          href="https://github.com/yourusername"
+          href={
+            socialLinks.find((l) => l.platform === "github")?.url ||
+            "https://github.com/yourusername"
+          }
           target="_blank"
           rel="noreferrer"
           title="GitHub"
@@ -45,7 +153,10 @@ export default function Contact() {
 
         {/* LinkedIn */}
         <a
-          href="https://linkedin.com/in/yourusername"
+          href={
+            socialLinks.find((l) => l.platform === "linkedin")?.url ||
+            "https://linkedin.com/in/yourusername"
+          }
           target="_blank"
           rel="noreferrer"
           title="LinkedIn"
@@ -64,7 +175,10 @@ export default function Contact() {
 
         {/* Twitter/X */}
         <a
-          href="https://twitter.com/yourusername"
+          href={
+            socialLinks.find((l) => l.platform === "twitter")?.url ||
+            "https://twitter.com/yourusername"
+          }
           target="_blank"
           rel="noreferrer"
           title="Twitter"

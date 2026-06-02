@@ -1,4 +1,31 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { Profile } from "@/lib/types";
+
+const DEFAULT_PROFILE: Profile = {
+  hero: {
+    name: "Your Name",
+    title: "AI Product Manager",
+    subtitle:
+      "我是一名专注于 AI 产品的产品经理，热衷于将前沿 AI 技术转化为用户价值。",
+  },
+  whoami: { bio: "", skills: [] },
+  contact: { email: "your@email.com", socialLinks: [] },
+};
+
 export default function Hero() {
+  const [profile, setProfile] = useState<Profile>(DEFAULT_PROFILE);
+
+  useEffect(() => {
+    fetch("/api/profile")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.profile) setProfile(data.profile);
+      })
+      .catch(() => {});
+  }, []);
+
   return (
     <section
       id="hero"
@@ -77,18 +104,17 @@ export default function Hero() {
           </span>
           <div className="overflow-hidden mt-3">
             <h1 className="text-animation text-6xl md:text-7xl lg:text-8xl font-bold my-2 leading-none">
-              Your Name
+              {profile.hero.name}
             </h1>
           </div>
           <div className="overflow-hidden">
             <span className="text-animation text-3xl md:text-4xl lg:text-5xl block my-4 text-marrsgreen dark:text-carrigreen font-semibold">
-              An AI Product Manager
+              {profile.hero.title}
             </span>
           </div>
           <div className="mt-6 mb-8 max-w-2xl mx-auto lg:mx-0">
             <p className="text-xl leading-relaxed mb-3 text-slate-700 dark:text-slate-300">
-              我是一名专注于 AI 产品的产品经理，热衷于将前沿 AI
-              技术转化为用户价值。
+              {profile.hero.subtitle}
             </p>
             <p className="text-xl leading-relaxed text-slate-700 dark:text-slate-300">
               擅长从 0 到 1 打造 AI
@@ -115,7 +141,7 @@ export default function Hero() {
           <a
             role="button"
             className="bg-marrsgreen hover:bg-marrslight active:bg-marrsdark dark:hover:bg-carrilight dark:active:bg-carridark dark:bg-carrigreen text-bglight dark:text-bgdark py-4 px-10 rounded-lg text-xl font-medium outline-marrsgreen dark:outline-carrigreen focus-visible:outline-double outline-offset-2 inline-block shadow-lg hover:shadow-xl transition-shadow"
-            href="mailto:your@email.com"
+            href={`mailto:${profile.contact.email}`}
             target="_self"
           >
             Contact me!
