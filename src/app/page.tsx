@@ -6,6 +6,8 @@ import Projects from "@/components/Projects";
 import Blog from "@/components/Blog";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import SideNav from "@/components/SideNav";
+import BackToTop from "@/components/BackToTop";
 
 export default function Home() {
   return (
@@ -14,6 +16,8 @@ export default function Home() {
       <div className="bg-bglight dark:bg-bgdark overflow-hidden">
         <div className="selection:bg-marrsgreen selection:text-bglight dark:selection:bg-carrigreen dark:selection:text-bgdark">
           <Header />
+          <SideNav />
+          <BackToTop />
           <main id="main">
             <Hero />
             <WhoAmI />

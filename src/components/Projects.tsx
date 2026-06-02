@@ -69,7 +69,7 @@ export default function Projects() {
   }, []);
 
   return (
-    <section id="projects" className="section" ref={sectionRef}>
+    <section id="projects" className="section min-h-screen flex flex-col justify-center" ref={sectionRef}>
       <div className="project-title text-center">
         <span>
           <h2 className="section-heading">Featured Projects</h2>

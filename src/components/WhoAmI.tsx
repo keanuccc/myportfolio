@@ -53,8 +53,8 @@ export default function WhoAmI() {
   }, []);
 
   return (
-    <div className="about-panel bg-white dark:bg-[#1B2731] relative">
-      <section id="whoami" className="section" ref={sectionRef}>
+    <div className="about-panel bg-white dark:bg-[#1B2731] relative min-h-screen flex items-center">
+      <section id="whoami" className="section w-full" ref={sectionRef}>
         <div className="text-center">
           <span>
             <h2 className="section-heading">Who am I?</h2>

@@ -57,7 +57,7 @@ export default function Blog() {
   }, []);
 
   return (
-    <section id="blog" className="section" ref={sectionRef}>
+    <section id="blog" className="section min-h-screen flex flex-col justify-center" ref={sectionRef}>
       <div className="text-center">
         <span>
           <h2 className="section-heading">Blog</h2>

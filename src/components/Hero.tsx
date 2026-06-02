@@ -1,6 +1,6 @@
 export default function Hero() {
   return (
-    <section className="relative mt-16 sm:mt-8 pt-8 lg:pt-0 px-4 sm:px-8 md:px-20 max-w-5xl sm:pb-24 min-h-[600px] mx-auto sm:flex sm:flex-col sm:justify-center sm:items-center lg:flex-row-reverse">
+    <section id="hero" className="relative mt-16 sm:mt-8 pt-8 lg:pt-0 px-4 sm:px-8 md:px-20 max-w-5xl min-h-screen mx-auto sm:flex sm:flex-col sm:justify-center sm:items-center lg:flex-row-reverse">
       {/* Background decorative text */}
       <span
         aria-hidden="true"

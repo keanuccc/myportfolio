@@ -1,6 +1,6 @@
 export default function Contact() {
   return (
-    <section id="contact" className="section text-center">
+    <section id="contact" className="section text-center min-h-screen flex flex-col justify-center">
       <div>
         <span>
           <h2 className="section-heading">Contact</h2>
