@@ -81,7 +81,7 @@ export default function Header() {
                     <li key={link.href}>
                       <a
                         href={link.href}
-                        className="text-sm md:text-lg flex flex-col items-center w-[4.5rem] md:w-auto dark:fill-textlight md:mr-6 md:hover:text-marrsgreen md:dark:hover:text-carrigreen link-outline"
+                        className="text-base md:text-xl flex flex-col items-center w-[4.5rem] md:w-auto dark:fill-textlight md:mr-6 md:hover:text-marrsgreen md:dark:hover:text-carrigreen link-outline"
                       >
                         <span className="md:hidden">
                           {icons[link.icon as keyof typeof icons]}

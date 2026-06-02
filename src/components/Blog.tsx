@@ -66,7 +66,7 @@ export default function Blog() {
           <h2 className="section-heading">Blog</h2>
         </span>
       </div>
-      <span className="text-center block mb-14 text-xl text-slate-600 dark:text-slate-300">
+      <span className="text-center block mb-14 text-2xl text-slate-600 dark:text-slate-300">
         我偶尔写一些关于 AI 产品、技术趋势和职业思考的文章
       </span>
 
@@ -96,11 +96,11 @@ export default function Blog() {
               <time dateTime={post.date}>{post.date}</time>
             </div>
 
-            <h3 className="text-marrsgreen dark:text-carrigreen text-2xl font-bold mb-4 line-clamp-2">
+            <h3 className="text-marrsgreen dark:text-carrigreen text-3xl font-bold mb-4 line-clamp-2">
               {post.title}
             </h3>
 
-            <p className="text-slate-600 dark:text-slate-300 text-base leading-relaxed mb-6 line-clamp-3">
+            <p className="text-slate-600 dark:text-slate-300 text-lg leading-relaxed mb-6 line-clamp-3">
               {post.description}
             </p>
 
@@ -108,7 +108,7 @@ export default function Blog() {
               {post.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="text-sm bg-gradient-to-r from-marrsgreen/10 to-carrigreen/10 dark:from-marrsgreen/20 dark:to-carrigreen/20 text-marrsgreen dark:text-carrigreen py-1 px-3 rounded-lg font-medium"
+                  className="text-base bg-gradient-to-r from-marrsgreen/10 to-carrigreen/10 dark:from-marrsgreen/20 dark:to-carrigreen/20 text-marrsgreen dark:text-carrigreen py-1.5 px-3.5 rounded-lg font-medium"
                 >
                   {tag}
                 </span>

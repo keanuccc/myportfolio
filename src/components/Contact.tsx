@@ -9,7 +9,7 @@ export default function Contact() {
           <h2 className="section-heading">Contact</h2>
         </span>
       </div>
-      <p className="my-6 max-w-2xl mx-auto text-xl leading-relaxed text-slate-600 dark:text-slate-300">
+      <p className="my-6 max-w-2xl mx-auto text-2xl leading-relaxed text-slate-600 dark:text-slate-300">
         无论是 AI 产品合作、技术交流，还是职业机会探讨，都欢迎随时联系我。
       </p>
 

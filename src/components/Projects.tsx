@@ -79,7 +79,7 @@ export default function Projects() {
           <h2 className="section-heading">Featured Projects</h2>
         </span>
       </div>
-      <span className="project-desc text-center block mb-4">
+      <span className="project-desc text-center block mb-4 text-lg">
         &ldquo;Talk is cheap. Show me the code&rdquo;? 作为 AI PM，我更想说：
         <br />
         &ldquo;Show me the impact.&rdquo; 以下是我主导的部分 AI 产品项目
@@ -109,7 +109,7 @@ export default function Projects() {
               {/* Title row with links */}
               <div className="overflow-hidden">
                 <div className="project-text flex items-center justify-between">
-                  <h3 className="text-marrsgreen dark:text-carrigreen text-lg my-1 font-medium">
+                  <h3 className="text-marrsgreen dark:text-carrigreen text-xl my-1 font-medium">
                     {project.title}
                   </h3>
                   <div className="flex items-center space-x-5 sm:space-x-3 my-2 sm:my-0 mr-[0.1rem]">
@@ -198,12 +198,12 @@ export default function Projects() {
               {/* Tags */}
               <ul
                 aria-label={`Tech Stack used in ${project.title}`}
-                className="flex flex-wrap mt-2 mb-4 md:mt-2 md:mb-6 text-sm overflow-hidden"
+                className="flex flex-wrap mt-2 mb-4 md:mt-2 md:mb-6 text-base overflow-hidden"
               >
                 {project.tags.map((tag) => (
                   <li
                     key={tag}
-                    className="project-tags mr-2 my-1 bg-[#E2EFEF] dark:bg-carddark py-1 px-2 rounded"
+                    className="project-tags mr-2 my-1 bg-[#E2EFEF] dark:bg-carddark py-1.5 px-3 rounded"
                   >
                     {tag}
                   </li>

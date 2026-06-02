@@ -23,39 +23,6 @@ const education = [
   },
 ];
 
-const skills = [
-  {
-    icon: "🧠",
-    title: "AI/ML 认知",
-    desc: "深入理解 LLM、NLP、CV 等 AI 技术原理与边界",
-  },
-  {
-    icon: "📊",
-    title: "数据驱动",
-    desc: "擅长 A/B 测试、漏斗分析、指标体系搭建",
-  },
-  {
-    icon: "🎯",
-    title: "产品战略",
-    desc: "从 0 到 1 产品规划，定义 AI 产品路线图",
-  },
-  {
-    icon: "🤝",
-    title: "跨团队协作",
-    desc: "高效协调算法、工程、设计、业务多方资源",
-  },
-  {
-    icon: "💡",
-    title: "用户洞察",
-    desc: "深度用户调研，将需求转化为可落地的 AI 方案",
-  },
-  {
-    icon: "🚀",
-    title: "商业化落地",
-    desc: "关注 ROI，推动 AI 产品从 MVP 到规模化增长",
-  },
-];
-
 export default function WhoAmI() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
@@ -65,7 +32,7 @@ export default function WhoAmI() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const elements = entry.target.querySelectorAll(
-              ".edu-heading, .edu-info, .edu-list, .edu-bg, .about-intro, .skill-card"
+              ".edu-heading, .edu-info, .edu-list, .edu-bg, .about-intro"
             );
             elements.forEach((el, i) => {
               setTimeout(() => {
@@ -159,20 +126,20 @@ export default function WhoAmI() {
 
           {/* Right: Bio + Education */}
           <div className="lg:w-3/5">
-            <p className="about-intro text-xl leading-relaxed text-slate-700 dark:text-slate-300 mb-10">
+            <p className="about-intro text-2xl leading-relaxed text-slate-700 dark:text-slate-300 mb-10">
               拥有 4 年以上 AI 产品管理经验，深度参与过多个从 0 到 1 的 AI
               产品项目。擅长将复杂的 AI
               技术转化为用户可感知的产品价值，具备出色的跨部门协作能力和数据驱动决策思维。在技术理解力、用户洞察力和商业判断力之间找到最佳平衡点。
             </p>
 
-            <p className="edu-bg text-2xl font-medium mb-6 text-slate-800 dark:text-slate-200">
+            <p className="edu-bg text-3xl font-medium mb-6 text-slate-800 dark:text-slate-200">
               教育背景
             </p>
 
             {education.map((edu, i) => (
               <div key={i} className="edu-group mb-8">
                 <div className="overflow-hidden">
-                  <h3 className="edu-heading text-marrsgreen dark:text-carrigreen text-xl font-semibold">
+                  <h3 className="edu-heading text-marrsgreen dark:text-carrigreen text-2xl font-semibold">
                     {edu.title}
                   </h3>
                 </div>
@@ -186,7 +153,7 @@ export default function WhoAmI() {
                   className="marker:text-marrsgreen dark:marker:text-carrigreen list-disc pl-6 space-y-1.5 mt-2"
                 >
                   {edu.details.map((detail, j) => (
-                    <li key={j} className="edu-list text-base">
+                    <li key={j} className="edu-list text-lg">
                       {detail}
                     </li>
                   ))}
@@ -196,28 +163,6 @@ export default function WhoAmI() {
           </div>
         </div>
 
-        {/* Bottom: Skills grid */}
-        <div className="mt-8">
-          <p className="text-center text-2xl font-medium mb-10 text-slate-800 dark:text-slate-200">
-            核心能力
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-            {skills.map((skill, i) => (
-              <div
-                key={i}
-                className="skill-card bg-gradient-to-br from-white to-slate-50 dark:from-carddark dark:to-bgdark rounded-2xl p-6 border border-slate-100 dark:border-slate-700/50 hover:border-marrsgreen/30 dark:hover:border-carrigreen/30 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
-              >
-                <span className="text-3xl block mb-3">{skill.icon}</span>
-                <h4 className="text-lg font-semibold text-marrsgreen dark:text-carrigreen mb-2">
-                  {skill.title}
-                </h4>
-                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                  {skill.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
       </section>
 
       {/* Decorative dots - light */}

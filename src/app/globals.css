@@ -42,7 +42,7 @@
 
   /* Section heading - bigger, more decorative */
   .section-heading {
-    @apply text-4xl md:text-5xl font-bold inline-block relative tracking-tight;
+    @apply text-5xl md:text-6xl font-bold inline-block relative tracking-tight;
   }
 
   .section-heading::after {
@@ -74,7 +74,7 @@
   }
 
   .project-desc {
-    @apply mt-2 text-slate-600 dark:text-slate-300;
+    @apply mt-2 text-lg text-slate-600 dark:text-slate-300;
   }
 
   .project-tags {
@@ -204,14 +204,3 @@
   transform: translateY(0);
 }
 
-/* Skill card animation */
-.skill-card {
-  opacity: 0;
-  transform: translateY(20px) scale(0.95);
-  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-}
-
-.skill-card.visible {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
