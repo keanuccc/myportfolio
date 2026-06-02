@@ -45,7 +45,7 @@ export default function ProjectsListPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-marrsgreen dark:border-carrigreen"></div>
       </div>
     );
   }
@@ -58,7 +58,7 @@ export default function ProjectsListPage() {
         </h1>
         <Link
           href="/admin/projects/new"
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+          className="btn-brand"
         >
           New Project
         </Link>
@@ -68,14 +68,16 @@ export default function ProjectsListPage() {
         {projects.map((project) => (
           <div
             key={project.id}
-            className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden"
+            className="admin-card hover-lift overflow-hidden group"
           >
             {project.image && (
-              <img
-                src={project.image}
-                alt={project.title}
-                className="w-full h-48 object-cover"
-              />
+              <div className="relative overflow-hidden">
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
             )}
             <div className="p-6">
               <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
@@ -88,7 +90,7 @@ export default function ProjectsListPage() {
                 {project.technologies.slice(0, 3).map((tech) => (
                   <span
                     key={tech}
-                    className="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded-full"
+                    className="px-2 py-1 bg-marrsgreen/10 dark:bg-carrigreen/10 text-marrsgreen dark:text-carrigreen ring-1 ring-marrsgreen/20 dark:ring-carrigreen/20 text-xs rounded-full"
                   >
                     {tech}
                   </span>
@@ -98,7 +100,7 @@ export default function ProjectsListPage() {
                 <div className="flex gap-2">
                   <Link
                     href={`/admin/projects/${project.id}/edit`}
-                    className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 text-sm"
+                    className="text-marrsgreen dark:text-carrigreen hover:text-marrslight dark:hover:text-carrilight text-sm"
                   >
                     Edit
                   </Link>
@@ -110,7 +112,7 @@ export default function ProjectsListPage() {
                   </button>
                 </div>
                 {project.featured && (
-                  <span className="px-2 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 text-xs rounded-full">
+                  <span className="px-2 py-1 bg-gradient-to-r from-amber-100 to-yellow-100 dark:from-amber-900/30 dark:to-yellow-900/30 text-amber-700 dark:text-amber-300 ring-1 ring-amber-400/30 text-xs rounded-full">
                     Featured
                   </span>
                 )}
@@ -121,10 +123,10 @@ export default function ProjectsListPage() {
       </div>
 
       {projects.length === 0 && (
-        <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-lg shadow-md">
+        <div className="text-center py-12 admin-card">
           <p className="text-gray-500 dark:text-gray-400">
             No projects yet.{' '}
-            <Link href="/admin/projects/new" className="text-blue-500 hover:underline">
+            <Link href="/admin/projects/new" className="text-marrsgreen dark:text-carrigreen hover:underline">
               Add your first project
             </Link>
           </p>

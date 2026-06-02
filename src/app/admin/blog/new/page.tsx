@@ -62,26 +62,26 @@ export default function NewBlogPostPage() {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {error && (
-          <div className="p-4 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-lg">
+          <div className="p-4 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-lg border-l-4 border-red-500">
             {error}
           </div>
         )}
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-xs text-marrsgreen/80 dark:text-carrigreen/80">
             Title
           </label>
           <input
             type="text"
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+            className="admin-input"
             required
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-xs text-marrsgreen/80 dark:text-carrigreen/80">
             Slug
           </label>
           <div className="flex gap-2">
@@ -89,13 +89,13 @@ export default function NewBlogPostPage() {
               type="text"
               value={formData.slug}
               onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+              className="flex-1 admin-input"
               required
             />
             <button
               type="button"
               onClick={generateSlug}
-              className="px-4 py-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500"
+              className="px-4 py-3 bg-marrsgreen/10 dark:bg-carrigreen/10 text-marrsgreen dark:text-carrigreen rounded-xl hover:bg-marrsgreen/20 dark:hover:bg-carrigreen/20 transition-all duration-300 font-medium text-sm"
             >
               Generate
             </button>
@@ -103,19 +103,19 @@ export default function NewBlogPostPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-xs text-marrsgreen/80 dark:text-carrigreen/80">
             Excerpt
           </label>
           <textarea
             value={formData.excerpt}
             onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
             rows={3}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+            className="admin-input"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-xs text-marrsgreen/80 dark:text-carrigreen/80">
             Content
           </label>
           <MarkdownEditor
@@ -125,26 +125,26 @@ export default function NewBlogPostPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-xs text-marrsgreen/80 dark:text-carrigreen/80">
             Tags (comma-separated)
           </label>
           <input
             type="text"
             value={formData.tags}
             onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+            className="admin-input"
             placeholder="react, nextjs, typescript"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-xs text-marrsgreen/80 dark:text-carrigreen/80">
             Status
           </label>
           <select
             value={formData.status}
             onChange={(e) => setFormData({ ...formData, status: e.target.value as 'draft' | 'published' })}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+            className="admin-input"
           >
             <option value="draft">Draft</option>
             <option value="published">Published</option>
@@ -155,14 +155,14 @@ export default function NewBlogPostPage() {
           <button
             type="submit"
             disabled={loading}
-            className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+            className="btn-brand disabled:opacity-50"
           >
             {loading ? 'Creating...' : 'Create Post'}
           </button>
           <button
             type="button"
             onClick={() => router.push('/admin/blog')}
-            className="px-6 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
+            className="px-6 py-2.5 rounded-xl border border-marrsgreen/20 dark:border-carrigreen/20 text-gray-600 dark:text-gray-300 hover:bg-marrsgreen/5 dark:hover:bg-carrigreen/5 transition-all duration-300"
           >
             Cancel
           </button>
