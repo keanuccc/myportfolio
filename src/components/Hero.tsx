@@ -12,7 +12,7 @@ export default function Hero() {
         AI PRODUCT MANAGER STRATEGIST INNOVATOR
       </span>
 
-      <div className="w-full flex flex-col-reverse lg:flex-row-reverse items-center gap-10 lg:gap-16 py-20">
+      <div className="w-full flex flex-col-reverse lg:flex-row-reverse items-center gap-10 lg:gap-6 py-20">
         {/* Illustration placeholder */}
         <div className="image-animation z-10 select-none shrink-0 lg:w-2/5">
           <div className="relative w-72 h-80 md:w-80 md:h-88 lg:w-[28rem] lg:h-[30rem] flex items-center mx-auto">
