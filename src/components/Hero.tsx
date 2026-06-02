@@ -2,7 +2,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center px-6 sm:px-10 md:px-16 lg:px-24"
+      className="relative px-6 sm:px-10 md:px-16 lg:px-24 pt-28 pb-20"
     >
       {/* Background decorative text */}
       <span
@@ -12,46 +12,23 @@ export default function Hero() {
         AI PRODUCT MANAGER STRATEGIST INNOVATOR
       </span>
 
-      <div className="w-full flex flex-col-reverse lg:flex-row-reverse items-center gap-10 lg:gap-6 py-20">
-        {/* Illustration placeholder */}
-        <div className="image-animation z-10 select-none shrink-0 lg:w-2/5">
-          <div className="relative w-72 h-80 md:w-80 md:h-88 lg:w-[28rem] lg:h-[30rem] flex items-center mx-auto">
-            <div className="w-full h-full rounded-3xl bg-gradient-to-br from-marrsgreen/20 to-carrigreen/20 dark:from-carrigreen/20 dark:to-marrsgreen/20 flex items-center justify-center border-2 border-marrsgreen/30 dark:border-carrigreen/30 shadow-xl">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="160"
-                height="160"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="text-marrsgreen dark:text-carrigreen"
-              >
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
-            </div>
-          </div>
-        </div>
-
+      <div className="w-full max-w-7xl mx-auto flex flex-col-reverse lg:flex-row-reverse items-center gap-10 lg:gap-16">
         {/* Text content */}
-        <div className="z-10 relative text-center lg:text-left flex-1 lg:w-3/5">
+        <div className="z-10 relative text-center lg:text-left flex-1">
           <span className="text-marrsgreen text-xl lg:text-2xl font-medium dark:text-carrigreen tracking-wide">
             Hi, my name is
           </span>
           <div className="overflow-hidden mt-3">
-            <h1 className="text-animation text-6xl md:text-7xl lg:text-9xl font-bold my-2 leading-none">
+            <h1 className="text-animation text-6xl md:text-7xl lg:text-8xl font-bold my-2 leading-none">
               Your Name
             </h1>
           </div>
           <div className="overflow-hidden">
-            <span className="text-animation text-3xl md:text-4xl lg:text-6xl block my-4 text-marrsgreen dark:text-carrigreen font-semibold">
+            <span className="text-animation text-3xl md:text-4xl lg:text-5xl block my-4 text-marrsgreen dark:text-carrigreen font-semibold">
               An AI Product Manager
             </span>
           </div>
-          <div className="mt-6 mb-10 max-w-3xl mx-auto lg:mx-0">
+          <div className="mt-6 mb-10 max-w-2xl mx-auto lg:mx-0">
             <p className="text-xl leading-relaxed mb-3 text-slate-700 dark:text-slate-300">
               我是一名专注于 AI 产品的产品经理，热衷于将前沿 AI
               技术转化为用户价值。
@@ -70,12 +47,35 @@ export default function Hero() {
             Contact me!
           </a>
         </div>
+
+        {/* Illustration placeholder */}
+        <div className="image-animation z-10 select-none shrink-0 lg:w-2/5">
+          <div className="relative w-64 h-72 md:w-72 md:h-80 lg:w-80 lg:h-[22rem] flex items-center mx-auto">
+            <div className="w-full h-full rounded-2xl bg-gradient-to-br from-marrsgreen/20 to-carrigreen/20 dark:from-carrigreen/20 dark:to-marrsgreen/20 flex items-center justify-center border-2 border-marrsgreen/30 dark:border-carrigreen/30 shadow-xl">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="120"
+                height="120"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-marrsgreen dark:text-carrigreen"
+              >
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+              </svg>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Scroll indicator */}
       <a
         href="#whoami"
-        className="group absolute link-outline animate-bounce bottom-8 left-1/2 transform -translate-x-1/2 flex items-center flex-col"
+        className="group absolute link-outline animate-bounce bottom-4 left-1/2 transform -translate-x-1/2 flex items-center flex-col"
       >
         <span className="text-sm group-hover:text-marrsgreen dark:group-hover:text-carrigreen text-slate-500 dark:text-slate-400">
           Scroll
