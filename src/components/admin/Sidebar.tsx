@@ -32,10 +32,10 @@ export default function Sidebar() {
       <div className="absolute left-0 top-0 bottom-0 w-1 sidebar-accent rounded-r" />
 
       <div className="p-6">
-        <h1 className="text-2xl font-bold gradient-text">
+        <h1 className="text-3xl font-bold gradient-text">
           Admin Panel
         </h1>
-        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Portfolio Manager</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Portfolio Manager</p>
       </div>
 
       <nav className="mt-6">
@@ -45,14 +45,14 @@ export default function Sidebar() {
             <Link
               key={item.name}
               href={item.href}
-              className={`flex items-center px-6 py-3 transition-all duration-300 relative rounded-lg mx-3 ${
+              className={`flex items-center px-6 py-3.5 text-base transition-all duration-300 relative rounded-lg mx-3 ${
                 isActive
                   ? 'bg-gradient-to-r from-marrsgreen/10 to-transparent dark:from-carrigreen/10 dark:to-transparent text-marrsgreen dark:text-carrigreen font-medium'
                   : 'text-gray-700 dark:text-gray-300 hover:bg-marrsgreen/5 dark:hover:bg-carrigreen/5 hover:text-marrsgreen dark:hover:text-carrigreen'
               }`}
             >
-              <div className={`p-1.5 rounded-lg mr-3 ${isActive ? 'bg-marrsgreen/10 dark:bg-carrigreen/10' : ''}`}>
-                <item.icon className="h-5 w-5" />
+              <div className={`p-2.5 rounded-lg mr-3 ${isActive ? 'bg-marrsgreen/10 dark:bg-carrigreen/10' : ''}`}>
+                <item.icon className="h-6 w-6" />
               </div>
               {item.name}
             </Link>
@@ -63,9 +63,9 @@ export default function Sidebar() {
       <div className="absolute bottom-0 w-full p-6">
         <button
           onClick={handleLogout}
-          className="flex items-center w-full px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 rounded-lg mx-3 transition-all duration-300"
+          className="flex items-center w-full px-4 py-3 text-base text-gray-700 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 rounded-lg mx-3 transition-all duration-300"
         >
-          <ArrowRightOnRectangleIcon className="h-5 w-5 mr-3" />
+          <ArrowRightOnRectangleIcon className="h-6 w-6 mr-3" />
           Logout
         </button>
       </div>

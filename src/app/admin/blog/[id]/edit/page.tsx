@@ -88,7 +88,7 @@ export default function EditBlogPostPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
+      <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-8">
         Edit Blog Post
       </h1>
 
@@ -100,7 +100,7 @@ export default function EditBlogPostPage() {
         )}
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-xs text-marrsgreen/80 dark:text-carrigreen/80">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-sm text-marrsgreen/80 dark:text-carrigreen/80">
             Title
           </label>
           <input
@@ -113,7 +113,7 @@ export default function EditBlogPostPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-xs text-marrsgreen/80 dark:text-carrigreen/80">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-sm text-marrsgreen/80 dark:text-carrigreen/80">
             Slug
           </label>
           <input
@@ -126,7 +126,7 @@ export default function EditBlogPostPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-xs text-marrsgreen/80 dark:text-carrigreen/80">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-sm text-marrsgreen/80 dark:text-carrigreen/80">
             Excerpt
           </label>
           <textarea
@@ -138,7 +138,7 @@ export default function EditBlogPostPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-xs text-marrsgreen/80 dark:text-carrigreen/80">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-sm text-marrsgreen/80 dark:text-carrigreen/80">
             Content
           </label>
           <MarkdownEditor
@@ -148,7 +148,7 @@ export default function EditBlogPostPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-xs text-marrsgreen/80 dark:text-carrigreen/80">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-sm text-marrsgreen/80 dark:text-carrigreen/80">
             Tags (comma-separated)
           </label>
           <input
@@ -161,7 +161,7 @@ export default function EditBlogPostPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-xs text-marrsgreen/80 dark:text-carrigreen/80">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-sm text-marrsgreen/80 dark:text-carrigreen/80">
             Status
           </label>
           <select

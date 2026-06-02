@@ -56,7 +56,7 @@ export default function MessagesPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
+      <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-8">
         Contact Messages
       </h1>
 
@@ -64,7 +64,7 @@ export default function MessagesPage() {
         {/* Message List */}
         <div className="lg:col-span-1 admin-card overflow-hidden">
           <div className="p-4 border-b border-marrsgreen/10 dark:border-carrigreen/10">
-            <p className="text-sm text-marrsgreen dark:text-carrigreen font-semibold">
+            <p className="text-base text-marrsgreen dark:text-carrigreen font-semibold">
               {messages.filter((m) => !m.read).length} unread messages
             </p>
           </div>
@@ -81,10 +81,10 @@ export default function MessagesPage() {
               >
                 <div className="flex justify-between items-start">
                   <div>
-                    <p className="text-gray-900 dark:text-white">
+                    <p className="text-lg text-gray-900 dark:text-white">
                       {message.name}
                     </p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
+                    <p className="text-base text-gray-500 dark:text-gray-400 truncate">
                       {message.email}
                     </p>
                   </div>
@@ -92,7 +92,7 @@ export default function MessagesPage() {
                     <span className="h-2 w-2 bg-marrsgreen dark:bg-carrigreen rounded-full brand-pulse"></span>
                   )}
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">
+                <p className="text-base text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">
                   {message.message}
                 </p>
               </button>
@@ -111,10 +111,10 @@ export default function MessagesPage() {
             <div>
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                     {selectedMessage.name}
                   </h2>
-                  <p className="text-gray-600 dark:text-gray-400">
+                  <p className="text-base text-gray-600 dark:text-gray-400">
                     {selectedMessage.email}
                   </p>
                 </div>
@@ -129,11 +129,11 @@ export default function MessagesPage() {
                   {selectedMessage.read ? 'Mark Unread' : 'Mark Read'}
                 </button>
               </div>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+              <p className="text-base text-gray-500 dark:text-gray-400 mb-4">
                 {new Date(selectedMessage.createdAt).toLocaleString()}
               </p>
               <div className="bg-marrsgreen/5 dark:bg-carrigreen/5 border border-marrsgreen/10 dark:border-carrigreen/10 rounded-lg p-4">
-                <p className="text-gray-900 dark:text-white whitespace-pre-wrap">
+                <p className="text-base text-gray-900 dark:text-white whitespace-pre-wrap">
                   {selectedMessage.message}
                 </p>
               </div>

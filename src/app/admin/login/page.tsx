@@ -55,7 +55,7 @@ export default function LoginPage() {
       />
 
       <div className="admin-glass p-10 rounded-2xl shadow-2xl w-[420px] relative z-10 border border-white/30 dark:border-carrigreen/10">
-        <h1 className="text-2xl font-bold text-center mb-6 gradient-text">
+        <h1 className="text-3xl font-bold text-center mb-6 gradient-text">
           Admin Login
         </h1>
 

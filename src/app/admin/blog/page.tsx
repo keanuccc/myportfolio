@@ -53,7 +53,7 @@ export default function BlogListPage() {
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
           Blog Posts
         </h1>
         <Link
@@ -86,16 +86,16 @@ export default function BlogListPage() {
             {posts.map((post) => (
               <tr key={post.id} className="hover:bg-marrsgreen/[0.03] dark:hover:bg-carrigreen/[0.03] transition-colors duration-200">
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900 dark:text-white">
+                  <div className="text-base font-medium text-gray-900 dark:text-white">
                     {post.title}
                   </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
+                  <div className="text-base text-gray-500 dark:text-gray-400">
                     {post.slug}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
-                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                    className={`px-2 inline-flex text-sm leading-5 font-semibold rounded-full ${
                       post.status === 'published'
                         ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300 ring-1 ring-emerald-600/20'
                         : 'bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300 ring-1 ring-amber-600/20'
@@ -104,10 +104,10 @@ export default function BlogListPage() {
                     {post.status}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                <td className="px-6 py-4 whitespace-nowrap text-base text-gray-500 dark:text-gray-400">
                   {new Date(post.createdAt).toLocaleDateString()}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <td className="px-6 py-4 whitespace-nowrap text-right text-base font-medium">
                   <Link
                     href={`/admin/blog/${post.id}/edit`}
                     className="text-marrsgreen dark:text-carrigreen hover:text-marrslight dark:hover:text-carrilight mr-4"

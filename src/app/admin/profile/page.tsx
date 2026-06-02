@@ -70,7 +70,7 @@ export default function ProfilePage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
+      <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-8">
         Edit Profile
       </h1>
 
@@ -89,12 +89,12 @@ export default function ProfilePage() {
 
         {/* Hero Section */}
         <div className="admin-card p-6">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 pl-4 border-l-2 border-marrsgreen dark:border-carrigreen">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 pl-4 border-l-2 border-marrsgreen dark:border-carrigreen">
             Hero Section
           </h2>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-xs text-marrsgreen/80 dark:text-carrigreen/80">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-sm text-marrsgreen/80 dark:text-carrigreen/80">
                 Name
               </label>
               <input
@@ -110,7 +110,7 @@ export default function ProfilePage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-xs text-marrsgreen/80 dark:text-carrigreen/80">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-sm text-marrsgreen/80 dark:text-carrigreen/80">
                 Title
               </label>
               <input
@@ -126,7 +126,7 @@ export default function ProfilePage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-xs text-marrsgreen/80 dark:text-carrigreen/80">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-sm text-marrsgreen/80 dark:text-carrigreen/80">
                 Subtitle
               </label>
               <input
@@ -146,12 +146,12 @@ export default function ProfilePage() {
 
         {/* WhoAmI Section */}
         <div className="admin-card p-6">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 pl-4 border-l-2 border-marrsgreen dark:border-carrigreen">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 pl-4 border-l-2 border-marrsgreen dark:border-carrigreen">
             Who Am I Section
           </h2>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-xs text-marrsgreen/80 dark:text-carrigreen/80">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-sm text-marrsgreen/80 dark:text-carrigreen/80">
                 Bio
               </label>
               <textarea
@@ -167,7 +167,7 @@ export default function ProfilePage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-xs text-marrsgreen/80 dark:text-carrigreen/80">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-sm text-marrsgreen/80 dark:text-carrigreen/80">
                 Skills (comma-separated)
               </label>
               <input
@@ -190,12 +190,12 @@ export default function ProfilePage() {
 
         {/* Contact Section */}
         <div className="admin-card p-6">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 pl-4 border-l-2 border-marrsgreen dark:border-carrigreen">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 pl-4 border-l-2 border-marrsgreen dark:border-carrigreen">
             Contact Section
           </h2>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-xs text-marrsgreen/80 dark:text-carrigreen/80">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-sm text-marrsgreen/80 dark:text-carrigreen/80">
                 Email
               </label>
               <input

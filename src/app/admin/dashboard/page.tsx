@@ -89,7 +89,7 @@ export default function DashboardPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 gradient-text">
+      <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-8 gradient-text">
         Dashboard
       </h1>
 
@@ -100,14 +100,14 @@ export default function DashboardPage() {
             className="admin-card hover-lift stat-accent p-6"
           >
             <div className="flex items-center">
-              <div className={`${card.color} p-3 rounded-lg`}>
-                <card.icon className="h-6 w-6 text-white" />
+              <div className={`${card.color} p-4 rounded-lg`}>
+                <card.icon className="h-7 w-7 text-white" />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                <p className="text-base font-medium text-gray-600 dark:text-gray-400">
                   {card.name}
                 </p>
-                <p className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
+                <p className="text-4xl font-bold text-gray-900 dark:text-white tracking-tight">
                   {card.value}
                 </p>
               </div>
@@ -117,7 +117,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="mt-8 admin-card p-6">
-        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
           Quick Actions
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -129,7 +129,7 @@ export default function DashboardPage() {
               New Blog Post
               <span className="inline-block ml-2 transform group-hover:translate-x-1 transition-transform duration-300">→</span>
             </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-base text-gray-600 dark:text-gray-400">
               Create a new blog post
             </p>
           </a>
@@ -141,7 +141,7 @@ export default function DashboardPage() {
               New Project
               <span className="inline-block ml-2 transform group-hover:translate-x-1 transition-transform duration-300">→</span>
             </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-base text-gray-600 dark:text-gray-400">
               Add a new project to your portfolio
             </p>
           </a>
@@ -153,7 +153,7 @@ export default function DashboardPage() {
               View Messages
               <span className="inline-block ml-2 transform group-hover:translate-x-1 transition-transform duration-300">→</span>
             </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-base text-gray-600 dark:text-gray-400">
               Check your contact form submissions
             </p>
           </a>
