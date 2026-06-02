@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import MDEditor from '@uiw/react-md-editor';
 
 interface MarkdownEditorProps {
@@ -13,8 +14,22 @@ export default function MarkdownEditor({
   onChange,
   placeholder,
 }: MarkdownEditorProps) {
+  const [colorMode, setColorMode] = useState<'light' | 'dark'>('light');
+
+  useEffect(() => {
+    const isDark = document.documentElement.classList.contains('dark');
+    setColorMode(isDark ? 'dark' : 'light');
+
+    const observer = new MutationObserver(() => {
+      const dark = document.documentElement.classList.contains('dark');
+      setColorMode(dark ? 'dark' : 'light');
+    });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="markdown-editor" data-color-mode="light">
+    <div className="markdown-editor rounded-xl overflow-hidden border border-marrsgreen/15 dark:border-carrigreen/15" data-color-mode={colorMode}>
       <MDEditor
         value={value}
         onChange={(val) => onChange(val || '')}
