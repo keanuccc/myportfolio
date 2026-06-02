@@ -63,7 +63,7 @@ export default function Header() {
 
       <header className="md:flex">
         <div className="main-nav lower-glassmorphism bg-bglight dark:bg-bgdark z-30 top-0 shadow-sm fixed duration-400 px-4 sm:px-8 h-16 w-full">
-          <div className="w-full h-full mx-auto max-w-7xl flex items-center justify-between">
+          <div className="w-full h-full mx-auto max-w-[1400px] flex items-center justify-between px-6 sm:px-10 md:px-16 lg:px-24">
             {/* Logo */}
             <a
               className="text-xl sm:text-2xl md:hover:text-marrsgreen dark:md:hover:text-carrigreen focus-visible:outline-marrsgreen dark:focus-visible:outline-carrigreen font-semibold"

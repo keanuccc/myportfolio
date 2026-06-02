@@ -66,7 +66,7 @@ export default function WhoAmI() {
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center mb-20">
           {/* Left: Profile photo */}
           <div className="lg:w-2/5 flex flex-col items-center">
-            <div className="relative w-72 md:w-80">
+            <div className="relative w-80 md:w-96">
               {/* Decorative SVG */}
               <svg
                 width="96"

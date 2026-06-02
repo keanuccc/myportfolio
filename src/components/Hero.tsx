@@ -2,7 +2,7 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center px-6 sm:px-12 md:px-24 lg:px-32 max-w-7xl mx-auto"
+      className="relative min-h-screen flex items-center px-6 sm:px-10 md:px-16 lg:px-24"
     >
       {/* Background decorative text */}
       <span
