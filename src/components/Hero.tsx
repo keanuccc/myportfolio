@@ -12,7 +12,7 @@ export default function Hero() {
         AI PRODUCT MANAGER STRATEGIST INNOVATOR
       </span>
 
-      <div className="w-full flex flex-col-reverse lg:flex-row-reverse items-center gap-12 lg:gap-24 py-20">
+      <div className="w-full flex flex-col-reverse lg:flex-row-reverse items-center gap-10 lg:gap-16 py-20">
         {/* Illustration placeholder */}
         <div className="image-animation z-10 select-none shrink-0 lg:w-2/5">
           <div className="relative w-72 h-80 md:w-80 md:h-88 lg:w-[28rem] lg:h-[30rem] flex items-center mx-auto">
@@ -51,7 +51,7 @@ export default function Hero() {
               An AI Product Manager
             </span>
           </div>
-          <div className="mt-6 mb-10 max-w-2xl mx-auto lg:mx-0">
+          <div className="mt-6 mb-10 max-w-3xl mx-auto lg:mx-0">
             <p className="text-xl leading-relaxed mb-3 text-slate-700 dark:text-slate-300">
               我是一名专注于 AI 产品的产品经理，热衷于将前沿 AI
               技术转化为用户价值。
