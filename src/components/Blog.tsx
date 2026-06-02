@@ -64,8 +64,7 @@ export default function Blog() {
     const updateCardsPerView = () => {
       const w = window.innerWidth;
       if (w < 768) setCardsPerView(1);
-      else if (w < 1280) setCardsPerView(2);
-      else setCardsPerView(3);
+      else setCardsPerView(2);
     };
     updateCardsPerView();
     window.addEventListener("resize", updateCardsPerView);
@@ -132,7 +131,7 @@ export default function Blog() {
           onClick={prev}
           disabled={currentIndex === 0}
           aria-label="Previous articles"
-          className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-20 w-14 h-14 rounded-full bg-white dark:bg-carddark shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl ${
+          className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 z-20 w-16 h-16 rounded-full bg-white dark:bg-carddark shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl ${
             currentIndex === 0
               ? "opacity-0 pointer-events-none"
               : "opacity-0 group-hover/carousel:opacity-100"
@@ -159,7 +158,7 @@ export default function Blog() {
           onClick={next}
           disabled={currentIndex >= maxIndex}
           aria-label="Next articles"
-          className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-20 w-14 h-14 rounded-full bg-white dark:bg-carddark shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl ${
+          className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 z-20 w-16 h-16 rounded-full bg-white dark:bg-carddark shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl ${
             currentIndex >= maxIndex
               ? "opacity-0 pointer-events-none"
               : "opacity-0 group-hover/carousel:opacity-100"
@@ -192,11 +191,11 @@ export default function Blog() {
             {posts.map((post, index) => (
               <div
                 key={index}
-                className="shrink-0 px-6"
+                className="shrink-0 px-8"
                 style={{ width: `${100 / cardsPerView}%` }}
               >
                 <div
-                  className="blog-card h-full transition-all duration-500 bg-gray-100 dark:bg-carddark p-6 rounded-xl shadow-lg hover:shadow-2xl cursor-pointer"
+                  className="blog-card h-full transition-all duration-500 bg-gray-100 dark:bg-carddark p-8 rounded-2xl shadow-lg hover:shadow-2xl cursor-pointer"
                   onMouseEnter={() => setIsHovered(index)}
                   onMouseLeave={() => setIsHovered(null)}
                   style={{
@@ -208,12 +207,12 @@ export default function Blog() {
                 >
                   {/* Image */}
                   <div
-                    className="relative h-56 overflow-hidden"
+                    className="relative h-72 overflow-hidden rounded-xl"
                     style={{ backgroundColor: post.imageColor }}
                   >
                     <div className="absolute inset-0 flex items-center justify-center">
                       <span
-                        className="text-5xl font-bold text-white/30 transition-transform duration-500"
+                        className="text-7xl font-bold text-white/30 transition-transform duration-500"
                         style={{
                           transform:
                             isHovered === index ? "scale(1.2)" : "scale(1)",
@@ -233,11 +232,11 @@ export default function Blog() {
 
                   {/* Content */}
                   <div>
-                    <h3 className="text-xl font-semibold text-marrsgreen dark:text-carrigreen mb-2 line-clamp-2 h-14">
+                    <h3 className="text-2xl font-bold text-marrsgreen dark:text-carrigreen mb-3 line-clamp-2 h-16">
                       {post.title}
                     </h3>
 
-                    <div className="flex items-center gap-2 mb-3 text-sm text-slate-500 dark:text-slate-400 italic">
+                    <div className="flex items-center gap-2 mb-4 text-base text-slate-500 dark:text-slate-400 italic">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-4 w-4"
@@ -255,7 +254,7 @@ export default function Blog() {
                       <span>{post.date}</span>
                     </div>
 
-                    <p className="text-base text-slate-600 dark:text-slate-300 line-clamp-4 leading-7">
+                    <p className="text-lg text-slate-600 dark:text-slate-300 line-clamp-4 leading-8">
                       {post.description}
                     </p>
 
