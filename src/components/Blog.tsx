@@ -65,7 +65,7 @@ export default function Blog() {
       const w = window.innerWidth;
       if (w < 640) setCardsPerView(1);
       else if (w < 1024) setCardsPerView(2);
-      else setCardsPerView(2);
+      else setCardsPerView(3);
     };
     updateCardsPerView();
     window.addEventListener("resize", updateCardsPerView);
