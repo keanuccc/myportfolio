@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 4rem;
+  }
+
+  body {
+    font-family: "Jost", sans-serif;
+  }
+
+  ::selection {
+    background-color: #2b7a4b;
+    color: #f0f5fa;
+  }
+
+  .dark ::selection {
+    background-color: #58d5a3;
+    color: #0e141a;
+  }
+}
+
+@layer components {
+  /* Glassmorphism nav */
+  .lower-glassmorphism {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .glassmorphism {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    background: rgba(240, 245, 250, 0.85);
+  }
+
+  .dark .glassmorphism {
+    background: rgba(27, 39, 49, 0.85);
+  }
+
+  /* Section heading */
+  .section-heading {
+    @apply text-3xl md:text-4xl font-semibold inline-block relative;
+  }
+
+  .section-heading::after {
+    content: "";
+    @apply block w-12 h-1 bg-marrsgreen dark:bg-carrigreen mx-auto mt-2 rounded;
+  }
+
+  /* Section spacing */
+  .section {
+    @apply px-4 sm:px-8 md:px-20 py-16 max-w-5xl mx-auto;
+  }
+
+  /* Link focus outline */
+  .link-outline {
+    @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-marrsgreen dark:focus-visible:outline-carrigreen rounded;
+  }
+
+  /* Project card */
+  .project-card {
+    @apply bg-cardlight dark:bg-carddark rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300;
+  }
+}
+
+/* Loading screen animation */
+@keyframes loadingSlideUp {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes loadingTextReveal {
+  0% {
+    clip-path: inset(0 100% 0 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.loading-text {
+  animation: loadingTextReveal 1s ease-out forwards;
+}
+
+.white-bg {
+  animation: loadingSlideUp 0.8s ease-in-out 1.8s forwards;
+}
+
+.dark-bg {
+  animation: loadingSlideUp 0.8s ease-in-out 2s forwards;
+}
+
+/* Hero text animation */
+@keyframes heroSlideUp {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.text-animation {
+  animation: heroSlideUp 0.8s ease-out 2.4s both;
+}
+
+/* Image animation */
+@keyframes imageFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.image-animation {
+  animation: fadeIn 0.8s ease-out 2.6s both;
+}
+
+.image-animation img {
+  animation: imageFloat 4s ease-in-out infinite;
+}
+
+/* Background decorative text */
+.bg-text {
+  font-family: "Jost", sans-serif;
+  white-space: nowrap;
+}
+
+/* Education list animation */
+.edu-heading,
+.edu-info,
+.edu-list,
+.edu-bg,
+.about-intro {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.edu-heading.visible,
+.edu-info.visible,
+.edu-list.visible,
+.edu-bg.visible,
+.about-intro.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Project card animation */
+.project-card {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.project-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Blog card animation */
+.blog-card {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+}
+
+.blog-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
