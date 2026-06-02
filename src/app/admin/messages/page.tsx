@@ -49,7 +49,7 @@ export default function MessagesPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-marrsgreen dark:border-carrigreen"></div>
       </div>
     );
   }
@@ -62,9 +62,9 @@ export default function MessagesPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Message List */}
-        <div className="lg:col-span-1 bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+        <div className="lg:col-span-1 admin-card overflow-hidden">
+          <div className="p-4 border-b border-marrsgreen/10 dark:border-carrigreen/10">
+            <p className="text-sm text-marrsgreen dark:text-carrigreen font-semibold">
               {messages.filter((m) => !m.read).length} unread messages
             </p>
           </div>
@@ -73,9 +73,9 @@ export default function MessagesPage() {
               <button
                 key={message.id}
                 onClick={() => setSelectedMessage(message)}
-                className={`w-full text-left p-4 hover:bg-gray-50 dark:hover:bg-gray-700 ${
+                className={`w-full text-left p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 rounded-lg mx-2 my-1 ${
                   selectedMessage?.id === message.id
-                    ? 'bg-blue-50 dark:bg-blue-900'
+                    ? 'bg-marrsgreen/10 dark:bg-carrigreen/10 border-l-2 border-marrsgreen dark:border-carrigreen'
                     : ''
                 } ${!message.read ? 'font-semibold' : ''}`}
               >
@@ -89,7 +89,7 @@ export default function MessagesPage() {
                     </p>
                   </div>
                   {!message.read && (
-                    <span className="h-2 w-2 bg-blue-500 rounded-full"></span>
+                    <span className="h-2 w-2 bg-marrsgreen dark:bg-carrigreen rounded-full brand-pulse"></span>
                   )}
                 </div>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">
@@ -106,7 +106,7 @@ export default function MessagesPage() {
         </div>
 
         {/* Message Detail */}
-        <div className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+        <div className="lg:col-span-2 admin-card p-6">
           {selectedMessage ? (
             <div>
               <div className="flex justify-between items-start mb-6">
@@ -123,7 +123,7 @@ export default function MessagesPage() {
                   className={`px-3 py-1 rounded-lg text-sm ${
                     selectedMessage.read
                       ? 'bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300'
-                      : 'bg-blue-500 text-white'
+                      : 'bg-marrsgreen dark:bg-carrigreen text-white dark:text-bgdark'
                   }`}
                 >
                   {selectedMessage.read ? 'Mark Unread' : 'Mark Read'}
@@ -132,7 +132,7 @@ export default function MessagesPage() {
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
                 {new Date(selectedMessage.createdAt).toLocaleString()}
               </p>
-              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+              <div className="bg-marrsgreen/5 dark:bg-carrigreen/5 border border-marrsgreen/10 dark:border-carrigreen/10 rounded-lg p-4">
                 <p className="text-gray-900 dark:text-white whitespace-pre-wrap">
                   {selectedMessage.message}
                 </p>

@@ -63,7 +63,7 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-marrsgreen dark:border-carrigreen"></div>
       </div>
     );
   }
@@ -76,25 +76,25 @@ export default function ProfilePage() {
 
       <form onSubmit={handleSubmit} className="space-y-8 max-w-2xl">
         {error && (
-          <div className="p-4 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-lg">
+          <div className="p-4 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-lg border-l-4 border-red-500">
             {error}
           </div>
         )}
 
         {success && (
-          <div className="p-4 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-200 rounded-lg">
+          <div className="p-4 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-200 rounded-lg border-l-4 border-marrsgreen dark:border-carrigreen">
             {success}
           </div>
         )}
 
         {/* Hero Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="admin-card p-6">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 pl-4 border-l-2 border-marrsgreen dark:border-carrigreen">
             Hero Section
           </h2>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-xs text-marrsgreen/80 dark:text-carrigreen/80">
                 Name
               </label>
               <input
@@ -106,11 +106,11 @@ export default function ProfilePage() {
                     hero: { ...profile.hero, name: e.target.value },
                   })
                 }
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                className="admin-input"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-xs text-marrsgreen/80 dark:text-carrigreen/80">
                 Title
               </label>
               <input
@@ -122,11 +122,11 @@ export default function ProfilePage() {
                     hero: { ...profile.hero, title: e.target.value },
                   })
                 }
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                className="admin-input"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-xs text-marrsgreen/80 dark:text-carrigreen/80">
                 Subtitle
               </label>
               <input
@@ -138,20 +138,20 @@ export default function ProfilePage() {
                     hero: { ...profile.hero, subtitle: e.target.value },
                   })
                 }
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                className="admin-input"
               />
             </div>
           </div>
         </div>
 
         {/* WhoAmI Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="admin-card p-6">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 pl-4 border-l-2 border-marrsgreen dark:border-carrigreen">
             Who Am I Section
           </h2>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-xs text-marrsgreen/80 dark:text-carrigreen/80">
                 Bio
               </label>
               <textarea
@@ -163,11 +163,11 @@ export default function ProfilePage() {
                   })
                 }
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                className="admin-input"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-xs text-marrsgreen/80 dark:text-carrigreen/80">
                 Skills (comma-separated)
               </label>
               <input
@@ -182,20 +182,20 @@ export default function ProfilePage() {
                     },
                   })
                 }
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                className="admin-input"
               />
             </div>
           </div>
         </div>
 
         {/* Contact Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+        <div className="admin-card p-6">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4 pl-4 border-l-2 border-marrsgreen dark:border-carrigreen">
             Contact Section
           </h2>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-xs text-marrsgreen/80 dark:text-carrigreen/80">
                 Email
               </label>
               <input
@@ -207,7 +207,7 @@ export default function ProfilePage() {
                     contact: { ...profile.contact, email: e.target.value },
                   })
                 }
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                className="admin-input"
               />
             </div>
           </div>
@@ -216,7 +216,7 @@ export default function ProfilePage() {
         <button
           type="submit"
           disabled={saving}
-          className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+          className="btn-brand"
         >
           {saving ? 'Saving...' : 'Save Profile'}
         </button>
