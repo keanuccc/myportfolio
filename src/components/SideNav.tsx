@@ -63,12 +63,12 @@ export default function SideNav() {
               {label}
             </span>
 
-            {/* Dot */}
+            {/* Diamond shape */}
             <span
-              className={`block rounded-full transition-all duration-300 ${
+              className={`block transition-all duration-300 ${
                 isActive
-                  ? "w-4 h-4 bg-marrsgreen dark:bg-carrigreen ring-2 ring-marrsgreen/30 dark:ring-carrigreen/30"
-                  : "w-3 h-3 bg-slate-400 dark:bg-slate-600 group-hover:bg-marrsgreen dark:group-hover:bg-carrigreen group-hover:w-3.5 group-hover:h-3.5"
+                  ? "w-4 h-4 bg-marrsgreen dark:bg-carrigreen rotate-45 group-hover:rotate-0 group-hover:rounded-sm"
+                  : "w-3 h-3 bg-slate-400 dark:bg-slate-600 rotate-45 group-hover:rotate-0 group-hover:bg-marrsgreen dark:group-hover:bg-carrigreen group-hover:w-4 group-hover:h-4 group-hover:rounded-sm"
               }`}
             />
           </a>
