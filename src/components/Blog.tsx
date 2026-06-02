@@ -65,7 +65,7 @@ export default function Blog() {
       const w = window.innerWidth;
       if (w < 640) setCardsPerView(1);
       else if (w < 1024) setCardsPerView(2);
-      else setCardsPerView(3);
+      else setCardsPerView(2);
     };
     updateCardsPerView();
     window.addEventListener("resize", updateCardsPerView);
@@ -192,7 +192,7 @@ export default function Blog() {
             {posts.map((post, index) => (
               <div
                 key={index}
-                className="shrink-0 px-5"
+                className="shrink-0 px-6"
                 style={{ width: `${100 / cardsPerView}%` }}
               >
                 <div
