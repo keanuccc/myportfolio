@@ -9,6 +9,7 @@ import Footer from "@/components/Footer";
 import SideNav from "@/components/SideNav";
 import BackToTop from "@/components/BackToTop";
 import WaveDivider from "@/components/WaveDivider";
+import FixedContacts from "@/components/FixedContacts";
 
 export default function Home() {
   return (
@@ -18,6 +19,7 @@ export default function Home() {
         <div className="selection:bg-marrsgreen selection:text-bglight dark:selection:bg-carrigreen dark:selection:text-bgdark">
           <Header />
           <SideNav />
+          <FixedContacts />
           <BackToTop />
           <main id="main">
             <Hero />
