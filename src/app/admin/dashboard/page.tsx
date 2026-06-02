@@ -55,7 +55,7 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-marrsgreen dark:border-carrigreen"></div>
       </div>
     );
   }
@@ -65,31 +65,31 @@ export default function DashboardPage() {
       name: 'Blog Posts',
       value: stats.blogPosts,
       icon: DocumentTextIcon,
-      color: 'bg-blue-500',
+      color: 'bg-gradient-to-br from-marrsgreen to-marrslight dark:from-carrigreen dark:to-carrilight',
     },
     {
       name: 'Projects',
       value: stats.projects,
       icon: FolderIcon,
-      color: 'bg-green-500',
+      color: 'bg-gradient-to-br from-emerald-600 to-teal-400',
     },
     {
       name: 'Total Messages',
       value: stats.messages,
       icon: EnvelopeIcon,
-      color: 'bg-purple-500',
+      color: 'bg-gradient-to-br from-marrsdark to-marrsgreen dark:from-carridark dark:to-carrigreen',
     },
     {
       name: 'Unread Messages',
       value: stats.unreadMessages,
       icon: EnvelopeIcon,
-      color: 'bg-red-500',
+      color: 'bg-gradient-to-br from-amber-500 to-orange-400',
     },
   ];
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
+      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 gradient-text">
         Dashboard
       </h1>
 
@@ -97,7 +97,7 @@ export default function DashboardPage() {
         {statCards.map((card) => (
           <div
             key={card.name}
-            className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6"
+            className="admin-card hover-lift stat-accent p-6"
           >
             <div className="flex items-center">
               <div className={`${card.color} p-3 rounded-lg`}>
@@ -107,7 +107,7 @@ export default function DashboardPage() {
                 <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
                   {card.name}
                 </p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                <p className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
                   {card.value}
                 </p>
               </div>
@@ -116,17 +116,18 @@ export default function DashboardPage() {
         ))}
       </div>
 
-      <div className="mt-8 bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+      <div className="mt-8 admin-card p-6">
         <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
           Quick Actions
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <a
             href="/admin/blog/new"
-            className="block p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
+            className="admin-card hover-lift p-5 cursor-pointer group"
           >
-            <h3 className="font-medium text-gray-900 dark:text-white">
+            <h3 className="font-medium text-gray-900 dark:text-white group-hover:text-marrsgreen dark:group-hover:text-carrigreen transition-colors duration-300">
               New Blog Post
+              <span className="inline-block ml-2 transform group-hover:translate-x-1 transition-transform duration-300">→</span>
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">
               Create a new blog post
@@ -134,10 +135,11 @@ export default function DashboardPage() {
           </a>
           <a
             href="/admin/projects/new"
-            className="block p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
+            className="admin-card hover-lift p-5 cursor-pointer group"
           >
-            <h3 className="font-medium text-gray-900 dark:text-white">
+            <h3 className="font-medium text-gray-900 dark:text-white group-hover:text-marrsgreen dark:group-hover:text-carrigreen transition-colors duration-300">
               New Project
+              <span className="inline-block ml-2 transform group-hover:translate-x-1 transition-transform duration-300">→</span>
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">
               Add a new project to your portfolio
@@ -145,10 +147,11 @@ export default function DashboardPage() {
           </a>
           <a
             href="/admin/messages"
-            className="block p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
+            className="admin-card hover-lift p-5 cursor-pointer group"
           >
-            <h3 className="font-medium text-gray-900 dark:text-white">
+            <h3 className="font-medium text-gray-900 dark:text-white group-hover:text-marrsgreen dark:group-hover:text-carrigreen transition-colors duration-300">
               View Messages
+              <span className="inline-block ml-2 transform group-hover:translate-x-1 transition-transform duration-300">→</span>
             </h3>
             <p className="text-sm text-gray-600 dark:text-gray-400">
               Check your contact form submissions
