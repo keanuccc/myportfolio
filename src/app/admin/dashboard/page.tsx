@@ -1,10 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import {
   DocumentTextIcon,
   FolderIcon,
   EnvelopeIcon,
+  ArrowRightIcon,
+  ChartBarIcon,
 } from '@heroicons/react/24/outline';
 
 interface DashboardStats {
@@ -55,7 +58,10 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-marrsgreen dark:border-carrigreen"></div>
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 border-2 border-marrsgreen/20 dark:border-carrigreen/20 border-t-marrsgreen dark:border-t-carrigreen rounded-full animate-spin" />
+          <p className="text-sm text-gray-400 dark:text-gray-500">Loading dashboard...</p>
+        </div>
       </div>
     );
   }
@@ -65,98 +71,138 @@ export default function DashboardPage() {
       name: 'Blog Posts',
       value: stats.blogPosts,
       icon: DocumentTextIcon,
-      color: 'bg-gradient-to-br from-marrsgreen to-marrslight dark:from-carrigreen dark:to-carrilight',
+      gradient: 'from-emerald-500 to-teal-400',
     },
     {
       name: 'Projects',
       value: stats.projects,
       icon: FolderIcon,
-      color: 'bg-gradient-to-br from-emerald-600 to-teal-400',
+      gradient: 'from-marrsgreen to-marrslight dark:from-carrigreen dark:to-carrilight',
     },
     {
       name: 'Total Messages',
       value: stats.messages,
       icon: EnvelopeIcon,
-      color: 'bg-gradient-to-br from-marrsdark to-marrsgreen dark:from-carridark dark:to-carrigreen',
+      gradient: 'from-blue-500 to-indigo-400',
     },
     {
-      name: 'Unread Messages',
+      name: 'Unread',
       value: stats.unreadMessages,
       icon: EnvelopeIcon,
-      color: 'bg-gradient-to-br from-amber-500 to-orange-400',
+      gradient: 'from-amber-500 to-orange-400',
+      highlight: stats.unreadMessages > 0,
     },
   ];
 
-  return (
-    <div>
-      <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-8 gradient-text">
-        Dashboard
-      </h1>
+  const quickActions = [
+    {
+      title: 'New Blog Post',
+      description: 'Write and publish a new article',
+      href: '/admin/blog/new',
+      icon: DocumentTextIcon,
+    },
+    {
+      title: 'Add Project',
+      description: 'Showcase a new project in your portfolio',
+      href: '/admin/projects/new',
+      icon: FolderIcon,
+    },
+    {
+      title: 'Check Messages',
+      description: 'View contact form submissions',
+      href: '/admin/messages',
+      icon: EnvelopeIcon,
+      badge: stats.unreadMessages > 0 ? stats.unreadMessages : undefined,
+    },
+  ];
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+  const today = new Date();
+  const greeting = today.getHours() < 12 ? 'Good morning' : today.getHours() < 18 ? 'Good afternoon' : 'Good evening';
+  const dateStr = today.toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  return (
+    <div className="space-y-8">
+      {/* Welcome Banner */}
+      <div className="admin-banner rounded-2xl p-8 text-white relative">
+        <div className="relative z-10">
+          <p className="text-emerald-200 text-sm font-medium mb-1">{dateStr}</p>
+          <h1 className="text-2xl font-bold mb-2">{greeting}! Welcome back.</h1>
+          <p className="text-emerald-100/80 text-sm max-w-md">
+            Here is an overview of your portfolio management dashboard. You have{' '}
+            <span className="font-semibold text-white">{stats.unreadMessages}</span> unread{' '}
+            {stats.unreadMessages === 1 ? 'message' : 'messages'}.
+          </p>
+        </div>
+      </div>
+
+      {/* Stat Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {statCards.map((card) => (
           <div
             key={card.name}
-            className="admin-card hover-lift stat-accent p-6"
+            className="admin-card hover-lift p-5"
           >
-            <div className="flex items-center">
-              <div className={`${card.color} p-4 rounded-lg`}>
-                <card.icon className="h-7 w-7 text-white" />
+            <div className="flex items-center justify-between mb-4">
+              <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${card.gradient} flex items-center justify-center shadow-lg`}>
+                <card.icon className="h-5 w-5 text-white" strokeWidth={2} />
               </div>
-              <div className="ml-4">
-                <p className="text-base font-medium text-gray-600 dark:text-gray-400">
-                  {card.name}
-                </p>
-                <p className="text-4xl font-bold text-gray-900 dark:text-white tracking-tight">
-                  {card.value}
-                </p>
-              </div>
+              {card.highlight && (
+                <span className="admin-badge bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-700/30">
+                  New
+                </span>
+              )}
             </div>
+            <p className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
+              {card.value}
+            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 font-medium">
+              {card.name}
+            </p>
           </div>
         ))}
       </div>
 
-      <div className="mt-8 admin-card p-6">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-          Quick Actions
-        </h2>
+      {/* Quick Actions */}
+      <div className="admin-card p-6">
+        <div className="flex items-center gap-2 mb-5">
+          <ChartBarIcon className="h-5 w-5 text-marrsgreen dark:text-carrigreen" />
+          <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+            Quick Actions
+          </h2>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <a
-            href="/admin/blog/new"
-            className="admin-card hover-lift p-5 cursor-pointer group"
-          >
-            <h3 className="font-medium text-gray-900 dark:text-white group-hover:text-marrsgreen dark:group-hover:text-carrigreen transition-colors duration-300">
-              New Blog Post
-              <span className="inline-block ml-2 transform group-hover:translate-x-1 transition-transform duration-300">→</span>
-            </h3>
-            <p className="text-base text-gray-600 dark:text-gray-400">
-              Create a new blog post
-            </p>
-          </a>
-          <a
-            href="/admin/projects/new"
-            className="admin-card hover-lift p-5 cursor-pointer group"
-          >
-            <h3 className="font-medium text-gray-900 dark:text-white group-hover:text-marrsgreen dark:group-hover:text-carrigreen transition-colors duration-300">
-              New Project
-              <span className="inline-block ml-2 transform group-hover:translate-x-1 transition-transform duration-300">→</span>
-            </h3>
-            <p className="text-base text-gray-600 dark:text-gray-400">
-              Add a new project to your portfolio
-            </p>
-          </a>
-          <a
-            href="/admin/messages"
-            className="admin-card hover-lift p-5 cursor-pointer group"
-          >
-            <h3 className="font-medium text-gray-900 dark:text-white group-hover:text-marrsgreen dark:group-hover:text-carrigreen transition-colors duration-300">
-              View Messages
-              <span className="inline-block ml-2 transform group-hover:translate-x-1 transition-transform duration-300">→</span>
-            </h3>
-            <p className="text-base text-gray-600 dark:text-gray-400">
-              Check your contact form submissions
-            </p>
-          </a>
+          {quickActions.map((action) => (
+            <Link
+              key={action.title}
+              href={action.href}
+              className="group flex items-start gap-4 p-4 rounded-xl border border-gray-100 dark:border-gray-700/50 hover:border-marrsgreen/20 dark:hover:border-carrigreen/20 transition-all duration-200 hover:bg-marrsgreen/[0.02] dark:hover:bg-carrigreen/[0.02]"
+            >
+              <div className="w-10 h-10 rounded-lg bg-gray-50 dark:bg-gray-800 flex items-center justify-center flex-shrink-0 group-hover:bg-marrsgreen/5 dark:group-hover:bg-carrigreen/10 transition-colors">
+                <action.icon className="h-5 w-5 text-gray-400 dark:text-gray-500 group-hover:text-marrsgreen dark:group-hover:text-carrigreen transition-colors" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-marrsgreen dark:group-hover:text-carrigreen transition-colors">
+                    {action.title}
+                  </h3>
+                  {action.badge && (
+                    <span className="admin-badge bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 text-[10px]">
+                      {action.badge}
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                  {action.description}
+                </p>
+              </div>
+              <ArrowRightIcon className="h-4 w-4 text-gray-300 dark:text-gray-600 group-hover:text-marrsgreen dark:group-hover:text-carrigreen group-hover:translate-x-0.5 transition-all mt-1 flex-shrink-0" />
+            </Link>
+          ))}
         </div>
       </div>
     </div>

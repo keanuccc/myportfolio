@@ -4,6 +4,11 @@ import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import MarkdownEditor from '@/components/admin/MarkdownEditor';
 import { BlogPost } from '@/lib/types';
+import {
+  DocumentTextIcon,
+  TagIcon,
+  ExclamationTriangleIcon,
+} from '@heroicons/react/24/outline';
 
 export default function EditBlogPostPage() {
   const router = useRouter();
@@ -81,111 +86,151 @@ export default function EditBlogPostPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-marrsgreen dark:border-carrigreen"></div>
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 border-2 border-marrsgreen/20 dark:border-carrigreen/20 border-t-marrsgreen dark:border-t-carrigreen rounded-full animate-spin" />
+          <p className="text-sm text-gray-400 dark:text-gray-500">Loading post...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div>
-      <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-8">
-        Edit Blog Post
-      </h1>
+    <div className="space-y-6 max-w-3xl">
+      {/* Page Header */}
+      <div className="admin-page-header">
+        <div>
+          <h1 className="admin-page-title">Edit Blog Post</h1>
+          <p className="admin-page-subtitle">Update your article content and settings</p>
+        </div>
+      </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-5">
         {error && (
-          <div className="p-4 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-lg border-l-4 border-red-500">
+          <div className="admin-alert-error">
+            <ExclamationTriangleIcon className="h-4 w-4 flex-shrink-0 mt-0.5" />
             {error}
           </div>
         )}
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-sm text-marrsgreen/80 dark:text-carrigreen/80">
-            Title
-          </label>
-          <input
-            type="text"
-            value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            className="admin-input"
-            required
-          />
+        {/* Post Details */}
+        <div className="admin-section">
+          <div className="admin-section-header">
+            <div className="w-8 h-8 rounded-lg bg-marrsgreen/5 dark:bg-carrigreen/5 flex items-center justify-center">
+              <DocumentTextIcon className="h-4 w-4 text-marrsgreen dark:text-carrigreen" />
+            </div>
+            <div>
+              <h2 className="text-sm font-bold text-gray-900 dark:text-white">Post Details</h2>
+              <p className="text-[11px] text-gray-400 dark:text-gray-500">Title, slug, and excerpt</p>
+            </div>
+          </div>
+          <div className="admin-section-body space-y-4">
+            <div>
+              <label className="admin-label">Title</label>
+              <input
+                type="text"
+                value={formData.title}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                className="admin-input"
+                required
+              />
+            </div>
+            <div>
+              <label className="admin-label">Slug</label>
+              <input
+                type="text"
+                value={formData.slug}
+                onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                className="admin-input"
+                required
+              />
+            </div>
+            <div>
+              <label className="admin-label">Excerpt</label>
+              <textarea
+                value={formData.excerpt}
+                onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
+                rows={3}
+                className="admin-input"
+              />
+            </div>
+          </div>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-sm text-marrsgreen/80 dark:text-carrigreen/80">
-            Slug
-          </label>
-          <input
-            type="text"
-            value={formData.slug}
-            onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-            className="admin-input"
-            required
-          />
+        {/* Content */}
+        <div className="admin-section">
+          <div className="admin-section-header">
+            <div className="w-8 h-8 rounded-lg bg-marrsgreen/5 dark:bg-carrigreen/5 flex items-center justify-center">
+              <DocumentTextIcon className="h-4 w-4 text-marrsgreen dark:text-carrigreen" />
+            </div>
+            <div>
+              <h2 className="text-sm font-bold text-gray-900 dark:text-white">Content</h2>
+              <p className="text-[11px] text-gray-400 dark:text-gray-500">Edit your Markdown content</p>
+            </div>
+          </div>
+          <div className="admin-section-body">
+            <MarkdownEditor
+              value={formData.content}
+              onChange={(content) => setFormData({ ...formData, content })}
+            />
+          </div>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-sm text-marrsgreen/80 dark:text-carrigreen/80">
-            Excerpt
-          </label>
-          <textarea
-            value={formData.excerpt}
-            onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
-            rows={3}
-            className="admin-input"
-          />
+        {/* Tags & Status */}
+        <div className="admin-section">
+          <div className="admin-section-header">
+            <div className="w-8 h-8 rounded-lg bg-marrsgreen/5 dark:bg-carrigreen/5 flex items-center justify-center">
+              <TagIcon className="h-4 w-4 text-marrsgreen dark:text-carrigreen" />
+            </div>
+            <div>
+              <h2 className="text-sm font-bold text-gray-900 dark:text-white">Tags & Status</h2>
+              <p className="text-[11px] text-gray-400 dark:text-gray-500">Categorize and set visibility</p>
+            </div>
+          </div>
+          <div className="admin-section-body space-y-4">
+            <div>
+              <label className="admin-label">Tags (comma-separated)</label>
+              <input
+                type="text"
+                value={formData.tags}
+                onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+                className="admin-input"
+                placeholder="react, nextjs, typescript"
+              />
+            </div>
+            <div>
+              <label className="admin-label">Status</label>
+              <select
+                value={formData.status}
+                onChange={(e) => setFormData({ ...formData, status: e.target.value as 'draft' | 'published' })}
+                className="admin-input"
+              >
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+              </select>
+            </div>
+          </div>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-sm text-marrsgreen/80 dark:text-carrigreen/80">
-            Content
-          </label>
-          <MarkdownEditor
-            value={formData.content}
-            onChange={(content) => setFormData({ ...formData, content })}
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-sm text-marrsgreen/80 dark:text-carrigreen/80">
-            Tags (comma-separated)
-          </label>
-          <input
-            type="text"
-            value={formData.tags}
-            onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-            className="admin-input"
-            placeholder="react, nextjs, typescript"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 tracking-wide uppercase text-sm text-marrsgreen/80 dark:text-carrigreen/80">
-            Status
-          </label>
-          <select
-            value={formData.status}
-            onChange={(e) => setFormData({ ...formData, status: e.target.value as 'draft' | 'published' })}
-            className="admin-input"
-          >
-            <option value="draft">Draft</option>
-            <option value="published">Published</option>
-          </select>
-        </div>
-
-        <div className="flex gap-4">
+        {/* Actions */}
+        <div className="flex items-center gap-3 pt-2">
           <button
             type="submit"
             disabled={saving}
-            className="btn-brand disabled:opacity-50"
+            className="btn-brand flex items-center gap-2"
           >
-            {saving ? 'Saving...' : 'Save Changes'}
+            {saving ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                Saving...
+              </>
+            ) : (
+              'Save Changes'
+            )}
           </button>
           <button
             type="button"
             onClick={() => router.push('/admin/blog')}
-            className="px-6 py-2.5 rounded-xl border border-marrsgreen/20 dark:border-carrigreen/20 text-gray-600 dark:text-gray-300 hover:bg-marrsgreen/5 dark:hover:bg-carrigreen/5 transition-all duration-300"
+            className="btn-secondary"
           >
             Cancel
           </button>

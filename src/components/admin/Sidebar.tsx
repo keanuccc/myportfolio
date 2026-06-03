@@ -28,47 +28,64 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="fixed left-0 top-0 h-full w-64 admin-glass shadow-xl">
-      <div className="absolute left-0 top-0 bottom-0 w-1 sidebar-accent rounded-r" />
+    <aside className="fixed left-0 top-0 h-full w-60 admin-glass flex flex-col z-20">
+      {/* Accent line */}
+      <div className="absolute left-0 top-0 bottom-0 w-[3px] sidebar-accent rounded-r-full" />
 
-      <div className="p-6">
-        <h1 className="text-3xl font-bold gradient-text">
-          Admin Panel
-        </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Portfolio Manager</p>
+      {/* Logo area */}
+      <div className="px-5 pt-7 pb-6">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-marrsgreen to-carrigreen flex items-center justify-center shadow-lg shadow-marrsgreen/20">
+            <span className="text-white font-bold text-sm">A</span>
+          </div>
+          <div>
+            <h1 className="text-lg font-bold text-gray-900 dark:text-white tracking-tight">
+              Admin
+            </h1>
+            <p className="text-[11px] text-gray-400 dark:text-gray-500 font-medium tracking-wide uppercase">
+              Portfolio Manager
+            </p>
+          </div>
+        </div>
       </div>
 
-      <nav className="mt-6">
+      {/* Divider */}
+      <div className="mx-5 h-px bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-700/50 to-transparent" />
+
+      {/* Navigation */}
+      <nav className="flex-1 mt-4 px-2 space-y-0.5 overflow-y-auto admin-scrollbar">
         {navigation.map((item) => {
           const isActive = pathname.startsWith(item.href);
           return (
             <Link
               key={item.name}
               href={item.href}
-              className={`flex items-center px-6 py-3.5 text-base transition-all duration-300 relative rounded-lg mx-3 ${
-                isActive
-                  ? 'bg-gradient-to-r from-marrsgreen/10 to-transparent dark:from-carrigreen/10 dark:to-transparent text-marrsgreen dark:text-carrigreen font-medium'
-                  : 'text-gray-700 dark:text-gray-300 hover:bg-marrsgreen/5 dark:hover:bg-carrigreen/5 hover:text-marrsgreen dark:hover:text-carrigreen'
-              }`}
+              className={`sidebar-link ${isActive ? 'sidebar-link-active' : ''}`}
             >
-              <div className={`p-2.5 rounded-lg mr-3 ${isActive ? 'bg-marrsgreen/10 dark:bg-carrigreen/10' : ''}`}>
-                <item.icon className="h-6 w-6" />
-              </div>
+              <span className="sidebar-link-icon">
+                <item.icon className="h-[18px] w-[18px]" strokeWidth={isActive ? 2.2 : 1.8} />
+              </span>
               {item.name}
             </Link>
           );
         })}
       </nav>
 
-      <div className="absolute bottom-0 w-full p-6">
+      {/* Divider */}
+      <div className="mx-5 h-px bg-gradient-to-r from-transparent via-gray-200 dark:via-gray-700/50 to-transparent" />
+
+      {/* Logout */}
+      <div className="p-4">
         <button
           onClick={handleLogout}
-          className="flex items-center w-full px-4 py-3 text-base text-gray-700 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400 rounded-lg mx-3 transition-all duration-300"
+          className="sidebar-link w-full text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/15 hover:text-red-600 dark:hover:text-red-300"
         >
-          <ArrowRightOnRectangleIcon className="h-6 w-6 mr-3" />
+          <span className="sidebar-link-icon">
+            <ArrowRightOnRectangleIcon className="h-[18px] w-[18px]" strokeWidth={1.8} />
+          </span>
           Logout
         </button>
       </div>
-    </div>
+    </aside>
   );
 }
