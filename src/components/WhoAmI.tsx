@@ -5,21 +5,12 @@ import { Profile } from "@/lib/types";
 
 const education = [
   {
-    title: "M.Sc. in Artificial Intelligence",
-    school: "某知名大学 | 2018 ~ 2020",
+    title: "B.Sc. in Data Science & Big Data Technology",
+    school: "广东金融学院 | 2023 ~ 2027",
     details: [
-      "研究方向：自然语言处理与推荐系统",
-      "以优异成绩毕业",
-      "发表 2 篇 AI 相关学术论文",
-    ],
-  },
-  {
-    title: "B.Sc. in Computer Science",
-    school: "某知名大学 | 2014 ~ 2018",
-    details: [
-      "主修计算机科学与软件工程",
-      "获得一等荣誉学位",
-      "多次获得奖学金",
+      "主修数据科学与大数据技术",
+      "热爱 AI 技术，专注数据分析与处理方向",
+      "多次以团队负责人身份获得学科竞赛奖项",
     ],
   },
 ];
@@ -147,7 +138,7 @@ export default function WhoAmI() {
           <div className="lg:w-3/5">
             <p className="about-intro text-2xl leading-relaxed text-slate-700 dark:text-slate-300 mb-10">
               {profile?.whoami.bio ||
-                "拥有 4 年以上 AI 产品管理经验，深度参与过多个从 0 到 1 的 AI 产品项目。擅长将复杂的 AI 技术转化为用户可感知的产品价值，具备出色的跨部门协作能力和数据驱动决策思维。在技术理解力、用户洞察力和商业判断力之间找到最佳平衡点。"}
+                "2027 届本科生，主修数据科学与大数据技术。热爱 AI 技术，擅长数据分析与处理，具备从需求文档到项目部署上线的全流程开发经验。在校期间多次以团队负责人身份斩获学科竞赛奖项，兼具技术深度与团队领导力。职业发展方向为 AI 产品岗位，致力于用数据思维驱动 AI 产品落地。"}
             </p>
 
             <p className="edu-bg text-3xl font-medium mb-6 text-slate-800 dark:text-slate-200">
