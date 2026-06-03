@@ -10,9 +10,9 @@
 # 管理员密码（登录后台使用）
 ADMIN_PASSWORD=your-secure-password
 
-# Vercel KV 配置（部署时在 Vercel 控制台获取）
-KV_REST_API_URL=your-kv-url
-KV_REST_API_TOKEN=your-kv-token
+# Upstash Redis 配置（从 https://console.upstash.com 获取）
+UPSTASH_REDIS_REST_URL=your-upstash-url
+UPSTASH_REDIS_REST_TOKEN=your-upstash-token
 ```
 
 ### 2. 启动开发服务器
@@ -64,15 +64,14 @@ git push origin master
 1. 进入项目设置 → Environment Variables
 2. 添加以下变量：
    - `ADMIN_PASSWORD` - 管理员密码
-   - `KV_REST_API_URL` - Vercel KV URL
-   - `KV_REST_API_TOKEN` - Vercel KV Token
+   - `UPSTASH_REDIS_REST_URL` - Upstash Redis URL
+   - `UPSTASH_REDIS_REST_TOKEN` - Upstash Redis Token
 
-### 3. 获取 Vercel KV 配置
+### 3. 获取 Upstash Redis 配置
 
-1. 在 Vercel 控制台进入项目
-2. 点击 "Storage" 标签
-3. 创建 KV 数据库
-4. 复制 `KV_REST_API_URL` 和 `KV_REST_API_TOKEN`
+1. 访问 [console.upstash.com](https://console.upstash.com) 注册/登录
+2. 创建一个 Redis 数据库（选择离用户近的区域，如 `ap-northeast-1`）
+3. 在数据库详情页复制 REST API 的 `UPSTASH_REDIS_REST_URL` 和 `UPSTASH_REDIS_REST_TOKEN`
 
 ---
 
@@ -84,11 +83,11 @@ A: 修改 `.env.local` 中的 `ADMIN_PASSWORD`，重启服务器。
 
 ### Q: 数据存储在哪里？
 
-A: 开发环境使用 Vercel KV（Redis），数据存储在云端。
+A: 开发环境使用 Upstash Redis，数据存储在云端。
 
 ### Q: 如何备份数据？
 
-A: 在 Vercel 控制台的 KV 数据库页面可以导出数据。
+A: 在 Upstash 控制台的数据库页面可以导出数据。
 
 ---
 
@@ -97,7 +96,7 @@ A: 在 Vercel 控制台的 KV 数据库页面可以导出数据。
 - **框架**: Next.js 14 App Router
 - **语言**: TypeScript
 - **样式**: Tailwind CSS + Headless UI
-- **数据库**: Vercel KV (Redis)
+- **数据库**: Upstash Redis
 - **认证**: JWT (jose)
 - **编辑器**: @uiw/react-md-editor
 
@@ -123,7 +122,7 @@ src/
 │       └── contact/     # 联系表单 API
 ├── lib/
 │   ├── auth.ts          # 认证工具
-│   ├── kv.ts            # Vercel KV 客户端
+│   ├── kv.ts            # Upstash Redis 客户端
 │   └── types.ts         # TypeScript 类型
 └── components/
     └── admin/           # 后台组件
