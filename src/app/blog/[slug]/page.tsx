@@ -33,6 +33,15 @@ export default function BlogPostPage() {
         // 先获取所有文章，按 slug 查找
         const response = await fetch('/api/blog');
         const data = await response.json();
+
+        // Debug: log available slugs
+        console.log('Requested slug:', params.slug);
+        console.log('Available posts:', data.posts?.map((p: BlogPost) => ({
+          slug: p.slug,
+          status: p.status,
+          title: p.title
+        })));
+
         const foundPost = (data.posts || []).find(
           (p: BlogPost) => p.slug === params.slug && p.status === 'published'
         );
@@ -42,7 +51,8 @@ export default function BlogPostPage() {
         } else {
           setError('文章不存在');
         }
-      } catch {
+      } catch (err) {
+        console.error('Fetch error:', err);
         setError('加载失败');
       } finally {
         setLoading(false);
