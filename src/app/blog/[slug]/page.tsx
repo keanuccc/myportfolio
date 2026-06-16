@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import ReactMarkdown from 'react-markdown';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -172,12 +173,8 @@ export default function BlogPostPage() {
           </header>
 
           {/* Content */}
-          <div className="prose prose-lg dark:prose-invert max-w-none">
-            {post.content.split('\n').map((paragraph, index) => (
-              <p key={index} className="mb-4 text-slate-700 dark:text-slate-300 leading-relaxed">
-                {paragraph}
-              </p>
-            ))}
+          <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:text-marrsgreen dark:prose-headings:text-carrigreen prose-a:text-marrsgreen dark:prose-a:text-carrigreen">
+            <ReactMarkdown>{post.content}</ReactMarkdown>
           </div>
 
           {/* Footer */}
