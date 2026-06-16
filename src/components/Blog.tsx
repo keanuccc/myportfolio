@@ -30,11 +30,15 @@ export default function Blog() {
       try {
         const response = await fetch('/api/blog');
         const data = await response.json();
-        // 只显示已发布且精选的文章，最多 6 篇
-        const featuredPosts = (data.posts || [])
-          .filter((post: BlogPost) => post.status === 'published' && post.featured)
-          .slice(0, 6);
-        setPosts(featuredPosts);
+        const publishedPosts = (data.posts || []).filter(
+          (post: BlogPost) => post.status === 'published'
+        );
+        // 优先显示精选文章，没有精选时显示最新文章
+        const featuredPosts = publishedPosts.filter((post: BlogPost) => post.featured);
+        const displayPosts = featuredPosts.length > 0
+          ? featuredPosts.slice(0, 6)
+          : publishedPosts.slice(0, 6);
+        setPosts(displayPosts);
       } catch (error) {
         console.error('Error fetching posts:', error);
       } finally {
@@ -121,7 +125,7 @@ export default function Blog() {
           我偶尔写一些关于 AI 产品、技术趋势和职业思考的文章
         </div>
         <div className="text-center text-gray-500 dark:text-gray-400 py-20">
-          暂无精选文章
+          暂无已发布的文章
         </div>
       </section>
     );
