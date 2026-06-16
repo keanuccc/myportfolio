@@ -30,20 +30,15 @@ export default function BlogPostPage() {
   useEffect(() => {
     async function fetchPost() {
       try {
+        // 解码 URL 中的 slug
+        const decodedSlug = decodeURIComponent(params.slug as string);
+
         // 先获取所有文章，按 slug 查找
         const response = await fetch('/api/blog');
         const data = await response.json();
 
-        // Debug: log available slugs
-        console.log('Requested slug:', params.slug);
-        console.log('Available posts:', data.posts?.map((p: BlogPost) => ({
-          slug: p.slug,
-          status: p.status,
-          title: p.title
-        })));
-
         const foundPost = (data.posts || []).find(
-          (p: BlogPost) => p.slug === params.slug && p.status === 'published'
+          (p: BlogPost) => p.slug === decodedSlug && p.status === 'published'
         );
 
         if (foundPost) {
