@@ -19,6 +19,7 @@ export default function NewBlogPostPage() {
     slug: '',
     content: '',
     excerpt: '',
+    category: '',
     tags: '',
     status: 'draft' as 'draft' | 'published',
     featured: false,
@@ -131,6 +132,16 @@ export default function NewBlogPostPage() {
                 rows={3}
                 className="admin-input"
                 placeholder="A brief summary of the post..."
+              />
+            </div>
+            <div>
+              <label className="admin-label">Category (分类)</label>
+              <input
+                type="text"
+                value={formData.category}
+                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                className="admin-input"
+                placeholder="例如: AI产品、技术分享、职业思考"
               />
             </div>
           </div>

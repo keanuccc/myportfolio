@@ -5,6 +5,7 @@ export interface BlogPost {
   content: string;
   excerpt: string;
   coverImage?: string;
+  category?: string;
   tags: string[];
   status: 'draft' | 'published';
   featured: boolean;

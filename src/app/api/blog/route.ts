@@ -7,10 +7,11 @@ import { nanoid } from 'nanoid';
 export async function GET() {
   try {
     const posts = await kv.get<BlogPost[]>('blog:posts');
-    // 确保旧数据有 featured 字段
+    // 确保旧数据有 featured 和 category 字段
     const postsWithDefaults = (posts || []).map((post) => ({
       ...post,
       featured: post.featured ?? false,
+      category: post.category ?? '',
     }));
     return NextResponse.json({ posts: postsWithDefaults });
   } catch (error) {
@@ -30,7 +31,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { title, slug, content, excerpt, coverImage, tags, status, featured } = body;
+    const { title, slug, content, excerpt, coverImage, category, tags, status, featured } = body;
 
     if (!title || !slug || !content) {
       return NextResponse.json(
@@ -56,6 +57,7 @@ export async function POST(request: NextRequest) {
       content,
       excerpt: excerpt || content.substring(0, 150) + '...',
       coverImage,
+      category: category || '',
       tags: tags || [],
       status: status || 'draft',
       featured: featured || false,

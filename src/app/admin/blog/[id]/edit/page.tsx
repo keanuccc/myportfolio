@@ -21,6 +21,7 @@ export default function EditBlogPostPage() {
     slug: '',
     content: '',
     excerpt: '',
+    category: '',
     tags: '',
     status: 'draft' as 'draft' | 'published',
     featured: false,
@@ -39,6 +40,7 @@ export default function EditBlogPostPage() {
             slug: post.slug,
             content: post.content,
             excerpt: post.excerpt,
+            category: post.category || '',
             tags: post.tags.join(', '),
             status: post.status,
             featured: post.featured || false,
@@ -153,6 +155,16 @@ export default function EditBlogPostPage() {
                 onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
                 rows={3}
                 className="admin-input"
+              />
+            </div>
+            <div>
+              <label className="admin-label">Category (分类)</label>
+              <input
+                type="text"
+                value={formData.category}
+                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                className="admin-input"
+                placeholder="例如: AI产品、技术分享、职业思考"
               />
             </div>
           </div>

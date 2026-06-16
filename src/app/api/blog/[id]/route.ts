@@ -43,7 +43,7 @@ export async function PUT(
     }
 
     const body = await request.json();
-    const { title, slug, content, excerpt, coverImage, tags, status, featured } = body;
+    const { title, slug, content, excerpt, coverImage, category, tags, status, featured } = body;
 
     // Check if new slug conflicts with existing posts
     if (slug && slug !== posts[index].slug) {
@@ -62,6 +62,7 @@ export async function PUT(
       ...(content && { content }),
       ...(excerpt && { excerpt }),
       ...(coverImage !== undefined && { coverImage }),
+      ...(category !== undefined && { category }),
       ...(tags && { tags }),
       ...(status && { status }),
       ...(featured !== undefined && { featured }),
