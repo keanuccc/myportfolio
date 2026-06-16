@@ -76,6 +76,8 @@ export default function Blog() {
 
   // Intersection observer for fade-in
   useEffect(() => {
+    if (posts.length === 0) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -97,7 +99,7 @@ export default function Blog() {
     }
 
     return () => observer.disconnect();
-  }, []);
+  }, [posts]); // 添加 posts 作为依赖
 
   // 预设颜色数组
   const colors = ["#9FD0E3", "#B4BEE0", "#A6CECE", "#C5E4E7", "#D4E2D4", "#E2D4E2"];
