@@ -32,14 +32,31 @@ export default function BlogPostPage() {
       try {
         // 解码 URL 中的 slug
         const decodedSlug = decodeURIComponent(params.slug as string);
+        console.log('Original slug:', params.slug);
+        console.log('Decoded slug:', decodedSlug);
 
         // 先获取所有文章，按 slug 查找
         const response = await fetch('/api/blog');
         const data = await response.json();
 
+        console.log('Total posts:', data.posts?.length);
+        console.log('First 5 posts:', data.posts?.slice(0, 5).map((p: BlogPost) => ({
+          slug: p.slug,
+          slugLength: p.slug.length,
+          status: p.status
+        })));
+
         const foundPost = (data.posts || []).find(
           (p: BlogPost) => p.slug === decodedSlug && p.status === 'published'
         );
+
+        // 尝试模糊匹配
+        if (!foundPost) {
+          const similarPost = (data.posts || []).find(
+            (p: BlogPost) => p.slug.includes(decodedSlug) || decodedSlug.includes(p.slug)
+          );
+          console.log('Similar post found:', similarPost);
+        }
 
         if (foundPost) {
           setPost(foundPost);
