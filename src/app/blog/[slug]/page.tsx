@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeHighlight from 'rehype-highlight';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
@@ -195,8 +197,10 @@ export default function BlogPostPage() {
           </header>
 
           {/* Content */}
-          <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:text-marrsgreen dark:prose-headings:text-carrigreen prose-a:text-marrsgreen dark:prose-a:text-carrigreen">
-            <ReactMarkdown>{post.content}</ReactMarkdown>
+          <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:text-marrsgreen dark:prose-headings:text-carrigreen prose-a:text-marrsgreen dark:prose-a:text-carrigreen prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-blockquote:border-l-marrsgreen dark:prose-blockquote:border-l-carrigreen prose-blockquote:bg-gray-50 dark:prose-blockquote:bg-gray-800/50 prose-blockquote:py-1 prose-blockquote:px-4 prose-blockquote:rounded-r-lg">
+            <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight]}>
+              {post.content}
+            </ReactMarkdown>
           </div>
 
           {/* Footer */}
