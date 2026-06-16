@@ -21,6 +21,7 @@ export default function NewBlogPostPage() {
     excerpt: '',
     tags: '',
     status: 'draft' as 'draft' | 'published',
+    featured: false,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -186,6 +187,18 @@ export default function NewBlogPostPage() {
                 <option value="draft">Draft</option>
                 <option value="published">Published</option>
               </select>
+            </div>
+            <div className="flex items-center gap-3">
+              <input
+                type="checkbox"
+                id="featured"
+                checked={formData.featured}
+                onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
+                className="w-4 h-4 text-marrsgreen dark:text-carrigreen rounded border-gray-300 dark:border-gray-600 focus:ring-marrsgreen dark:focus:ring-carrigreen"
+              />
+              <label htmlFor="featured" className="admin-label cursor-pointer">
+                精选文章（显示在首页）
+              </label>
             </div>
           </div>
         </div>

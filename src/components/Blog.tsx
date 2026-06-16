@@ -11,6 +11,7 @@ interface BlogPost {
   coverImage?: string;
   tags?: string[];
   status: string;
+  featured: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -29,11 +30,11 @@ export default function Blog() {
       try {
         const response = await fetch('/api/blog');
         const data = await response.json();
-        // 只显示已发布的文章
-        const publishedPosts = (data.posts || []).filter(
-          (post: BlogPost) => post.status === 'published'
-        );
-        setPosts(publishedPosts);
+        // 只显示已发布且精选的文章，最多 6 篇
+        const featuredPosts = (data.posts || [])
+          .filter((post: BlogPost) => post.status === 'published' && post.featured)
+          .slice(0, 6);
+        setPosts(featuredPosts);
       } catch (error) {
         console.error('Error fetching posts:', error);
       } finally {
@@ -120,7 +121,7 @@ export default function Blog() {
           我偶尔写一些关于 AI 产品、技术趋势和职业思考的文章
         </div>
         <div className="text-center text-gray-500 dark:text-gray-400 py-20">
-          暂无已发布的文章
+          暂无精选文章
         </div>
       </section>
     );
@@ -331,7 +332,7 @@ export default function Blog() {
       <div className="mt-10 text-center">
         <a
           className="link text-2xl font-medium text-marrsgreen dark:text-carrigreen hover:underline inline-flex items-center gap-2"
-          href="#"
+          href="/blog/all"
         >
           Read all blog posts
           <svg

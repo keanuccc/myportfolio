@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { title, slug, content, excerpt, coverImage, tags, status } = body;
+    const { title, slug, content, excerpt, coverImage, tags, status, featured } = body;
 
     if (!title || !slug || !content) {
       return NextResponse.json(
@@ -53,6 +53,7 @@ export async function POST(request: NextRequest) {
       coverImage,
       tags: tags || [],
       status: status || 'draft',
+      featured: featured || false,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };

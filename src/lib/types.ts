@@ -7,6 +7,7 @@ export interface BlogPost {
   coverImage?: string;
   tags: string[];
   status: 'draft' | 'published';
+  featured: boolean;
   createdAt: string;
   updatedAt: string;
 }
