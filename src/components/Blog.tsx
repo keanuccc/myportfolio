@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import Link from "next/link";
 
 interface BlogPost {
   id: string;
@@ -218,17 +219,18 @@ export default function Blog() {
                 className="shrink-0 px-8"
                 style={{ width: `${100 / cardsPerView}%` }}
               >
-                <div
-                  className="blog-card h-full transition-all duration-500 bg-gray-100 dark:bg-carddark p-8 rounded-2xl shadow-lg hover:shadow-2xl cursor-pointer"
-                  onMouseEnter={() => setIsHovered(index)}
-                  onMouseLeave={() => setIsHovered(null)}
-                  style={{
-                    transform:
-                      isHovered === index
-                        ? "translateY(-8px) scale(1.02)"
-                        : "translateY(0) scale(1)",
-                  }}
-                >
+                <Link href={`/blog/${post.slug}`}>
+                  <div
+                    className="blog-card h-full transition-all duration-500 bg-gray-100 dark:bg-carddark p-8 rounded-2xl shadow-lg hover:shadow-2xl cursor-pointer"
+                    onMouseEnter={() => setIsHovered(index)}
+                    onMouseLeave={() => setIsHovered(null)}
+                    style={{
+                      transform:
+                        isHovered === index
+                          ? "translateY(-8px) scale(1.02)"
+                          : "translateY(0) scale(1)",
+                    }}
+                  >
                   {/* Image */}
                   <div
                     className="relative h-72 overflow-hidden rounded-xl"
@@ -312,6 +314,7 @@ export default function Blog() {
                     </div>
                   </div>
                 </div>
+                </Link>
               </div>
             ))}
           </div>
