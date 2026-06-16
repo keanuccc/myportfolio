@@ -2,62 +2,47 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 
-const posts = [
-  {
-    title: "大语言模型在产品中的落地实践",
-    date: "2026年5月15日",
-    description:
-      "分享我在多个项目中将 LLM 融入产品的经验，包括 Prompt 工程、RAG 架构选型、以及如何评估 AI 功能的 ROI。",
-    imageColor: "#9FD0E3",
-    slug: "llm-in-product-practice",
-  },
-  {
-    title: "AI 产品经理的核心能力模型",
-    date: "2026年4月20日",
-    description:
-      "探讨一名优秀的 AI 产品经理需要具备哪些核心能力——技术理解力、数据思维、用户洞察和商业判断力缺一不可。",
-    imageColor: "#B4BEE0",
-    slug: "ai-pm-core-competencies",
-  },
-  {
-    title: "从 A/B 测试看 AI 产品的迭代方法论",
-    date: "2026年3月10日",
-    description:
-      "AI 产品的迭代与传统互联网产品有何不同？本文结合实际案例，探讨数据驱动的 AI 产品迭代方法论。",
-    imageColor: "#A6CECE",
-    slug: "ai-product-ab-testing",
-  },
-  {
-    title: "如何从零打造一个成功的 AI 产品",
-    date: "2026年2月5日",
-    description:
-      "从需求分析、技术选型、MVP 打造到规模化增长，系统性地分享 AI 产品从 0 到 1 的完整方法论。",
-    imageColor: "#C5E4E7",
-    slug: "build-ai-product-from-scratch",
-  },
-  {
-    title: "Prompt Engineering 实战心得",
-    date: "2026年1月18日",
-    description:
-      "在多个 AI 产品中积累的 Prompt 工程经验，包括 Few-shot、CoT、ReAct 等技巧在实际产品中的应用案例。",
-    imageColor: "#D4E2D4",
-    slug: "prompt-engineering-practice",
-  },
-  {
-    title: "AI 产品的用户体验设计思考",
-    date: "2025年12月8日",
-    description:
-      "AI 产品的 UX 设计与传统产品有何不同？如何在不确定性的 AI 输出中构建用户信任和良好的交互体验。",
-    imageColor: "#E2D4E2",
-    slug: "ai-product-ux-design",
-  },
-];
+interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  excerpt?: string;
+  coverImage?: string;
+  tags?: string[];
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
 export default function Blog() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cardsPerView, setCardsPerView] = useState(3);
   const [isHovered, setIsHovered] = useState<number | null>(null);
+
+  // Fetch posts from API
+  useEffect(() => {
+    async function fetchPosts() {
+      try {
+        const response = await fetch('/api/blog');
+        const data = await response.json();
+        // 只显示已发布的文章
+        const publishedPosts = (data.posts || []).filter(
+          (post: BlogPost) => post.status === 'published'
+        );
+        setPosts(publishedPosts);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchPosts();
+  }, []);
 
   // Determine cards per view based on screen width
   useEffect(() => {
@@ -108,6 +93,38 @@ export default function Blog() {
 
     return () => observer.disconnect();
   }, []);
+
+  // 预设颜色数组
+  const colors = ["#9FD0E3", "#B4BEE0", "#A6CECE", "#C5E4E7", "#D4E2D4", "#E2D4E2"];
+
+  if (loading) {
+    return (
+      <section id="blog" className="section min-h-screen flex flex-col justify-center max-w-7xl mx-auto">
+        <div className="text-center">
+          <h2 className="section-heading">Blog</h2>
+        </div>
+        <div className="flex items-center justify-center h-64">
+          <div className="w-10 h-10 border-2 border-marrsgreen/20 dark:border-carrigreen/20 border-t-marrsgreen dark:border-t-carrigreen rounded-full animate-spin" />
+        </div>
+      </section>
+    );
+  }
+
+  if (posts.length === 0) {
+    return (
+      <section id="blog" className="section min-h-screen flex flex-col justify-center max-w-7xl mx-auto">
+        <div className="text-center">
+          <h2 className="section-heading">Blog</h2>
+        </div>
+        <div className="text-center mb-12 text-2xl text-slate-600 dark:text-slate-300">
+          我偶尔写一些关于 AI 产品、技术趋势和职业思考的文章
+        </div>
+        <div className="text-center text-gray-500 dark:text-gray-400 py-20">
+          暂无已发布的文章
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section
@@ -190,7 +207,7 @@ export default function Blog() {
           >
             {posts.map((post, index) => (
               <div
-                key={index}
+                key={post.id}
                 className="shrink-0 px-8"
                 style={{ width: `${100 / cardsPerView}%` }}
               >
@@ -208,7 +225,7 @@ export default function Blog() {
                   {/* Image */}
                   <div
                     className="relative h-72 overflow-hidden rounded-xl"
-                    style={{ backgroundColor: post.imageColor }}
+                    style={{ backgroundColor: colors[index % colors.length] }}
                   >
                     <div className="absolute inset-0 flex items-center justify-center">
                       <span
@@ -251,11 +268,11 @@ export default function Blog() {
                           d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                         />
                       </svg>
-                      <span>{post.date}</span>
+                      <span>{new Date(post.createdAt).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                     </div>
 
                     <p className="text-lg text-slate-600 dark:text-slate-300 line-clamp-4 leading-8">
-                      {post.description}
+                      {post.excerpt || post.content.substring(0, 150) + '...'}
                     </p>
 
                     {/* Read more link that appears on hover */}
