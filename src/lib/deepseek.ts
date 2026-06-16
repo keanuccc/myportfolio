@@ -1,0 +1,125 @@
+interface ProcessedBlogPost {
+  title: string;
+  content: string;
+  excerpt: string;
+  tags: string[];
+  category: string;
+}
+
+export async function processDocumentWithDeepSeek(
+  content: string,
+  title: string
+): Promise<ProcessedBlogPost> {
+  const apiKey = process.env.DEEPSEEK_API_KEY;
+  const apiUrl = process.env.DEEPSEEK_API_URL || 'https://api.deepseek.com/v1/chat/completions';
+
+  if (!apiKey) {
+    throw new Error('DEEPSEEK_API_KEY is not configured');
+  }
+
+  const prompt = `你是一个专业的博客文章编辑。请将以下飞书文档内容转换为格式工整、优雅的博客文章。
+
+要求：
+1. 保持原文的核心内容和观点
+2. 添加合适的标题结构（使用 Markdown 标题语法，一级标题用 #，二级用 ##，以此类推）
+3. 优化段落结构，使其更易读
+4. 代码块使用正确的语法高亮标记（如 \`\`\`javascript、\`\`\`python 等）
+5. 适当添加列表、引用等格式
+6. 重要概念用 **加粗** 或 *斜体* 强调
+7. 生成一个简洁的摘要（150字以内）
+8. 提取3-5个关键词作为标签
+9. 根据内容自动判断分类（如：技术分享、产品思考、工具使用、学习笔记等）
+
+原文标题：${title}
+
+原文内容：
+${content}
+
+请按以下JSON格式返回（确保是有效的JSON）：
+{
+  "title": "优化后的文章标题",
+  "content": "Markdown格式的完整文章内容",
+  "excerpt": "150字以内的文章摘要",
+  "tags": ["标签1", "标签2", "标签3"],
+  "category": "分类名称"
+}`;
+
+  const response = await fetch(apiUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify({
+      model: 'deepseek-chat',
+      messages: [
+        {
+          role: 'system',
+          content: `你是一个专业的博客文章编辑助手，擅长将文档转换为优雅的博客文章。
+你的输出必须是有效的JSON格式，不要包含任何其他文本。
+文章应该结构清晰、排版优雅、易于阅读。`,
+        },
+        { role: 'user', content: prompt },
+      ],
+      temperature: 0.7,
+      max_tokens: 4096,
+    }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(`DeepSeek API error: ${data.error?.message || 'Unknown error'}`);
+  }
+
+  const result = data.choices[0].message.content;
+
+  // 解析JSON响应
+  try {
+    // 尝试提取JSON内容（处理可能的markdown代码块包裹）
+    const jsonMatch = result.match(/```(?:json)?\s*([\s\S]*?)\s*```/) || [null, result];
+    const jsonStr = jsonMatch[1] || result;
+    const parsed = JSON.parse(jsonStr.trim());
+
+    return {
+      title: parsed.title || title,
+      content: parsed.content || content,
+      excerpt: parsed.excerpt || content.substring(0, 150) + '...',
+      tags: Array.isArray(parsed.tags) ? parsed.tags : [],
+      category: parsed.category || '未分类',
+    };
+  } catch (parseError) {
+    console.error('Failed to parse DeepSeek response:', parseError);
+    // 如果解析失败，返回原始内容
+    return {
+      title,
+      content: result,
+      excerpt: content.substring(0, 150) + '...',
+      tags: [],
+      category: '未分类',
+    };
+  }
+}
+
+// 批量处理文档
+export async function batchProcessDocuments(
+  documents: Array<{ id: string; content: string; title: string }>
+): Promise<Array<{ id: string; result?: ProcessedBlogPost; error?: string }>> {
+  const results = await Promise.allSettled(
+    documents.map(async (doc) => {
+      try {
+        const result = await processDocumentWithDeepSeek(doc.content, doc.title);
+        return { id: doc.id, result };
+      } catch (error) {
+        return { id: doc.id, error: (error as Error).message };
+      }
+    })
+  );
+
+  return results.map((r, i) => {
+    if (r.status === 'fulfilled') {
+      return r.value;
+    }
+    return { id: documents[i].id, error: 'Processing failed' };
+  });
+}

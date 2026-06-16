@@ -9,11 +9,13 @@ import {
   UserIcon,
   EnvelopeIcon,
   ArrowRightOnRectangleIcon,
+  CloudArrowDownIcon,
 } from '@heroicons/react/24/outline';
 
 const navigation = [
   { name: 'Dashboard', href: '/admin/dashboard', icon: HomeIcon },
   { name: 'Blog', href: '/admin/blog', icon: DocumentTextIcon },
+  { name: '飞书同步', href: '/admin/feishu-sync', icon: CloudArrowDownIcon },
   { name: 'Projects', href: '/admin/projects', icon: FolderIcon },
   { name: 'Profile', href: '/admin/profile', icon: UserIcon },
   { name: 'Messages', href: '/admin/messages', icon: EnvelopeIcon },
