@@ -7,7 +7,12 @@ import { nanoid } from 'nanoid';
 export async function GET() {
   try {
     const posts = await kv.get<BlogPost[]>('blog:posts');
-    return NextResponse.json({ posts: posts || [] });
+    // 确保旧数据有 featured 字段
+    const postsWithDefaults = (posts || []).map((post) => ({
+      ...post,
+      featured: post.featured ?? false,
+    }));
+    return NextResponse.json({ posts: postsWithDefaults });
   } catch (error) {
     console.error('Error fetching posts:', error);
     return NextResponse.json(
