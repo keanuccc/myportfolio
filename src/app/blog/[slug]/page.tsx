@@ -49,7 +49,7 @@ export default function BlogPostPage() {
         })));
 
         const foundPost = (data.posts || []).find(
-          (p: BlogPost) => p.slug === decodedSlug && p.status === 'published'
+          (p: BlogPost) => p.slug === decodedSlug && (p.status === 'published' || p.status === 'draft')
         );
 
         // 尝试模糊匹配
