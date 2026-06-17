@@ -129,14 +129,14 @@ export default function Projects() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8">
         {projects.map((project, index) => (
-          <div key={project.id}>
+          <div key={project.id} className="h-full">
             <div
-              className="project-card"
+              className="project-card h-full flex flex-col"
               onMouseEnter={() => setIsHovered(index)}
               onMouseLeave={() => setIsHovered(null)}
             >
               {/* Image area */}
-              <div className="overflow-hidden">
+              <div className="overflow-hidden flex-shrink-0">
                 <div
                   className="project-image relative aspect-[16/10]"
                   style={{ backgroundColor: colors[index % colors.length] }}
@@ -155,7 +155,7 @@ export default function Projects() {
               </div>
 
               {/* Content */}
-              <div className="p-5">
+              <div className="p-5 flex-1 flex flex-col">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="text-marrsgreen dark:text-carrigreen text-lg font-semibold">
                     {project.title}
@@ -212,11 +212,11 @@ export default function Projects() {
                   </div>
                 </div>
 
-                <p className="text-base leading-relaxed text-slate-600 dark:text-slate-300 mb-4">
+                <p className="text-base leading-relaxed text-slate-600 dark:text-slate-300 mb-4 flex-grow">
                   {project.description}
                 </p>
 
-                <ul className="flex flex-wrap gap-2">
+                <ul className="flex flex-wrap gap-2 mt-auto">
                   {project.technologies.map((tech) => (
                     <li
                       key={tech}
