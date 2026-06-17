@@ -88,6 +88,8 @@ export default function FeishuSyncPage() {
     setMessage({ type: '', text: '' });
 
     try {
+      console.log('开始处理文档:', { documentId, documentUrl });
+
       const response = await fetch('/api/feishu/process', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -95,15 +97,18 @@ export default function FeishuSyncPage() {
       });
 
       const data = await response.json();
+      console.log('API 响应:', data);
 
       if (response.ok) {
         setMessage({ type: 'success', text: '文档处理成功！已生成博客草稿。' });
         setDocumentUrl('');
         fetchQueue();
       } else {
+        console.error('处理失败:', data);
         setMessage({ type: 'error', text: data.error || '处理失败，请重试' });
       }
     } catch (error) {
+      console.error('请求错误:', error);
       setMessage({ type: 'error', text: '网络错误，请检查连接' });
     } finally {
       setProcessing(false);
