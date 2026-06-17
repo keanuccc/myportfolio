@@ -7,11 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "next build"
+    "postinstall": "next build",
+    "feishu:ws": "node scripts/feishu-ws.mjs"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.10",
     "@heroicons/react": "^2.2.0",
+    "@larksuiteoapi/node-sdk": "^1.67.0",
     "@uiw/react-md-editor": "^4.1.1",
     "@upstash/redis": "^1.38.0",
     "@vercel/blob": "^2.4.0",
