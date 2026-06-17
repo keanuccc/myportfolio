@@ -79,12 +79,22 @@ ${content}
 
   const result = data.choices[0].message.content;
 
+  console.log('DeepSeek 原始响应（前500字符）:', result.substring(0, 500));
+
   // 解析JSON响应
   try {
     // 尝试提取JSON内容（处理可能的markdown代码块包裹）
     const jsonMatch = result.match(/```(?:json)?\s*([\s\S]*?)\s*```/) || [null, result];
     const jsonStr = jsonMatch[1] || result;
     const parsed = JSON.parse(jsonStr.trim());
+
+    console.log('解析成功:', {
+      title: parsed.title,
+      contentLength: parsed.content?.length,
+      contentPreview: parsed.content?.substring(0, 200),
+      tags: parsed.tags,
+      category: parsed.category,
+    });
 
     // 处理 content 中的换行符
     let content = parsed.content || content;
