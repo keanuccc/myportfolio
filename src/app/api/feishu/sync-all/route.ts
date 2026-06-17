@@ -6,6 +6,71 @@ import { getFeishuTenantAccessToken } from '@/lib/feishu';
 import { addToQueue } from '@/lib/queue';
 import { processFeishuDocument } from '@/lib/processor';
 
+interface WikiNode {
+  node_token: string;
+  obj_token: string;
+  obj_type: string;
+  title: string;
+  has_child: boolean;
+}
+
+/**
+ * 获取知识库空间列表
+ */
+async function getWikiSpaces(token: string) {
+  const response = await fetch(
+    'https://open.feishu.cn/open-apis/wiki/v2/spaces?page_size=50',
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  const data = await response.json();
+  if (data.code !== 0) {
+    throw new Error(`获取知识库空间失败: ${data.msg}`);
+  }
+
+  return data.data?.items || [];
+}
+
+/**
+ * 获取知识库节点列表（递归获取所有文档）
+ */
+async function getWikiNodes(token: string, spaceId: string, parentNodeToken?: string): Promise<WikiNode[]> {
+  const url = parentNodeToken
+    ? `https://open.feishu.cn/open-apis/wiki/v2/spaces/${spaceId}/nodes?parent_node_token=${parentNodeToken}&page_size=50`
+    : `https://open.feishu.cn/open-apis/wiki/v2/spaces/${spaceId}/nodes?page_size=50`;
+
+  const response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await response.json();
+  if (data.code !== 0) {
+    console.error(`获取节点失败: ${data.msg}`);
+    return [];
+  }
+
+  const nodes: WikiNode[] = data.data?.items || [];
+
+  // 递归获取子节点
+  const allNodes: WikiNode[] = [...nodes];
+  for (const node of nodes) {
+    if (node.has_child) {
+      const childNodes = await getWikiNodes(token, spaceId, node.node_token);
+      allNodes.push(...childNodes);
+    }
+  }
+
+  return allNodes;
+}
+
 /**
  * GET /api/feishu/sync-all
  * 获取飞书知识库中的所有文档
@@ -20,44 +85,44 @@ export async function GET(request: NextRequest) {
 
     const token = await getFeishuTenantAccessToken();
 
-    // 获取云空间根目录下的文件
-    const response = await fetch(
-      'https://open.feishu.cn/open-apis/drive/v1/files?folder_token=&order_by=EditedTime&direction=DESC&page_size=100',
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
+    // 获取知识库空间列表
+    const spaces = await getWikiSpaces(token);
+    console.log(`找到 ${spaces.length} 个知识库空间`);
+
+    // 获取所有空间中的文档
+    const allFiles: Array<{ id: string; name: string; type: string; spaceName: string }> = [];
+
+    for (const space of spaces) {
+      const spaceId = space.space_id;
+      const spaceName = space.name;
+
+      console.log(`正在获取知识库: ${spaceName}`);
+
+      const nodes = await getWikiNodes(token, spaceId);
+
+      for (const node of nodes) {
+        // 只处理文档类型 (doc, docx)
+        if (node.obj_type === 'doc' || node.obj_type === 'docx') {
+          allFiles.push({
+            id: node.obj_token,
+            name: node.title,
+            type: node.obj_type,
+            spaceName: spaceName,
+          });
+        }
       }
-    );
-
-    const data = await response.json();
-
-    if (data.code !== 0) {
-      throw new Error(`获取文件列表失败: ${data.msg}`);
     }
-
-    // 过滤出文档类型文件
-    const files = (data.data?.files || [])
-      .filter((file: { type: string }) =>
-        file.type === 'docx' || file.type === 'doc'
-      )
-      .map((file: { token: string; name: string; type: string; edited_time: string }) => ({
-        id: file.token,
-        name: file.name,
-        type: file.type,
-        editedTime: file.edited_time,
-      }));
 
     return NextResponse.json({
       success: true,
-      files,
-      total: files.length,
+      files: allFiles,
+      total: allFiles.length,
+      spaces: spaces.length,
     });
   } catch (error) {
-    console.error('获取飞书文件列表错误:', error);
+    console.error('获取飞书文档列表错误:', error);
     return NextResponse.json(
-      { error: (error as Error).message || '获取文件列表失败' },
+      { error: (error as Error).message || '获取文档列表失败' },
       { status: 500 }
     );
   }
@@ -77,35 +142,48 @@ export async function POST(request: NextRequest) {
 
     const token = await getFeishuTenantAccessToken();
 
-    // 获取云空间根目录下的文件
-    const response = await fetch(
-      'https://open.feishu.cn/open-apis/drive/v1/files?folder_token=&order_by=EditedTime&direction=DESC&page_size=100',
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
+    // 获取知识库空间列表
+    const spaces = await getWikiSpaces(token);
+    console.log(`找到 ${spaces.length} 个知识库空间`);
+
+    // 获取所有空间中的文档
+    const allFiles: Array<{ id: string; name: string; type: string; spaceName: string }> = [];
+
+    for (const space of spaces) {
+      const spaceId = space.space_id;
+      const spaceName = space.name;
+
+      console.log(`正在获取知识库: ${spaceName}`);
+
+      const nodes = await getWikiNodes(token, spaceId);
+
+      for (const node of nodes) {
+        // 只处理文档类型 (doc, docx)
+        if (node.obj_type === 'doc' || node.obj_type === 'docx') {
+          allFiles.push({
+            id: node.obj_token,
+            name: node.title,
+            type: node.obj_type,
+            spaceName: spaceName,
+          });
+        }
       }
-    );
-
-    const data = await response.json();
-
-    if (data.code !== 0) {
-      throw new Error(`获取文件列表失败: ${data.msg}`);
     }
 
-    // 过滤出文档类型文件
-    const files = (data.data?.files || [])
-      .filter((file: { type: string }) =>
-        file.type === 'docx' || file.type === 'doc'
-      );
+    console.log(`找到 ${allFiles.length} 个文档，开始批量同步...`);
 
-    console.log(`找到 ${files.length} 个文档，开始批量同步...`);
+    if (allFiles.length === 0) {
+      return NextResponse.json({
+        success: true,
+        message: '没有找到可同步的文档',
+        files: [],
+      });
+    }
 
-    // 添加到队列
+    // 添加到队列并异步处理
     const results = [];
-    for (const file of files) {
-      const fileId = file.token;
+    for (const file of allFiles) {
+      const fileId = file.id;
       const fileName = file.name;
 
       // 添加到处理队列
@@ -127,13 +205,14 @@ export async function POST(request: NextRequest) {
       results.push({
         id: fileId,
         name: fileName,
+        spaceName: file.spaceName,
         status: 'queued',
       });
     }
 
     return NextResponse.json({
       success: true,
-      message: `已将 ${files.length} 个文档加入处理队列`,
+      message: `已将 ${allFiles.length} 个文档加入处理队列`,
       files: results,
     });
   } catch (error) {
