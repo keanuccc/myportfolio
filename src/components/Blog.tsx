@@ -54,8 +54,9 @@ export default function Blog() {
   useEffect(() => {
     const updateCardsPerView = () => {
       const w = window.innerWidth;
-      if (w < 768) setCardsPerView(1);
-      else setCardsPerView(2);
+      if (w < 640) setCardsPerView(1);
+      else if (w < 1024) setCardsPerView(2);
+      else setCardsPerView(3);
     };
     updateCardsPerView();
     window.addEventListener("resize", updateCardsPerView);
@@ -216,12 +217,12 @@ export default function Blog() {
             {posts.map((post, index) => (
               <div
                 key={post.id}
-                className="shrink-0 px-8"
+                className="shrink-0 px-5"
                 style={{ width: `${100 / cardsPerView}%` }}
               >
                 <Link href={`/blog/${post.slug}`}>
                   <div
-                    className="blog-card h-full transition-all duration-500 bg-gray-100 dark:bg-carddark p-8 rounded-2xl shadow-lg hover:shadow-2xl cursor-pointer"
+                    className="blog-card h-full transition-all duration-500 bg-gray-100 dark:bg-carddark p-6 rounded-2xl shadow-lg hover:shadow-2xl cursor-pointer"
                     onMouseEnter={() => setIsHovered(index)}
                     onMouseLeave={() => setIsHovered(null)}
                     style={{
@@ -233,7 +234,7 @@ export default function Blog() {
                   >
                   {/* Image */}
                   <div
-                    className="relative h-72 overflow-hidden rounded-xl"
+                    className="relative h-48 overflow-hidden rounded-xl"
                     style={{ backgroundColor: colors[index % colors.length] }}
                   >
                     <div className="absolute inset-0 flex items-center justify-center">
@@ -258,14 +259,14 @@ export default function Blog() {
 
                   {/* Content */}
                   <div>
-                    <h3 className="text-2xl font-bold text-marrsgreen dark:text-carrigreen mb-3 line-clamp-2 h-16">
+                    <h3 className="text-xl font-bold text-marrsgreen dark:text-carrigreen mb-2 line-clamp-2 h-14">
                       {post.title}
                     </h3>
 
-                    <div className="flex items-center gap-2 mb-4 text-base text-slate-500 dark:text-slate-400 italic">
+                    <div className="flex items-center gap-2 mb-3 text-sm text-slate-500 dark:text-slate-400 italic">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4"
+                        className="h-3.5 w-3.5"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -280,13 +281,13 @@ export default function Blog() {
                       <span>{new Date(post.createdAt).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                     </div>
 
-                    <p className="text-lg text-slate-600 dark:text-slate-300 line-clamp-4 leading-8">
+                    <p className="text-base text-slate-600 dark:text-slate-300 line-clamp-3 leading-7">
                       {post.excerpt || post.content.substring(0, 150) + '...'}
                     </p>
 
                     {/* Read more link that appears on hover */}
                     <div
-                      className="mt-4 transition-all duration-300"
+                      className="mt-3 transition-all duration-300"
                       style={{
                         opacity: isHovered === index ? 1 : 0,
                         transform:
@@ -295,12 +296,12 @@ export default function Blog() {
                             : "translateY(10px)",
                       }}
                     >
-                      <span className="inline-flex items-center gap-1.5 text-marrsgreen dark:text-carrigreen font-semibold text-base">
+                      <span className="inline-flex items-center gap-1.5 text-marrsgreen dark:text-carrigreen font-semibold text-sm">
                         Read more
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
+                          width="14"
+                          height="14"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
