@@ -83,10 +83,29 @@ ${content}
 
   // 解析JSON响应
   try {
+    // 清理响应内容
+    let cleanResult = result.trim();
+
+    // 如果以 "markdown" 开头，去掉这个前缀
+    if (cleanResult.startsWith('markdown')) {
+      cleanResult = cleanResult.substring(8).trim();
+      console.log('去掉 markdown 前缀后:', cleanResult.substring(0, 200));
+    }
+
     // 尝试提取JSON内容（处理可能的markdown代码块包裹）
-    const jsonMatch = result.match(/```(?:json)?\s*([\s\S]*?)\s*```/) || [null, result];
-    const jsonStr = jsonMatch[1] || result;
-    const parsed = JSON.parse(jsonStr.trim());
+    const jsonMatch = cleanResult.match(/```(?:json)?\s*([\s\S]*?)\s*```/) || [null, cleanResult];
+    const jsonStr = jsonMatch[1] || cleanResult;
+
+    // 找到 JSON 对象的开始和结束位置
+    const jsonStart = jsonStr.indexOf('{');
+    const jsonEnd = jsonStr.lastIndexOf('}');
+
+    if (jsonStart === -1 || jsonEnd === -1) {
+      throw new Error('无法找到 JSON 对象');
+    }
+
+    const finalJsonStr = jsonStr.substring(jsonStart, jsonEnd + 1);
+    const parsed = JSON.parse(finalJsonStr);
 
     console.log('解析成功:', {
       title: parsed.title,
@@ -101,7 +120,6 @@ ${content}
     // 调试：检查 content 是否包含换行符
     console.log('Content 包含真正的换行符:', processedContent.includes('\n'));
     console.log('Content 包含字符串 \\n:', processedContent.includes('\\n'));
-    console.log('Content 前 300 字符:', processedContent.substring(0, 300));
 
     // 如果 content 是字符串形式的 \n，转换为真正的换行符
     if (processedContent.includes('\\n') && !processedContent.includes('\n')) {
@@ -118,7 +136,27 @@ ${content}
     };
   } catch (parseError) {
     console.error('解析 DeepSeek 响应失败:', parseError);
-    // 如果解析失败，返回原始内容
+
+    // 尝试手动提取内容
+    const titleMatch = result.match(/"title"\s*:\s*"([^"]+)"/);
+    const contentMatch = result.match(/"content"\s*:\s*"([\s\S]+?)"(?=,\s*"excerpt")/);
+
+    if (titleMatch && contentMatch) {
+      console.log('手动提取成功');
+      let extractedContent = contentMatch[1];
+      // 处理转义的换行符
+      extractedContent = extractedContent.replace(/\\n/g, '\n');
+
+      return {
+        title: titleMatch[1] || title,
+        content: extractedContent,
+        excerpt: extractedContent.substring(0, 150) + '...',
+        tags: [],
+        category: '未分类',
+      };
+    }
+
+    // 如果都失败，返回原始内容
     return {
       title,
       content: result,
