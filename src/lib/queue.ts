@@ -60,9 +60,33 @@ export async function updateQueueItem(
   const index = queue.findIndex((item) => item.documentId === documentId);
 
   if (index !== -1) {
+    // 更新现有项
     queue[index] = { ...queue[index], ...updates };
-    await kv.set(QUEUE_KEY, queue);
+  } else if (updates.status) {
+    // 如果不存在且有状态，创建新项
+    const newItem: ProcessingItem = {
+      id: `${documentId}-${Date.now()}`,
+      documentId,
+      documentTitle: updates.documentTitle || '处理中...',
+      status: updates.status,
+      createdAt: updates.createdAt || new Date().toISOString(),
+      processedAt: updates.processedAt,
+      blogPostId: updates.blogPostId,
+      error: updates.error,
+    };
+    queue.push(newItem);
   }
+
+  await kv.set(QUEUE_KEY, queue);
+}
+
+/**
+ * 删除队列项
+ */
+export async function deleteQueueItem(id: string): Promise<void> {
+  const queue = await getProcessingQueue();
+  const filteredQueue = queue.filter((item) => item.id !== id);
+  await kv.set(QUEUE_KEY, filteredQueue);
 }
 
 /**

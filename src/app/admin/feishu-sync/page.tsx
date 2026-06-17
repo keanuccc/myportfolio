@@ -10,6 +10,9 @@ import {
   LinkIcon,
   SparklesIcon,
   DocumentTextIcon,
+  TrashIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
 } from '@heroicons/react/24/outline';
 
 interface QueueItem {
@@ -31,6 +34,13 @@ interface QueueStats {
   failed: number;
 }
 
+interface Pagination {
+  page: number;
+  pageSize: number;
+  total: number;
+  totalPages: number;
+}
+
 export default function FeishuSyncPage() {
   const [queue, setQueue] = useState<QueueItem[]>([]);
   const [stats, setStats] = useState<QueueStats>({
@@ -40,28 +50,59 @@ export default function FeishuSyncPage() {
     completed: 0,
     failed: 0,
   });
+  const [pagination, setPagination] = useState<Pagination>({
+    page: 1,
+    pageSize: 20,
+    total: 0,
+    totalPages: 0,
+  });
   const [loading, setLoading] = useState(true);
   const [documentUrl, setDocumentUrl] = useState('');
   const [processing, setProcessing] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
+  const [deleting, setDeleting] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchQueue();
+    fetchQueue(1);
     // 每 30 秒刷新一次队列状态
-    const interval = setInterval(fetchQueue, 30000);
+    const interval = setInterval(() => fetchQueue(pagination.page), 30000);
     return () => clearInterval(interval);
   }, []);
 
-  async function fetchQueue() {
+  async function fetchQueue(page: number = 1) {
     try {
-      const response = await fetch('/api/feishu/queue');
+      const response = await fetch(`/api/feishu/queue?page=${page}&pageSize=20`);
       const data = await response.json();
       setQueue(data.queue || []);
       setStats(data.stats || { total: 0, pending: 0, processing: 0, completed: 0, failed: 0 });
+      setPagination(data.pagination || { page: 1, pageSize: 20, total: 0, totalPages: 0 });
     } catch (error) {
       console.error('获取队列失败:', error);
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handleDeleteItem(id: string) {
+    if (!confirm('确定要删除这条记录吗？')) return;
+
+    setDeleting(id);
+    try {
+      const response = await fetch('/api/feishu/queue', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      });
+
+      if (response.ok) {
+        fetchQueue(pagination.page);
+      } else {
+        alert('删除失败');
+      }
+    } catch (error) {
+      alert('删除失败');
+    } finally {
+      setDeleting(null);
     }
   }
 
@@ -86,7 +127,7 @@ export default function FeishuSyncPage() {
       if (response.ok) {
         setMessage({ type: 'success', text: '文档处理成功！已生成博客草稿。' });
         setDocumentUrl('');
-        fetchQueue();
+        fetchQueue(1);
       } else {
         setMessage({ type: 'error', text: data.error || '处理失败，请重试' });
       }
@@ -226,15 +267,14 @@ export default function FeishuSyncPage() {
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">自动同步配置</h2>
         <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
           <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
-            在飞书开放平台配置以下 Webhook URL，即可实现自动同步：
+            使用飞书长连接自动同步，运行命令：
           </p>
-          <code className="block bg-gray-100 dark:bg-gray-700 p-3 rounded text-sm break-all">
-            {typeof window !== 'undefined' ? window.location.origin : ''}/api/feishu/webhook
+          <code className="block bg-gray-100 dark:bg-gray-700 p-3 rounded text-sm">
+            npm run feishu:ws
           </code>
-          <div className="mt-3 text-xs text-gray-500 dark:text-gray-400">
-            <p>事件类型：drive.file.edit_v1（文档编辑）</p>
-            <p>配置后，飞书文档更新时会自动触发处理</p>
-          </div>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+            保持脚本运行，飞书文档更新时会自动触发处理
+          </p>
         </div>
       </div>
 
@@ -243,7 +283,7 @@ export default function FeishuSyncPage() {
         <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">处理历史</h2>
           <button
-            onClick={fetchQueue}
+            onClick={() => fetchQueue(pagination.page)}
             className="btn-ghost flex items-center gap-2"
           >
             <ArrowPathIcon className="h-4 w-4" />
@@ -256,62 +296,104 @@ export default function FeishuSyncPage() {
             <CloudArrowDownIcon className="h-8 w-8 text-gray-400 mb-2" />
             <p className="text-gray-500 dark:text-gray-400">暂无处理记录</p>
             <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">
-              输入飞书文档链接开始使用，或配置 Webhook 自动同步
+              输入飞书文档链接开始使用，或运行长连接脚本自动同步
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-gray-200 dark:divide-gray-700">
-            {queue.slice(0, 50).map((item) => (
-              <div
-                key={item.id}
-                className="p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    {getStatusIcon(item.status)}
-                    <div>
-                      <p className="font-medium text-gray-900 dark:text-white">
-                        {item.documentTitle}
-                      </p>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        {new Date(item.createdAt).toLocaleString('zh-CN')}
-                      </p>
+          <>
+            <div className="divide-y divide-gray-200 dark:divide-gray-700">
+              {queue.map((item) => (
+                <div
+                  key={item.id}
+                  className="p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      {getStatusIcon(item.status)}
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-gray-900 dark:text-white truncate">
+                          {item.documentTitle}
+                        </p>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                          {new Date(item.createdAt).toLocaleString('zh-CN')}
+                        </p>
+                        {item.error && (
+                          <p className="text-sm text-red-500 mt-1 truncate">{item.error}</p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 ml-4">
+                      <span
+                        className={`px-2.5 py-1 rounded-full text-xs font-medium ${
+                          item.status === 'completed'
+                            ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                            : item.status === 'failed'
+                              ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+                              : item.status === 'processing'
+                                ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
+                                : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'
+                        }`}
+                      >
+                        {getStatusText(item.status)}
+                      </span>
+
+                      {item.blogPostId && (
+                        <a
+                          href={`/admin/blog/${item.blogPostId}/edit`}
+                          className="text-marrsgreen dark:text-carrigreen hover:underline text-sm flex items-center gap-1"
+                        >
+                          <DocumentTextIcon className="h-4 w-4" />
+                          查看文章
+                        </a>
+                      )}
+
+                      <button
+                        onClick={() => handleDeleteItem(item.id)}
+                        disabled={deleting === item.id}
+                        className="text-gray-400 hover:text-red-500 transition-colors p-1"
+                        title="删除"
+                      >
+                        {deleting === item.id ? (
+                          <ArrowPathIcon className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <TrashIcon className="h-4 w-4" />
+                        )}
+                      </button>
                     </div>
                   </div>
+                </div>
+              ))}
+            </div>
 
-                  <div className="flex items-center gap-4">
-                    <span
-                      className={`px-2.5 py-1 rounded-full text-xs font-medium ${
-                        item.status === 'completed'
-                          ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                          : item.status === 'failed'
-                            ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
-                            : item.status === 'processing'
-                              ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
-                              : 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'
-                      }`}
-                    >
-                      {getStatusText(item.status)}
-                    </span>
-
-                    {item.blogPostId && (
-                      <a
-                        href={`/admin/blog/${item.blogPostId}/edit`}
-                        className="text-marrsgreen dark:text-carrigreen hover:underline text-sm flex items-center gap-1"
-                      >
-                        <DocumentTextIcon className="h-4 w-4" />
-                        查看文章
-                      </a>
-                    )}
-
-                    {item.error && (
-                      <p className="text-sm text-red-500 max-w-xs truncate">{item.error}</p>
-                    )}
-                  </div>
+            {/* Pagination */}
+            {pagination.totalPages > 1 && (
+              <div className="p-4 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  共 {pagination.total} 条记录，第 {pagination.page}/{pagination.totalPages} 页
+                </p>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => fetchQueue(pagination.page - 1)}
+                    disabled={pagination.page <= 1}
+                    className="btn-ghost p-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <ChevronLeftIcon className="h-4 w-4" />
+                  </button>
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                    {pagination.page}
+                  </span>
+                  <button
+                    onClick={() => fetchQueue(pagination.page + 1)}
+                    disabled={pagination.page >= pagination.totalPages}
+                    className="btn-ghost p-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <ChevronRightIcon className="h-4 w-4" />
+                  </button>
                 </div>
               </div>
-            ))}
-          </div>
+            )}
+          </>
         )}
       </div>
 
@@ -322,8 +404,8 @@ export default function FeishuSyncPage() {
           <div>
             <h3 className="font-medium text-gray-900 dark:text-white mb-3">自动同步（推荐）</h3>
             <ol className="list-decimal list-inside space-y-2 text-sm text-gray-600 dark:text-gray-300">
-              <li>在飞书开放平台配置 Webhook URL</li>
-              <li>订阅文档编辑事件 (drive.file.edit_v1)</li>
+              <li>在终端运行 <code className="bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded">npm run feishu:ws</code></li>
+              <li>在飞书开放平台配置长连接模式</li>
               <li>编辑飞书文档后自动触发处理</li>
               <li>AI 自动生成博客草稿</li>
             </ol>

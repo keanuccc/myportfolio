@@ -4,7 +4,7 @@ import { kv } from '@/lib/kv';
 import { nanoid } from 'nanoid';
 import { getFeishuDocumentContent } from '@/lib/feishu';
 import { processDocumentWithDeepSeek, ProcessedBlogPost } from '@/lib/deepseek';
-import { updateQueueItem } from '@/lib/queue';
+import { updateQueueItem, getQueueItemByDocumentId } from '@/lib/queue';
 import { BlogPost } from '@/lib/types';
 
 /**
@@ -20,10 +20,33 @@ export async function processFeishuDocument(
 }> {
   console.log(`开始处理文档: ${documentId}`);
 
+  // 确保队列中有该项
+  const existingItem = await getQueueItemByDocumentId(documentId);
+  if (!existingItem) {
+    await updateQueueItem(documentId, {
+      documentId,
+      documentTitle: '处理中...',
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+    });
+  }
+
   try {
     // 1. 获取飞书文档内容
     console.log('步骤 1: 获取飞书文档内容');
-    const document = await getFeishuDocumentContent(documentId);
+    let document;
+    try {
+      document = await getFeishuDocumentContent(documentId);
+    } catch (err) {
+      const errorMsg = `获取文档失败: ${(err as Error).message}`;
+      console.error(errorMsg);
+      await updateQueueItem(documentId, {
+        status: 'failed',
+        error: errorMsg,
+        processedAt: new Date().toISOString(),
+      });
+      return { success: false, error: errorMsg };
+    }
     console.log(`文档标题: ${document.title}`);
 
     // 更新队列状态
@@ -34,15 +57,39 @@ export async function processFeishuDocument(
 
     // 2. 调用 DeepSeek 处理内容
     console.log('步骤 2: 调用 DeepSeek 处理内容');
-    const processedContent = await processDocumentWithDeepSeek(
-      document.content,
-      document.title
-    );
+    let processedContent;
+    try {
+      processedContent = await processDocumentWithDeepSeek(
+        document.content,
+        document.title
+      );
+    } catch (err) {
+      const errorMsg = `AI 处理失败: ${(err as Error).message}`;
+      console.error(errorMsg);
+      await updateQueueItem(documentId, {
+        status: 'failed',
+        error: errorMsg,
+        processedAt: new Date().toISOString(),
+      });
+      return { success: false, error: errorMsg };
+    }
     console.log(`处理完成，标题: ${processedContent.title}`);
 
     // 3. 保存为博客文章
     console.log('步骤 3: 保存博客文章');
-    const blogPost = await saveAsBlogPost(processedContent, document.title);
+    let blogPost;
+    try {
+      blogPost = await saveAsBlogPost(processedContent, document.title);
+    } catch (err) {
+      const errorMsg = `保存文章失败: ${(err as Error).message}`;
+      console.error(errorMsg);
+      await updateQueueItem(documentId, {
+        status: 'failed',
+        error: errorMsg,
+        processedAt: new Date().toISOString(),
+      });
+      return { success: false, error: errorMsg };
+    }
     console.log(`文章保存成功，ID: ${blogPost.id}`);
 
     // 4. 更新队列状态为完成
@@ -50,6 +97,7 @@ export async function processFeishuDocument(
       status: 'completed',
       processedAt: new Date().toISOString(),
       blogPostId: blogPost.id,
+      documentTitle: document.title,
     });
 
     return {
