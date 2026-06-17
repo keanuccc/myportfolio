@@ -13,6 +13,7 @@ import {
   TrashIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  FolderArrowDownIcon,
 } from '@heroicons/react/24/outline';
 
 interface QueueItem {
@@ -61,6 +62,8 @@ export default function FeishuSyncPage() {
   const [processing, setProcessing] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [syncingAll, setSyncingAll] = useState(false);
+  const [syncResult, setSyncResult] = useState<{ type: string; text: string } | null>(null);
 
   useEffect(() => {
     fetchQueue(1);
@@ -138,6 +141,44 @@ export default function FeishuSyncPage() {
     }
   }
 
+  async function handleSyncAll() {
+    if (!confirm('确定要同步飞书知识库中的所有文档吗？这可能需要一些时间。')) {
+      return;
+    }
+
+    setSyncingAll(true);
+    setSyncResult(null);
+
+    try {
+      const response = await fetch('/api/feishu/sync-all', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSyncResult({
+          type: 'success',
+          text: data.message || '批量同步已开始',
+        });
+        fetchQueue(1);
+      } else {
+        setSyncResult({
+          type: 'error',
+          text: data.error || '批量同步失败',
+        });
+      }
+    } catch (error) {
+      setSyncResult({
+        type: 'error',
+        text: '网络错误，请检查连接',
+      });
+    } finally {
+      setSyncingAll(false);
+    }
+  }
+
   const getStatusIcon = (status: QueueItem['status']) => {
     switch (status) {
       case 'pending':
@@ -180,7 +221,37 @@ export default function FeishuSyncPage() {
           <h1 className="admin-page-title">飞书文档同步</h1>
           <p className="admin-page-subtitle">自动将飞书文档转换为博客文章</p>
         </div>
+        <button
+          onClick={handleSyncAll}
+          disabled={syncingAll}
+          className="btn-brand flex items-center gap-2"
+        >
+          {syncingAll ? (
+            <>
+              <ArrowPathIcon className="h-4 w-4 animate-spin" />
+              同步中...
+            </>
+          ) : (
+            <>
+              <FolderArrowDownIcon className="h-4 w-4" />
+              同步所有文档
+            </>
+          )}
+        </button>
       </div>
+
+      {/* Sync Result */}
+      {syncResult && (
+        <div
+          className={`p-4 rounded-lg ${
+            syncResult.type === 'success'
+              ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400'
+              : 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400'
+          }`}
+        >
+          {syncResult.text}
+        </div>
+      )}
 
       {/* Stats */}
       <div className="grid grid-cols-5 gap-4">
