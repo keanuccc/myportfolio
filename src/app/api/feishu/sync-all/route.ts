@@ -89,6 +89,23 @@ export async function GET(request: NextRequest) {
     const spaces = await getWikiSpaces(token);
     console.log(`找到 ${spaces.length} 个知识库空间`);
 
+    // 打印空间详情
+    for (const space of spaces) {
+      console.log(`空间: ${space.name} (${space.space_id})`);
+    }
+
+    if (spaces.length === 0) {
+      return NextResponse.json({
+        success: true,
+        message: '没有找到知识库空间，请检查应用权限',
+        files: [],
+        debug: {
+          spacesCount: 0,
+          hint: '需要在飞书开放平台添加 wiki:wiki:readonly 权限',
+        },
+      });
+    }
+
     // 获取所有空间中的文档
     const allFiles: Array<{ id: string; name: string; type: string; spaceName: string }> = [];
 
@@ -96,11 +113,14 @@ export async function GET(request: NextRequest) {
       const spaceId = space.space_id;
       const spaceName = space.name;
 
-      console.log(`正在获取知识库: ${spaceName}`);
+      console.log(`正在获取知识库: ${spaceName} (${spaceId})`);
 
       const nodes = await getWikiNodes(token, spaceId);
+      console.log(`  找到 ${nodes.length} 个节点`);
 
       for (const node of nodes) {
+        console.log(`  节点: ${node.title} (类型: ${node.obj_type}, token: ${node.obj_token})`);
+
         // 只处理文档类型 (doc, docx)
         if (node.obj_type === 'doc' || node.obj_type === 'docx') {
           allFiles.push({
