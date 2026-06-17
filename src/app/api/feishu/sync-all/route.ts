@@ -29,8 +29,11 @@ async function getWikiSpaces(token: string) {
   );
 
   const data = await response.json();
+  console.log('知识库空间 API 响应:', JSON.stringify(data).substring(0, 500));
+
   if (data.code !== 0) {
-    throw new Error(`获取知识库空间失败: ${data.msg}`);
+    console.error(`获取知识库空间失败: ${data.msg}`);
+    return [];
   }
 
   return data.data?.items || [];
@@ -44,6 +47,8 @@ async function getWikiNodes(token: string, spaceId: string, parentNodeToken?: st
     ? `https://open.feishu.cn/open-apis/wiki/v2/spaces/${spaceId}/nodes?parent_node_token=${parentNodeToken}&page_size=50`
     : `https://open.feishu.cn/open-apis/wiki/v2/spaces/${spaceId}/nodes?page_size=50`;
 
+  console.log(`请求节点列表: ${url}`);
+
   const response = await fetch(url, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -52,6 +57,8 @@ async function getWikiNodes(token: string, spaceId: string, parentNodeToken?: st
   });
 
   const data = await response.json();
+  console.log(`节点列表响应 (space: ${spaceId}):`, JSON.stringify(data).substring(0, 500));
+
   if (data.code !== 0) {
     console.error(`获取节点失败: ${data.msg}`);
     return [];
@@ -84,24 +91,34 @@ export async function GET(request: NextRequest) {
     }
 
     const token = await getFeishuTenantAccessToken();
+    console.log('获取到 token:', token ? '成功' : '失败');
 
     // 获取知识库空间列表
     const spaces = await getWikiSpaces(token);
     console.log(`找到 ${spaces.length} 个知识库空间`);
 
-    // 打印空间详情
-    for (const space of spaces) {
-      console.log(`空间: ${space.name} (${space.space_id})`);
-    }
-
     if (spaces.length === 0) {
+      // 尝试获取用户信息，确认 token 有效
+      const userResponse = await fetch(
+        'https://open.feishu.cn/open-apis/authen/v1/user_info',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      const userData = await userResponse.json();
+      console.log('用户信息:', JSON.stringify(userData).substring(0, 300));
+
       return NextResponse.json({
         success: true,
-        message: '没有找到知识库空间，请检查应用权限',
+        message: '没有找到知识库空间。个人知识库需要在知识库设置中添加应用为成员。',
         files: [],
         debug: {
           spacesCount: 0,
-          hint: '需要在飞书开放平台添加 wiki:wiki:readonly 权限',
+          tokenValid: !!token,
+          hint: '请在飞书知识库设置中添加应用为成员，或使用手动输入文档链接的方式',
         },
       });
     }
@@ -165,6 +182,14 @@ export async function POST(request: NextRequest) {
     // 获取知识库空间列表
     const spaces = await getWikiSpaces(token);
     console.log(`找到 ${spaces.length} 个知识库空间`);
+
+    if (spaces.length === 0) {
+      return NextResponse.json({
+        success: false,
+        message: '没有找到知识库空间。个人知识库需要在知识库设置中添加应用为成员。',
+        files: [],
+      });
+    }
 
     // 获取所有空间中的文档
     const allFiles: Array<{ id: string; name: string; type: string; spaceName: string }> = [];
