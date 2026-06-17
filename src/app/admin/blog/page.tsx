@@ -9,11 +9,13 @@ import {
   TrashIcon,
   DocumentTextIcon,
   CalendarDaysIcon,
+  ExclamationTriangleIcon,
 } from '@heroicons/react/24/outline';
 
 export default function BlogListPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const [clearing, setClearing] = useState(false);
 
   useEffect(() => {
     async function fetchPosts() {
@@ -49,6 +51,35 @@ export default function BlogListPage() {
     }
   };
 
+  const handleClearAll = async () => {
+    if (!confirm('确定要清除所有博客文章吗？此操作不可撤销！')) {
+      return;
+    }
+
+    if (!confirm('再次确认：这将删除所有文章和处理历史，确定继续吗？')) {
+      return;
+    }
+
+    setClearing(true);
+    try {
+      const response = await fetch('/api/blog/clear', {
+        method: 'POST',
+      });
+
+      if (response.ok) {
+        setPosts([]);
+        alert('所有数据已清除');
+      } else {
+        alert('清除失败');
+      }
+    } catch (error) {
+      console.error('Error clearing posts:', error);
+      alert('清除失败');
+    } finally {
+      setClearing(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -70,10 +101,31 @@ export default function BlogListPage() {
             {posts.length} {posts.length === 1 ? 'post' : 'posts'} total
           </p>
         </div>
-        <Link href="/admin/blog/new" className="btn-brand flex items-center gap-2">
-          <PlusIcon className="h-4 w-4" />
-          New Post
-        </Link>
+        <div className="flex items-center gap-3">
+          {posts.length > 0 && (
+            <button
+              onClick={handleClearAll}
+              disabled={clearing}
+              className="btn-danger flex items-center gap-2"
+            >
+              {clearing ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  清除中...
+                </>
+              ) : (
+                <>
+                  <ExclamationTriangleIcon className="h-4 w-4" />
+                  清除所有
+                </>
+              )}
+            </button>
+          )}
+          <Link href="/admin/blog/new" className="btn-brand flex items-center gap-2">
+            <PlusIcon className="h-4 w-4" />
+            New Post
+          </Link>
+        </div>
       </div>
 
       {/* Posts Table */}
