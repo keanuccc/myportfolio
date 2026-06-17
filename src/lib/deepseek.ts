@@ -91,15 +91,23 @@ ${content}
     console.log('解析成功:', {
       title: parsed.title,
       contentLength: parsed.content?.length,
-      contentPreview: parsed.content?.substring(0, 200),
       tags: parsed.tags,
       category: parsed.category,
     });
 
     // 处理 content 中的换行符
     let processedContent = parsed.content || content;
-    // 将字符串 \n 替换为真正的换行符
-    processedContent = processedContent.replace(/\\n/g, '\n');
+
+    // 调试：检查 content 是否包含换行符
+    console.log('Content 包含真正的换行符:', processedContent.includes('\n'));
+    console.log('Content 包含字符串 \\n:', processedContent.includes('\\n'));
+    console.log('Content 前 300 字符:', processedContent.substring(0, 300));
+
+    // 如果 content 是字符串形式的 \n，转换为真正的换行符
+    if (processedContent.includes('\\n') && !processedContent.includes('\n')) {
+      processedContent = processedContent.replace(/\\n/g, '\n');
+      console.log('已将字符串 \\n 转换为换行符');
+    }
 
     return {
       title: parsed.title || title,
