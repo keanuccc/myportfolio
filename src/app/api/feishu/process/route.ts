@@ -227,6 +227,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: '文档 ID 不能为空' }, { status: 400 });
     }
 
+    console.log('开始处理文档:', documentId);
+
     // 添加到处理队列
     const queue = (await kv.get<ProcessingItem[]>('feishu:processing_queue')) || [];
     const processingItem: ProcessingItem = {
@@ -240,7 +242,9 @@ export async function POST(request: NextRequest) {
 
     try {
       // 1. 获取飞书文档内容
+      console.log('获取飞书文档内容...');
       const document = await getFeishuDocumentContent(documentId);
+      console.log('文档标题:', document.title);
 
       // 更新队列中的文件名
       const updatedQueue = (await kv.get<ProcessingItem[]>('feishu:processing_queue')) || [];
@@ -251,9 +255,12 @@ export async function POST(request: NextRequest) {
       }
 
       // 2. 调用 DeepSeek 处理内容
+      console.log('调用 DeepSeek 处理内容...');
       const processedContent = await processWithDeepSeek(document.content, document.title);
+      console.log('处理完成，标题:', processedContent.title);
 
       // 3. 保存为博客文章
+      console.log('保存博客文章...');
       const blogPost = await saveAsBlogPost(processedContent, document.title);
 
       // 4. 更新队列状态
@@ -267,6 +274,8 @@ export async function POST(request: NextRequest) {
         await kv.set('feishu:processing_queue', finalQueue);
       }
 
+      console.log('文档处理成功:', blogPost.id);
+
       return NextResponse.json({
         success: true,
         message: '文档处理成功',
@@ -277,6 +286,8 @@ export async function POST(request: NextRequest) {
         },
       });
     } catch (processError) {
+      console.error('处理文档失败:', processError);
+
       // 更新队列状态为失败
       const errorQueue = (await kv.get<ProcessingItem[]>('feishu:processing_queue')) || [];
       const errorIndex = errorQueue.findIndex((item) => item.id === documentId);
@@ -287,10 +298,13 @@ export async function POST(request: NextRequest) {
         await kv.set('feishu:processing_queue', errorQueue);
       }
 
-      throw processError;
+      return NextResponse.json(
+        { error: (processError as Error).message || '处理文档失败' },
+        { status: 500 }
+      );
     }
   } catch (error) {
-    console.error('处理文档失败:', error);
+    console.error('API 错误:', error);
     return NextResponse.json(
       { error: (error as Error).message || '处理文档失败' },
       { status: 500 }
