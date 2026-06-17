@@ -1,16 +1,29 @@
+// 飞书 API 服务
+
 interface FeishuDocument {
-  document_id: string;
+  documentId: string;
   title: string;
   content: string;
 }
 
-// 获取飞书 tenant_access_token
+// 缓存 tenant_access_token
+let cachedToken: string | null = null;
+let tokenExpiry: number = 0;
+
+/**
+ * 获取飞书 tenant_access_token
+ */
 export async function getFeishuTenantAccessToken(): Promise<string> {
+  // 检查缓存是否有效
+  if (cachedToken && Date.now() < tokenExpiry) {
+    return cachedToken;
+  }
+
   const appId = process.env.FEISHU_APP_ID;
   const appSecret = process.env.FEISHU_APP_SECRET;
 
   if (!appId || !appSecret) {
-    throw new Error('Feishu app credentials not configured');
+    throw new Error('飞书应用凭证未配置。请检查 FEISHU_APP_ID 和 FEISHU_APP_SECRET 环境变量。');
   }
 
   const response = await fetch(
@@ -25,13 +38,46 @@ export async function getFeishuTenantAccessToken(): Promise<string> {
   const data = await response.json();
 
   if (data.code !== 0) {
-    throw new Error(`Failed to get tenant access token: ${data.msg}`);
+    throw new Error(`获取飞书访问令牌失败: ${data.msg}`);
   }
 
-  return data.tenant_access_token;
+  // 缓存 token，提前 5 分钟过期
+  cachedToken = data.tenant_access_token;
+  tokenExpiry = Date.now() + (data.expire - 300) * 1000;
+
+  return cachedToken as string;
 }
 
-// 获取飞书文档内容
+/**
+ * 从飞书文档链接中提取文档 ID
+ */
+export function extractDocumentId(url: string): string | null {
+  // 支持多种飞书文档链接格式
+  const patterns = [
+    /\/docx\/([a-zA-Z0-9]+)/,
+    /\/docs\/([a-zA-Z0-9]+)/,
+    /\/wiki\/([a-zA-Z0-9]+)/,
+    /\/sheets\/([a-zA-Z0-9]+)/,
+  ];
+
+  for (const pattern of patterns) {
+    const match = url.match(pattern);
+    if (match) {
+      return match[1];
+    }
+  }
+
+  // 如果直接输入的是文档 ID
+  if (/^[a-zA-Z0-9]+$/.test(url)) {
+    return url;
+  }
+
+  return null;
+}
+
+/**
+ * 获取飞书文档内容
+ */
 export async function getFeishuDocumentContent(documentId: string): Promise<FeishuDocument> {
   const token = await getFeishuTenantAccessToken();
 
@@ -49,7 +95,7 @@ export async function getFeishuDocumentContent(documentId: string): Promise<Feis
   const metaData = await metaResponse.json();
 
   if (metaData.code !== 0) {
-    throw new Error(`Failed to fetch document meta: ${metaData.msg}`);
+    throw new Error(`获取文档信息失败: ${metaData.msg}`);
   }
 
   // 获取文档纯文本内容
@@ -66,23 +112,27 @@ export async function getFeishuDocumentContent(documentId: string): Promise<Feis
   const contentData = await contentResponse.json();
 
   if (contentData.code !== 0) {
-    throw new Error(`Failed to fetch document content: ${contentData.msg}`);
+    throw new Error(`获取文档内容失败: ${contentData.msg}`);
   }
 
   return {
-    document_id: documentId,
-    title: metaData.data?.document?.title || 'Untitled',
+    documentId,
+    title: metaData.data?.document?.title || '未命名文档',
     content: contentData.data?.content || '',
   };
 }
 
-// 验证飞书 Webhook 请求
+/**
+ * 验证飞书 Webhook 请求
+ */
 export function verifyFeishuWebhook(token: string): boolean {
   const verificationToken = process.env.FEISHU_VERIFICATION_TOKEN;
   return token === verificationToken;
 }
 
-// 解析飞书事件
+/**
+ * 飞书 Webhook 事件类型
+ */
 export interface FeishuWebhookEvent {
   schema?: string;
   header: {
@@ -96,6 +146,9 @@ export interface FeishuWebhookEvent {
   event: Record<string, unknown>;
 }
 
+/**
+ * 解析飞书事件
+ */
 export function parseFeishuEvent(body: unknown): FeishuWebhookEvent | null {
   try {
     const event = body as FeishuWebhookEvent;

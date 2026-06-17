@@ -1,4 +1,6 @@
-interface ProcessedBlogPost {
+// DeepSeek AI 处理服务
+
+export interface ProcessedBlogPost {
   title: string;
   content: string;
   excerpt: string;
@@ -6,6 +8,9 @@ interface ProcessedBlogPost {
   category: string;
 }
 
+/**
+ * 调用 DeepSeek 处理文档内容
+ */
 export async function processDocumentWithDeepSeek(
   content: string,
   title: string
@@ -14,14 +19,14 @@ export async function processDocumentWithDeepSeek(
   const apiUrl = process.env.DEEPSEEK_API_URL || 'https://api.deepseek.com/v1/chat/completions';
 
   if (!apiKey) {
-    throw new Error('DEEPSEEK_API_KEY is not configured');
+    throw new Error('DeepSeek API Key 未配置');
   }
 
   const prompt = `你是一个专业的博客文章编辑。请将以下飞书文档内容转换为格式工整、优雅的博客文章。
 
 要求：
 1. 保持原文的核心内容和观点
-2. 添加合适的标题结构（使用 Markdown 标题语法，一级标题用 #，二级用 ##，以此类推）
+2. 添加合适的标题结构（使用 Markdown 标题语法）
 3. 优化段落结构，使其更易读
 4. 代码块使用正确的语法高亮标记（如 \`\`\`javascript、\`\`\`python 等）
 5. 适当添加列表、引用等格式
@@ -69,7 +74,7 @@ ${content}
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(`DeepSeek API error: ${data.error?.message || 'Unknown error'}`);
+    throw new Error(`DeepSeek API 错误: ${data.error?.message || '未知错误'}`);
   }
 
   const result = data.choices[0].message.content;
@@ -89,7 +94,7 @@ ${content}
       category: parsed.category || '未分类',
     };
   } catch (parseError) {
-    console.error('Failed to parse DeepSeek response:', parseError);
+    console.error('解析 DeepSeek 响应失败:', parseError);
     // 如果解析失败，返回原始内容
     return {
       title,
@@ -99,27 +104,4 @@ ${content}
       category: '未分类',
     };
   }
-}
-
-// 批量处理文档
-export async function batchProcessDocuments(
-  documents: Array<{ id: string; content: string; title: string }>
-): Promise<Array<{ id: string; result?: ProcessedBlogPost; error?: string }>> {
-  const results = await Promise.allSettled(
-    documents.map(async (doc) => {
-      try {
-        const result = await processDocumentWithDeepSeek(doc.content, doc.title);
-        return { id: doc.id, result };
-      } catch (error) {
-        return { id: doc.id, error: (error as Error).message };
-      }
-    })
-  );
-
-  return results.map((r, i) => {
-    if (r.status === 'fulfilled') {
-      return r.value;
-    }
-    return { id: documents[i].id, error: 'Processing failed' };
-  });
 }
