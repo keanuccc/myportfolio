@@ -7,6 +7,8 @@ import {
   ExclamationCircleIcon,
   ClockIcon,
   ArrowPathIcon,
+  LinkIcon,
+  SparklesIcon,
 } from '@heroicons/react/24/outline';
 
 interface ProcessingItem {
@@ -22,7 +24,9 @@ interface ProcessingItem {
 export default function FeishuSyncPage() {
   const [queue, setQueue] = useState<ProcessingItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [syncing, setSyncing] = useState(false);
+  const [documentUrl, setDocumentUrl] = useState('');
+  const [processing, setProcessing] = useState(false);
+  const [message, setMessage] = useState({ type: '', text: '' });
 
   useEffect(() => {
     fetchQueue();
@@ -40,11 +44,70 @@ export default function FeishuSyncPage() {
     }
   }
 
-  async function handleManualSync() {
-    setSyncing(true);
-    // TODO: 实现手动同步逻辑
-    await fetchQueue();
-    setSyncing(false);
+  // 从飞书文档链接中提取文档 ID
+  function extractDocumentId(url: string): string | null {
+    // 支持多种飞书文档链接格式
+    // https://xxx.feishu.cn/docx/xxxxxx
+    // https://xxx.feishu.cn/docs/xxxxxx
+    // https://xxx.larksuite.com/docx/xxxxxx
+    const patterns = [
+      /\/docx\/([a-zA-Z0-9]+)/,
+      /\/docs\/([a-zA-Z0-9]+)/,
+      /\/wiki\/([a-zA-Z0-9]+)/,
+      /\/sheets\/([a-zA-Z0-9]+)/,
+    ];
+
+    for (const pattern of patterns) {
+      const match = url.match(pattern);
+      if (match) {
+        return match[1];
+      }
+    }
+
+    // 如果直接输入的是文档 ID
+    if (/^[a-zA-Z0-9]+$/.test(url)) {
+      return url;
+    }
+
+    return null;
+  }
+
+  async function handleProcessDocument() {
+    if (!documentUrl.trim()) {
+      setMessage({ type: 'error', text: '请输入飞书文档链接' });
+      return;
+    }
+
+    const documentId = extractDocumentId(documentUrl);
+    if (!documentId) {
+      setMessage({ type: 'error', text: '无法识别文档链接，请输入有效的飞书文档链接' });
+      return;
+    }
+
+    setProcessing(true);
+    setMessage({ type: '', text: '' });
+
+    try {
+      const response = await fetch('/api/feishu/process', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ documentId, documentUrl }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage({ type: 'success', text: '文档处理成功！已生成博客草稿。' });
+        setDocumentUrl('');
+        fetchQueue();
+      } else {
+        setMessage({ type: 'error', text: data.error || '处理失败，请重试' });
+      }
+    } catch (error) {
+      setMessage({ type: 'error', text: '网络错误，请检查连接' });
+    } finally {
+      setProcessing(false);
+    }
   }
 
   const getStatusIcon = (status: ProcessingItem['status']) => {
@@ -95,25 +158,76 @@ export default function FeishuSyncPage() {
       <div className="admin-page-header">
         <div>
           <h1 className="admin-page-title">飞书文档同步</h1>
-          <p className="admin-page-subtitle">管理飞书文档自动同步到博客</p>
+          <p className="admin-page-subtitle">输入飞书文档链接，自动生成博客文章</p>
         </div>
-        <button
-          onClick={handleManualSync}
-          disabled={syncing}
-          className="btn-brand flex items-center gap-2"
-        >
-          {syncing ? (
-            <>
-              <ArrowPathIcon className="h-4 w-4 animate-spin" />
-              同步中...
-            </>
-          ) : (
-            <>
-              <CloudArrowDownIcon className="h-4 w-4" />
-              手动同步
-            </>
-          )}
-        </button>
+      </div>
+
+      {/* Process Document Input */}
+      <div className="admin-card p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-xl bg-marrsgreen/10 dark:bg-carrigreen/10 flex items-center justify-center">
+            <SparklesIcon className="h-5 w-5 text-marrsgreen dark:text-carrigreen" />
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">AI 智能处理</h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400">粘贴飞书文档链接，自动转换为优雅的博客文章</p>
+          </div>
+        </div>
+
+        <div className="flex gap-3">
+          <div className="flex-1 relative">
+            <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <input
+              type="text"
+              value={documentUrl}
+              onChange={(e) => setDocumentUrl(e.target.value)}
+              placeholder="粘贴飞书文档链接，如：https://xxx.feishu.cn/docx/xxxxxx"
+              className="admin-input pl-10"
+              onKeyDown={(e) => e.key === 'Enter' && handleProcessDocument()}
+            />
+          </div>
+          <button
+            onClick={handleProcessDocument}
+            disabled={processing}
+            className="btn-brand flex items-center gap-2 px-6"
+          >
+            {processing ? (
+              <>
+                <ArrowPathIcon className="h-4 w-4 animate-spin" />
+                处理中...
+              </>
+            ) : (
+              <>
+                <SparklesIcon className="h-4 w-4" />
+                开始处理
+              </>
+            )}
+          </button>
+        </div>
+
+        {/* Message */}
+        {message.text && (
+          <div
+            className={`mt-4 p-4 rounded-lg ${
+              message.type === 'success'
+                ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400'
+                : 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400'
+            }`}
+          >
+            {message.text}
+          </div>
+        )}
+
+        {/* Supported formats */}
+        <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
+          <p className="font-medium mb-2">支持的链接格式：</p>
+          <ul className="list-disc list-inside space-y-1">
+            <li>https://xxx.feishu.cn/docx/xxxxxx</li>
+            <li>https://xxx.feishu.cn/docs/xxxxxx</li>
+            <li>https://xxx.feishu.cn/wiki/xxxxxx</li>
+            <li>直接输入文档 ID</li>
+          </ul>
+        </div>
       </div>
 
       {/* Stats */}
@@ -136,32 +250,17 @@ export default function FeishuSyncPage() {
         </div>
       </div>
 
-      {/* Webhook URL Info */}
-      <div className="admin-card p-6">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Webhook 配置</h2>
-        <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-          <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
-            在飞书开放平台配置以下 Webhook URL：
-          </p>
-          <code className="block bg-gray-100 dark:bg-gray-700 p-3 rounded text-sm break-all">
-            {typeof window !== 'undefined' ? window.location.origin : ''}/api/feishu
-          </code>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
-            事件类型：文档编辑 (drive.file.edit_v1)
-          </p>
-        </div>
-      </div>
-
       {/* Queue List */}
       <div className="admin-card overflow-hidden">
         <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">处理队列</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">处理历史</h2>
         </div>
 
         {queue.length === 0 ? (
           <div className="admin-empty">
             <CloudArrowDownIcon className="h-8 w-8 text-gray-400 mb-2" />
-            <p className="text-gray-500 dark:text-gray-400">暂无同步记录</p>
+            <p className="text-gray-500 dark:text-gray-400">暂无处理记录</p>
+            <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">输入飞书文档链接开始使用</p>
           </div>
         ) : (
           <div className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -205,7 +304,7 @@ export default function FeishuSyncPage() {
                           href={`/admin/blog/${item.blogPostId}/edit`}
                           className="text-marrsgreen dark:text-carrigreen hover:underline text-sm"
                         >
-                          查看文章
+                          查看文章 →
                         </a>
                       )}
 
@@ -223,14 +322,29 @@ export default function FeishuSyncPage() {
       {/* Instructions */}
       <div className="admin-card p-6">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">使用说明</h2>
-        <ol className="list-decimal list-inside space-y-2 text-gray-600 dark:text-gray-300">
-          <li>在飞书开放平台创建应用并获取 App ID 和 App Secret</li>
-          <li>配置环境变量 <code className="bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded">FEISHU_APP_ID</code> 和 <code className="bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded">FEISHU_APP_SECRET</code></li>
-          <li>在飞书开放平台配置事件订阅，添加 Webhook URL</li>
-          <li>订阅 <code className="bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded">drive.file.edit_v1</code> 事件</li>
-          <li>当飞书文档更新时，系统会自动处理并生成博客草稿</li>
-          <li>在博客管理页面审核并发布文章</li>
-        </ol>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="text-center">
+            <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-marrsgreen/10 dark:bg-carrigreen/10 flex items-center justify-center">
+              <span className="text-xl font-bold text-marrsgreen dark:text-carrigreen">1</span>
+            </div>
+            <h3 className="font-medium text-gray-900 dark:text-white mb-1">复制文档链接</h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400">在飞书中打开文档，复制浏览器地址栏的链接</p>
+          </div>
+          <div className="text-center">
+            <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-marrsgreen/10 dark:bg-carrigreen/10 flex items-center justify-center">
+              <span className="text-xl font-bold text-marrsgreen dark:text-carrigreen">2</span>
+            </div>
+            <h3 className="font-medium text-gray-900 dark:text-white mb-1">粘贴并处理</h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400">将链接粘贴到输入框，点击"开始处理"按钮</p>
+          </div>
+          <div className="text-center">
+            <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-marrsgreen/10 dark:bg-carrigreen/10 flex items-center justify-center">
+              <span className="text-xl font-bold text-marrsgreen dark:text-carrigreen">3</span>
+            </div>
+            <h3 className="font-medium text-gray-900 dark:text-white mb-1">审核发布</h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400">AI 处理完成后，在博客管理页面审核并发布文章</p>
+          </div>
+        </div>
       </div>
     </div>
   );
