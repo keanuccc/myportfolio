@@ -85,18 +85,18 @@ export default function Projects() {
         &ldquo;Show me the impact.&rdquo; 以下是我主导的部分 AI 产品项目
       </span>
 
-      <div className="grid md:grid-cols-2 gap-x-12 gap-y-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8">
         {projects.map((project, index) => (
           <div key={index}>
             <div className="project-card">
               {/* Image area */}
               <div className="overflow-hidden">
                 <div
-                  className="project-image relative aspect-[16/9]"
+                  className="project-image relative aspect-[16/10]"
                   style={{ backgroundColor: project.color }}
                 >
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-6xl font-bold text-white/30">
+                    <span className="text-4xl font-bold text-white/30">
                       {String(index + 1).padStart(2, "0")}
                     </span>
                   </div>
@@ -104,26 +104,26 @@ export default function Projects() {
               </div>
 
               {/* Content */}
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-marrsgreen dark:text-carrigreen text-2xl font-semibold">
+              <div className="p-5">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-marrsgreen dark:text-carrigreen text-lg font-semibold">
                     {project.title}
                   </h3>
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3">
                     {/* Star count */}
                     <a
                       target="_blank"
                       rel="noreferrer"
                       title={`Check stargazers of '${project.title}' on Github`}
-                      className="flex items-center group text-base text-slate-600 dark:text-slate-300"
+                      className="flex items-center group text-sm text-slate-600 dark:text-slate-300"
                       href={project.github}
                     >
                       {project.stars}
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="scale-90 group-hover:-rotate-12 transition-transform"
-                        width="20"
-                        height="20"
+                        width="16"
+                        height="16"
                         viewBox="0 0 24 24"
                         strokeWidth="1.5"
                         stroke="currentColor"
@@ -145,8 +145,8 @@ export default function Projects() {
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
+                        width="20"
+                        height="20"
                         className="opacity-70 hover:opacity-100 hover:-rotate-12 transition-all fill-black dark:fill-bglight"
                       >
                         <path
@@ -166,7 +166,7 @@ export default function Projects() {
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-7 w-7 bg-cardlight dark:bg-bgdark hover:bg-marrsgreen hover:text-white dark:hover:bg-carrigreen dark:hover:text-bgdark rounded-full p-1 hover:-rotate-12 transition-all"
+                        className="h-6 w-6 bg-cardlight dark:bg-bgdark hover:bg-marrsgreen hover:text-white dark:hover:bg-carrigreen dark:hover:text-bgdark rounded-full p-1 hover:-rotate-12 transition-all"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -182,15 +182,15 @@ export default function Projects() {
                   </div>
                 </div>
 
-                <p className="text-lg leading-relaxed text-slate-600 dark:text-slate-300 mb-5">
+                <p className="text-base leading-relaxed text-slate-600 dark:text-slate-300 mb-4">
                   {project.description}
                 </p>
 
-                <ul className="flex flex-wrap gap-2.5">
+                <ul className="flex flex-wrap gap-2">
                   {project.tags.map((tag) => (
                     <li
                       key={tag}
-                      className="text-base bg-[#E2EFEF] dark:bg-bgdark text-marrsgreen dark:text-carrigreen py-1.5 px-4 rounded-md font-medium"
+                      className="text-sm bg-[#E2EFEF] dark:bg-bgdark text-marrsgreen dark:text-carrigreen py-1 px-3 rounded-md font-medium"
                     >
                       {tag}
                     </li>
