@@ -86,9 +86,14 @@ ${content}
     const jsonStr = jsonMatch[1] || result;
     const parsed = JSON.parse(jsonStr.trim());
 
+    // 处理 content 中的换行符
+    let content = parsed.content || content;
+    // 将字符串 \n 替换为真正的换行符
+    content = content.replace(/\\n/g, '\n');
+
     return {
       title: parsed.title || title,
-      content: parsed.content || content,
+      content: content,
       excerpt: parsed.excerpt || content.substring(0, 150) + '...',
       tags: Array.isArray(parsed.tags) ? parsed.tags : [],
       category: parsed.category || '未分类',
