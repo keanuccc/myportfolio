@@ -18,8 +18,15 @@ async function getFeishuTenantAccessToken(): Promise<string> {
   const appId = process.env.FEISHU_APP_ID;
   const appSecret = process.env.FEISHU_APP_SECRET;
 
+  console.log('飞书环境变量检查:', {
+    appIdExists: !!appId,
+    appIdLength: appId?.length,
+    appSecretExists: !!appSecret,
+    appSecretLength: appSecret?.length,
+  });
+
   if (!appId || !appSecret) {
-    throw new Error('飞书应用凭证未配置。请在 .env.local 中设置 FEISHU_APP_ID 和 FEISHU_APP_SECRET');
+    throw new Error(`飞书应用凭证未配置。FEISHU_APP_ID: ${appId ? '已设置' : '未设置'}, FEISHU_APP_SECRET: ${appSecret ? '已设置' : '未设置'}`);
   }
 
   const response = await fetch(
