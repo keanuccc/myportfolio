@@ -75,7 +75,7 @@ export default function Contact() {
         <div className="flex flex-col sm:flex-row gap-5">
           <input
             type="text"
-            placeholder="Your Name"
+            placeholder="Keanuccc"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required

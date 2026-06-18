@@ -5,13 +5,13 @@ import { Profile } from "@/lib/types";
 
 const DEFAULT_PROFILE: Profile = {
   hero: {
-    name: "Your Name",
-    title: "AI Product Manager",
+    name: "Keanuccc",
+    title: "Intern Product Manager",
     subtitle:
       "我是一名专注于 AI 产品的产品经理，热衷于将前沿 AI 技术转化为用户价值。",
   },
   whoami: { bio: "", skills: [] },
-  contact: { email: "your@email.com", socialLinks: [] },
+  contact: { email: "2245269601@qq.com", socialLinks: [] },
 };
 
 export default function Hero() {
@@ -76,7 +76,7 @@ export default function Hero() {
       <div className="w-full max-w-7xl mx-auto flex flex-col-reverse lg:flex-row-reverse items-center gap-8 lg:gap-12 py-16">
         {/* Illustration - floating avatar */}
         <div className="z-10 select-none shrink-0 lg:w-2/5">
-          <div className="flex items-center justify-center mx-auto">
+          <div className="flex items-center justify-center mx-auto" style={{ transform: 'rotate(5deg)' }}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none" shapeRendering="auto" aria-hidden="true" className="w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 drop-shadow-lg" style={{ animation: 'avatarFloat 4s ease-in-out infinite' }}>
                 {/* DiceBear Adventurer Neutral by Lisa Wischofsky — CC BY 4.0 */}
                 <defs>
@@ -96,7 +96,7 @@ export default function Hero() {
                     <path d="M120.26 30.7c11.07 3.23 22.56 7.72 30.43 16.52 4.18 4.76 6.93 11.23 4 17.39-3 6.16-9.66 8.56-16.2 7.98-22.43-4.47-46.27-4.38-68.96-2.05-12.25 1.6-24.14 3.39-36.04 6.83-5.67 1.38-11.3 2.18-16.17-1.8-6.6-5.25-7.4-14.6-3.5-21.74 3.43-5.84 8.9-10.26 14.65-13.66 4.08 2.55 8.45 3.7 13.04 4.97 21.88 5.68 46.86 3.96 67-6.7 4.31-2.1 7.84-5.15 11.78-7.74" fill="#8F2E45"/>
                   </g>
                   <clipPath id="clip-7dff0831">
-                    <rect width="400" height="400" rx="0" ry="0"/>
+                    <rect width="400" height="400" rx="40" ry="40"/>
                   </clipPath>
                 </defs>
                 <g clipPath="url(#clip-7dff0831)">

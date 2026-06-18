@@ -5,8 +5,8 @@ import { Profile } from '@/lib/types';
 
 const DEFAULT_PROFILE: Profile = {
   hero: {
-    name: 'Your Name',
-    title: 'AI Product Manager',
+    name: 'Keanuccc',
+    title: 'Intern Product Manager',
     subtitle: 'Building intelligent products that solve real-world problems',
   },
   whoami: {

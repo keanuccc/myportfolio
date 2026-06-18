@@ -8,7 +8,7 @@ export default function Footer() {
             href="/"
             className="text-marrsgreen dark:text-carrigreen hover:underline font-medium"
           >
-            Your Name
+            Keanuccc
           </a>
         </p>
         <p className="mt-2">

@@ -2,15 +2,15 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Your Name - AI Product Manager",
+  title: "Keanuccc - Intern Product Manager",
   description:
-    "AI Product Manager passionate about building intelligent products that solve real-world problems. Experienced in leading cross-functional teams to deliver AI-powered solutions.",
+    "Intern Product Manager passionate about building intelligent products that solve real-world problems. Experienced in leading cross-functional teams to deliver AI-powered solutions.",
   openGraph: {
-    title: "Your Name - AI Product Manager",
+    title: "Keanuccc - Intern Product Manager",
     description:
-      "AI Product Manager passionate about building intelligent products that solve real-world problems.",
-    url: "https://yourdomain.com",
-    siteName: "Your Name",
+      "Intern Product Manager passionate about building intelligent products that solve real-world problems.",
+    url: "https://myportfolio-tau-coral-89.vercel.app/",
+    siteName: "Keanuccc",
     type: "website",
   },
 };

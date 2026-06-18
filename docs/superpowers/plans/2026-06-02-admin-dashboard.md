@@ -2909,7 +2909,7 @@ import { Profile } from '@/lib/types';
 
 export default function Hero() {
   const [profile, setProfile] = useState<Profile['hero']>({
-    name: 'Your Name',
+    name: 'Keanuccc',
     title: 'AI Product Manager',
     subtitle: 'Building intelligent products that solve real-world problems',
   });
