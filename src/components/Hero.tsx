@@ -117,12 +117,11 @@ export default function Hero() {
               {profile.hero.subtitle}
             </p>
             <p className="text-xl leading-relaxed text-slate-700 dark:text-slate-300">
-              擅长从 0 到 1 打造 AI
-              产品，具备深厚的机器学习认知、出色的跨团队协作能力，以及数据驱动的产品决策思维。
+              了解产品开发流程，学过以及使用过原型工具，掌握PRD的写法以及从0开发过几个项目。
             </p>
           </div>
 
-          {/* Key stats */}
+          {/* Key stats
           <div className="flex flex-wrap justify-center lg:justify-start gap-8 mb-10">
             <div className="text-center lg:text-left">
               <div className="text-3xl lg:text-4xl font-bold text-marrsgreen dark:text-carrigreen">4+</div>
@@ -136,7 +135,7 @@ export default function Hero() {
               <div className="text-3xl lg:text-4xl font-bold text-marrsgreen dark:text-carrigreen">100K+</div>
               <div className="text-sm text-slate-500 dark:text-slate-400">用户覆盖</div>
             </div>
-          </div>
+          </div> */}
 
           <a
             role="button"
