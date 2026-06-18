@@ -140,8 +140,7 @@ export default function Hero() {
           <a
             role="button"
             className="bg-gradient-to-r from-marrsgreen to-marrslight dark:from-carrigreen dark:to-carrilight hover:bg-marrslight active:bg-marrsdark dark:hover:bg-carrilight dark:active:bg-carridark text-bglight dark:text-bgdark py-4 px-10 rounded-lg text-xl font-medium outline-marrsgreen dark:outline-carrigreen focus-visible:outline-double outline-offset-2 inline-block shadow-lg hover:shadow-xl hover:shadow-marrsgreen/20 dark:hover:shadow-carrigreen/20 transition-all duration-300 hover:-translate-y-0.5"
-            href={`mailto:${profile.contact.email}`}
-            target="_self"
+            href="#contact"
           >
             Contact me!
           </a>
