@@ -74,11 +74,10 @@ export default function Hero() {
       </div>
 
       <div className="w-full max-w-7xl mx-auto flex flex-col-reverse lg:flex-row-reverse items-center gap-8 lg:gap-12 py-16">
-        {/* Illustration - takes up significant vertical space */}
-        <div className="image-animation z-10 select-none shrink-0 lg:w-2/5">
-          <div className="relative w-72 h-80 md:w-80 md:h-[22rem] lg:w-[22rem] lg:h-[28rem] flex items-center mx-auto">
-            <div className="w-full h-full rounded-3xl bg-gradient-to-br from-marrsgreen/20 to-carrigreen/20 dark:from-carrigreen/20 dark:to-marrsgreen/20 flex items-center justify-center border-2 border-marrsgreen/30 dark:border-carrigreen/30 shadow-xl">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none" shapeRendering="auto" aria-hidden="true" className="w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64">
+        {/* Illustration - floating avatar */}
+        <div className="z-10 select-none shrink-0 lg:w-2/5">
+          <div className="flex items-center justify-center mx-auto">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" fill="none" shapeRendering="auto" aria-hidden="true" className="w-48 h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 drop-shadow-lg" style={{ animation: 'avatarFloat 4s ease-in-out infinite' }}>
                 {/* DiceBear Adventurer Neutral by Lisa Wischofsky — CC BY 4.0 */}
                 <defs>
                   <g id="eyes-variant26-7dff0831">
@@ -107,7 +106,6 @@ export default function Hero() {
                   <use transform="translate(114.51 217.6)" href="#mouth-variant14-7dff0831"/>
                 </g>
               </svg>
-            </div>
           </div>
         </div>
 
