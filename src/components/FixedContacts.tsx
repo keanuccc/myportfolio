@@ -38,7 +38,7 @@ export default function FixedContacts() {
           <div key={link.label} className="relative group">
             <a
               href={link.href}
-              target={link.href.startsWith("mailto") || link.href === "#" ? undefined : "_blank"}
+              target={link.href.startsWith("mailto") || link.href.startsWith("#") ? undefined : "_blank"}
               rel="noreferrer"
               title={link.label}
               aria-label={link.label}
