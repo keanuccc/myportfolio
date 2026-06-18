@@ -69,7 +69,7 @@ export default function Header() {
               className="text-3xl sm:text-4xl md:hover:text-marrsgreen dark:md:hover:text-carrigreen focus-visible:outline-marrsgreen dark:focus-visible:outline-carrigreen font-bold"
               href="/"
             >
-              YourName
+              Keanuccc
               <span className="text-marrsgreen dark:text-carrigreen">.dev</span>
             </a>
 
