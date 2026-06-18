@@ -129,9 +129,9 @@ export default function Projects() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8">
         {projects.map((project, index) => (
-          <div key={project.id} className="h-full">
+          <div key={project.id} className="h-full flex">
             <div
-              className="project-card h-full flex flex-col"
+              className="project-card h-full flex flex-col flex-1"
               onMouseEnter={() => setIsHovered(index)}
               onMouseLeave={() => setIsHovered(null)}
             >
