@@ -133,7 +133,7 @@ export default function Contact() {
         <a
           href={
             socialLinks.find((l) => l.platform === "github")?.url ||
-            "https://github.com/yourusername"
+            "https://github.com/keanuccc"
           }
           target="_blank"
           rel="noreferrer"
