@@ -51,7 +51,7 @@ export default function Contact() {
   };
 
   const socialLinks = profile?.contact.socialLinks || [];
-  const contactEmail = profile?.contact.email || "your@email.com";
+  const contactEmail = profile?.contact.email || "2245269601@@qq.com";
 
   return (
     <section
@@ -151,49 +151,27 @@ export default function Contact() {
           </svg>
         </a>
 
-        {/* LinkedIn */}
-        <a
-          href={
-            socialLinks.find((l) => l.platform === "linkedin")?.url ||
-            "https://linkedin.com/in/yourusername"
-          }
-          target="_blank"
-          rel="noreferrer"
-          title="LinkedIn"
-          className="text-slate-500 dark:text-slate-400 hover:text-marrsgreen dark:hover:text-carrigreen transition-colors hover:scale-110 transform"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="32"
-            height="32"
-            viewBox="0 0 24 24"
-            fill="currentColor"
+        {/* WeChat */}
+        <div className="relative group">
+          <div
+            title="WeChat"
+            className="text-slate-500 dark:text-slate-400 hover:text-marrsgreen dark:hover:text-carrigreen transition-colors hover:scale-110 transform cursor-pointer"
           >
-            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-          </svg>
-        </a>
-
-        {/* Twitter/X */}
-        <a
-          href={
-            socialLinks.find((l) => l.platform === "twitter")?.url ||
-            "https://twitter.com/yourusername"
-          }
-          target="_blank"
-          rel="noreferrer"
-          title="Twitter"
-          className="text-slate-500 dark:text-slate-400 hover:text-marrsgreen dark:hover:text-carrigreen transition-colors hover:scale-110 transform"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="32"
-            height="32"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-          </svg>
-        </a>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05a6.937 6.937 0 0 1-.261-1.883c0-3.54 3.28-6.41 7.326-6.41.18 0 .354.014.53.025-.838-3.2-4.153-5.461-8.41-5.461zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm3.564 2.677c-3.617 0-6.554 2.536-6.554 5.668 0 3.131 2.937 5.667 6.554 5.667.72 0 1.417-.105 2.076-.296a.674.674 0 0 1 .564.076l1.36.796a.258.258 0 0 0 .13.042c.126 0 .227-.103.227-.23 0-.057-.023-.113-.038-.168l-.278-1.056a.466.466 0 0 1 .168-.524C21.022 17.406 22 15.77 22 13.923c0-3.132-2.937-5.668-6.554-5.668h-.284zm-2.32 3.16c.505 0 .914.416.914.928a.921.921 0 0 1-.914.927.921.921 0 0 1-.913-.927c0-.512.41-.928.913-.928zm4.642 0c.505 0 .913.416.913.928a.921.921 0 0 1-.913.927.921.921 0 0 1-.914-.927c0-.512.41-.928.914-.928z" />
+            </svg>
+          </div>
+          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-slate-800 dark:bg-slate-700 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+            微信: xjyczh20070309
+            <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 w-2 h-2 bg-slate-800 dark:bg-slate-700 rotate-45"></div>
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -83,7 +83,7 @@ export default function Projects() {
           </span>
         </div>
         <span className="project-desc text-center block mb-12 text-xl">
-          &ldquo;Talk is cheap. Show me the code&rdquo;? 作为 AI PM，我更想说：
+          &ldquo;Talk is cheap. Show me the code&rdquo;? 作为PM，我更想说：
           <br />
           &ldquo;Show me the impact.&rdquo; 以下是我主导的部分 AI 产品项目
         </span>
