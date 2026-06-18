@@ -90,21 +90,11 @@ export default function WhoAmI() {
                     className="w-full aspect-square object-cover rounded-2xl border border-marrsgreen/20 dark:border-carrigreen/20"
                   />
                 ) : (
-                  <div className="w-full aspect-square bg-gradient-to-br from-marrsgreen/10 to-carrigreen/10 dark:from-carrigreen/10 dark:to-marrsgreen/10 rounded-2xl flex items-center justify-center border border-marrsgreen/20 dark:border-carrigreen/20">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="80"
-                      height="80"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1"
-                      className="text-marrsgreen/40 dark:text-carrigreen/40"
-                    >
-                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                      <circle cx="12" cy="7" r="4" />
-                    </svg>
-                  </div>
+                  <img
+                    src="/image/me.jpg"
+                    alt="Profile"
+                    className="w-full aspect-square object-cover rounded-2xl border border-marrsgreen/20 dark:border-carrigreen/20"
+                  />
                 )}
               </div>
 
