@@ -9,34 +9,30 @@ export async function GET(request: NextRequest) {
 
     // 验证 state 参数
     if (state !== 'feishu_sync') {
-      return NextResponse.json(
-        { error: 'Invalid state parameter' },
-        { status: 400 }
+      return NextResponse.redirect(
+        new URL('/admin/blog?error=invalid_state', request.url)
       );
     }
 
     if (!code) {
-      return NextResponse.json(
-        { error: 'Missing code parameter' },
-        { status: 400 }
+      return NextResponse.redirect(
+        new URL('/admin/blog?error=missing_code', request.url)
       );
     }
 
     // 获取 user_access_token
-    const { accessToken, refreshToken, expiresIn } = await getFeishuUserAccessToken(code);
+    const { accessToken } = await getFeishuUserAccessToken(code);
 
-    // 返回 token（实际应用中应该存储到数据库或 session）
-    // 这里为了简化，直接返回给前端
-    return NextResponse.json({
-      accessToken,
-      refreshToken,
-      expiresIn,
-    });
+    // 重定向回前端页面，将 token 作为参数传递
+    const redirectUrl = new URL('/admin/blog', request.url);
+    redirectUrl.searchParams.set('feishu_token', accessToken);
+
+    return NextResponse.redirect(redirectUrl);
   } catch (error) {
     console.error('Error in feishu auth callback:', error);
-    return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Auth failed' },
-      { status: 500 }
+    const errorMessage = error instanceof Error ? error.message : 'auth_failed';
+    return NextResponse.redirect(
+      new URL(`/admin/blog?error=${encodeURIComponent(errorMessage)}`, request.url)
     );
   }
 }

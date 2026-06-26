@@ -22,42 +22,30 @@ export default function FeishuSyncModal({
   const [error, setError] = useState<string | null>(null);
   const [userToken, setUserToken] = useState<string | null>(null);
 
-  // 从 localStorage 读取 token
+  // 从 localStorage 读取 token 或从 URL 参数获取
   useEffect(() => {
-    const savedToken = localStorage.getItem('feishu_user_token');
-    if (savedToken) {
-      setUserToken(savedToken);
-    }
-  }, []);
+    // 检查 URL 参数中是否有 token（OAuth 回调后）
+    const urlParams = new URLSearchParams(window.location.search);
+    const tokenFromUrl = urlParams.get('feishu_token');
+    const errorFromUrl = urlParams.get('error');
 
-  // 处理 OAuth 回调
-  useEffect(() => {
-    const handleCallback = async () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const code = urlParams.get('code');
-      const state = urlParams.get('state');
-
-      if (code && state === 'feishu_sync') {
-        try {
-          const response = await fetch(`/api/feishu/auth/callback?code=${code}&state=${state}`);
-          const data = await response.json();
-
-          if (response.ok && data.accessToken) {
-            localStorage.setItem('feishu_user_token', data.accessToken);
-            setUserToken(data.accessToken);
-            // 清除 URL 参数
-            window.history.replaceState({}, '', window.location.pathname);
-          } else {
-            setError(data.error || '授权失败');
-          }
-        } catch (err) {
-          console.error('Error handling callback:', err);
-          setError('授权失败');
-        }
+    if (errorFromUrl) {
+      setError(`授权失败: ${decodeURIComponent(errorFromUrl)}`);
+      // 清除 URL 参数
+      window.history.replaceState({}, '', window.location.pathname);
+    } else if (tokenFromUrl) {
+      // 保存 token 到 localStorage
+      localStorage.setItem('feishu_user_token', tokenFromUrl);
+      setUserToken(tokenFromUrl);
+      // 清除 URL 参数
+      window.history.replaceState({}, '', window.location.pathname);
+    } else {
+      // 从 localStorage 读取
+      const savedToken = localStorage.getItem('feishu_user_token');
+      if (savedToken) {
+        setUserToken(savedToken);
       }
-    };
-
-    handleCallback();
+    }
   }, []);
 
   // 加载文档列表
