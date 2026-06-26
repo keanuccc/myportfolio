@@ -244,9 +244,9 @@ export async function getFeishuDocumentList(
     params.set('page_token', pageToken);
   }
 
-  // 调用飞书 API 获取文档列表
+  // 调用飞书 API 获取文档列表（使用云文档列表 API）
   const response = await fetch(
-    `https://open.feishu.cn/open-apis/docx/v1/documents?${params.toString()}`,
+    `https://open.feishu.cn/open-apis/drive/v1/files?${params.toString()}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -269,11 +269,11 @@ export async function getFeishuDocumentList(
   }
 
   return {
-    documents: (data.data?.items || []).map((item: { document_id: string; title: string; revision_id: string; }) => ({
-      id: item.document_id,
-      title: item.title || '未命名文档',
-      updateTime: '',  // 飞书 API 不返回更新时间
-      size: 0,         // 飞书 API 不返回文档大小
+    documents: (data.data?.files || []).map((item: { token: string; name: string; type: string; modified_time?: string; size?: number }) => ({
+      id: item.token,
+      title: item.name || '未命名文档',
+      updateTime: item.modified_time || '',
+      size: item.size || 0,
     })),
     hasMore: data.data?.has_more || false,
     pageToken: data.data?.page_token,
