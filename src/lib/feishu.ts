@@ -128,8 +128,17 @@ async function getWikiDocumentId(wikiToken: string, token: string): Promise<stri
 /**
  * 获取飞书文档内容
  */
-export async function getFeishuDocumentContent(documentId: string): Promise<FeishuDocument> {
-  const token = await getFeishuTenantAccessToken();
+/**
+ * 获取飞书文档内容
+ * @param documentId 文档 ID 或 node_token
+ * @param userAccessToken 可选的用户访问令牌，如果提供则使用用户令牌
+ */
+export async function getFeishuDocumentContent(
+  documentId: string,
+  userAccessToken?: string
+): Promise<FeishuDocument> {
+  // 优先使用 userAccessToken，否则使用 tenant_access_token
+  const token = userAccessToken || await getFeishuTenantAccessToken();
 
   let actualDocId = documentId;
 

@@ -32,6 +32,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    // 从请求头获取 user_access_token
+    const userAccessToken = request.headers.get('Authorization')?.replace('Bearer ', '');
+    if (!userAccessToken) {
+      return NextResponse.json(
+        { error: '请先授权飞书账号' },
+        { status: 401 }
+      );
+    }
+
     // 获取请求体
     const body = await request.json();
     const { documentIds } = body;
@@ -75,8 +84,8 @@ export async function POST(request: NextRequest) {
           continue;
         }
 
-        // 获取文档内容
-        const doc = await getFeishuDocumentContent(docId);
+        // 获取文档内容（使用 userAccessToken）
+        const doc = await getFeishuDocumentContent(docId, userAccessToken);
 
         // 使用 DeepSeek 处理文档内容
         console.log(`正在使用 DeepSeek 处理文档: ${doc.title}`);
