@@ -237,6 +237,8 @@ export function getFeishuAuthUrl(redirectUri: string): string {
     redirect_uri: redirectUri,
     response_type: 'code',
     state: 'feishu_sync',  // 用于验证回调
+    // 指定需要的权限范围
+    scope: 'drive:drive:readonly',
   });
 
   return `https://open.feishu.cn/open-apis/authen/v1/authorize?${params.toString()}`;
