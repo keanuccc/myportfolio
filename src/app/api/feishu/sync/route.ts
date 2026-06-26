@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getFeishuDocumentContent } from '@/lib/feishu';
+import { processDocumentWithDeepSeek } from '@/lib/deepseek';
 import { generateSlug, ensureUniqueSlug } from '@/lib/slug';
-import { extractTags } from '@/lib/tags';
 import { kv } from '@/lib/kv';
 import { verifySession } from '@/lib/auth';
 import { BlogPost, SyncResult } from '@/lib/types';
@@ -78,23 +78,24 @@ export async function POST(request: NextRequest) {
         // 获取文档内容
         const doc = await getFeishuDocumentContent(docId);
 
-        // 生成 slug
-        const baseSlug = generateSlug(doc.title);
-        const slug = ensureUniqueSlug(baseSlug, existingSlugs);
+        // 使用 DeepSeek 处理文档内容
+        console.log(`正在使用 DeepSeek 处理文档: ${doc.title}`);
+        const processed = await processDocumentWithDeepSeek(doc.content, doc.title);
 
-        // 提取标签
-        const tags = extractTags(doc.content);
+        // 生成 slug
+        const baseSlug = generateSlug(processed.title);
+        const slug = ensureUniqueSlug(baseSlug, existingSlugs);
 
         // 创建博客文章
         const newPost: BlogPost = {
           id: nanoid(),
-          title: doc.title,
+          title: processed.title,
           slug,
-          content: doc.content,
-          excerpt: generateExcerpt(doc.content),
+          content: processed.content,
+          excerpt: processed.excerpt,
           coverImage: '/images/default-cover.jpg',
-          category: '',
-          tags,
+          category: processed.category,
+          tags: processed.tags,
           status: 'published',
           featured: false,
           feishuDocId: docId,
