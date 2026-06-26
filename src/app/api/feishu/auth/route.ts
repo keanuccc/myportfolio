@@ -1,11 +1,13 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getFeishuAuthUrl } from '@/lib/feishu';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
-    // 构建回调 URL
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-    const redirectUri = `${baseUrl}/api/feishu/auth/callback`;
+    // 使用请求的 origin 构建回调 URL
+    const origin = request.nextUrl.origin;
+    const redirectUri = `${origin}/api/feishu/auth/callback`;
+
+    console.log('Feishu auth redirect URI:', redirectUri);
 
     // 获取授权 URL
     const authUrl = getFeishuAuthUrl(redirectUri);
