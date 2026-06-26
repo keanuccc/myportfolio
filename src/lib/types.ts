@@ -9,6 +9,7 @@ export interface BlogPost {
   tags: string[];
   status: 'draft' | 'published';
   featured: boolean;
+  feishuDocId?: string;  // 飞书文档 ID，用于判断是否已同步
   createdAt: string;
   updatedAt: string;
 }
@@ -51,4 +52,17 @@ export interface ContactMessage {
   message: string;
   read: boolean;
   createdAt: string;
+}
+
+export interface FeishuDocumentItem {
+  id: string;           // 飞书文档 ID
+  title: string;        // 文档标题
+  updateTime: string;   // 更新时间
+  size: number;         // 文档大小（字节）
+}
+
+export interface SyncResult {
+  synced: number;       // 成功同步数量
+  skipped: number;      // 跳过数量
+  errors: string[];     // 错误信息列表
 }
