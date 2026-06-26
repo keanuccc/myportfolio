@@ -10,13 +10,22 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
+    // 从请求头获取 user_access_token
+    const userAccessToken = request.headers.get('Authorization')?.replace('Bearer ', '');
+    if (!userAccessToken) {
+      return NextResponse.json(
+        { error: '请先授权飞书账号' },
+        { status: 401 }
+      );
+    }
+
     // 获取查询参数
     const searchParams = request.nextUrl.searchParams;
     const pageSize = parseInt(searchParams.get('page_size') || '50', 10);
     const pageToken = searchParams.get('page_token') || undefined;
 
     // 调用飞书 API 获取文档列表
-    const result = await getFeishuDocumentList(pageSize, pageToken);
+    const result = await getFeishuDocumentList(userAccessToken, pageSize, pageToken);
 
     return NextResponse.json(result);
   } catch (error) {

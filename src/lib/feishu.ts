@@ -224,9 +224,87 @@ export function parseFeishuEvent(body: unknown): FeishuWebhookEvent | null {
 }
 
 /**
- * 获取飞书文档列表
+ * 获取飞书 OAuth 授权 URL
+ */
+export function getFeishuAuthUrl(redirectUri: string): string {
+  const appId = process.env.FEISHU_APP_ID;
+  if (!appId) {
+    throw new Error('FEISHU_APP_ID 未配置');
+  }
+
+  const params = new URLSearchParams({
+    app_id: appId,
+    redirect_uri: redirectUri,
+    response_type: 'code',
+    state: 'feishu_sync',  // 用于验证回调
+  });
+
+  return `https://open.feishu.cn/open-apis/authen/v1/authorize?${params.toString()}`;
+}
+
+/**
+ * 使用授权码获取 user_access_token
+ */
+export async function getFeishuUserAccessToken(code: string): Promise<{
+  accessToken: string;
+  refreshToken: string;
+  expiresIn: number;
+}> {
+  const appId = process.env.FEISHU_APP_ID;
+  const appSecret = process.env.FEISHU_APP_SECRET;
+
+  if (!appId || !appSecret) {
+    throw new Error('飞书应用凭证未配置');
+  }
+
+  // 先获取 app_access_token
+  const appTokenResponse = await fetch(
+    'https://open.feishu.cn/open-apis/auth/v3/app_access_token/internal',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ app_id: appId, app_secret: appSecret }),
+    }
+  );
+
+  const appTokenData = await appTokenResponse.json();
+  if (appTokenData.code !== 0) {
+    throw new Error(`获取 app_access_token 失败: ${appTokenData.msg}`);
+  }
+
+  // 使用授权码获取 user_access_token
+  const response = await fetch(
+    'https://open.feishu.cn/open-apis/authen/v1/oidc/access_token',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${appTokenData.app_access_token}`,
+      },
+      body: JSON.stringify({
+        grant_type: 'authorization_code',
+        code,
+      }),
+    }
+  );
+
+  const data = await response.json();
+  if (data.code !== 0) {
+    throw new Error(`获取 user_access_token 失败: ${data.msg}`);
+  }
+
+  return {
+    accessToken: data.data.access_token,
+    refreshToken: data.data.refresh_token,
+    expiresIn: data.data.expires_in,
+  };
+}
+
+/**
+ * 获取飞书文档列表（使用 user_access_token）
  */
 export async function getFeishuDocumentList(
+  userAccessToken: string,
   pageSize: number = 50,
   pageToken?: string
 ): Promise<{
@@ -234,8 +312,6 @@ export async function getFeishuDocumentList(
   hasMore: boolean;
   pageToken?: string;
 }> {
-  const token = await getFeishuTenantAccessToken();
-
   // 构建查询参数
   const params = new URLSearchParams({
     page_size: pageSize.toString(),
@@ -249,7 +325,7 @@ export async function getFeishuDocumentList(
     `https://open.feishu.cn/open-apis/drive/v1/files?${params.toString()}`,
     {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${userAccessToken}`,
         'Content-Type': 'application/json',
       },
     }
