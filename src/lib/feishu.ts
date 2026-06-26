@@ -257,6 +257,10 @@ export async function getFeishuDocumentList(
 
   const data = await response.json();
 
+  if (!response.ok) {
+    throw new Error(`HTTP 错误: ${response.status} ${response.statusText}`);
+  }
+
   if (data.code !== 0) {
     throw new Error(`获取文档列表失败: ${data.msg} (code: ${data.code})`);
   }
@@ -265,8 +269,8 @@ export async function getFeishuDocumentList(
     documents: (data.data?.items || []).map((item: { document_id: string; title: string; revision_id: string; }) => ({
       id: item.document_id,
       title: item.title || '未命名文档',
-      updateTime: '',
-      size: 0,
+      updateTime: '',  // 飞书 API 不返回更新时间
+      size: 0,         // 飞书 API 不返回文档大小
     })),
     hasMore: data.data?.has_more || false,
     pageToken: data.data?.page_token,
