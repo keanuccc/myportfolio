@@ -217,6 +217,19 @@ export default function FeishuSyncModal({
             </div>
           )}
 
+          {/* 已授权状态 - 始终显示断开授权按钮 */}
+          {userToken && (
+            <div className="mb-4 flex justify-between items-center">
+              <span className="text-sm text-green-600">已授权飞书账号</span>
+              <button
+                onClick={handleDisconnect}
+                className="text-sm text-red-500 hover:text-red-700"
+              >
+                断开授权
+              </button>
+            </div>
+          )}
+
           {/* 未授权状态 */}
           {!userToken ? (
             <div className="text-center py-8">
@@ -237,18 +250,12 @@ export default function FeishuSyncModal({
           ) : (
             <>
               {/* 全选按钮 */}
-              <div className="mb-2 flex justify-between items-center">
+              <div className="mb-2">
                 <button
                   onClick={toggleAll}
                   className="text-sm text-blue-600 hover:text-blue-700"
                 >
                   {selectedDocs.size === documents.length ? '取消全选' : '全选'}
-                </button>
-                <button
-                  onClick={handleDisconnect}
-                  className="text-sm text-gray-500 hover:text-gray-700"
-                >
-                  断开授权
                 </button>
               </div>
               <div className="space-y-2">
