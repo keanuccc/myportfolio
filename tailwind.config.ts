@@ -6,23 +6,41 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Light theme
-        bglight: "#f0f5fa",
+        // Apple 风格颜色系统
+        apple: {
+          bg: '#ffffff',
+          bgSecondary: '#f5f5f7',
+          text: '#1d1d1f',
+          textSecondary: '#86868b',
+        },
+        // Light theme (保持兼容)
+        bglight: "#ffffff",
         cardlight: "#ffffff",
         textlight: "#f0f5fa",
         marrsgreen: "#2b7a4b",
         marrslight: "#3a9d60",
         marrsdark: "#1e5c36",
-        // Dark theme
-        bgdark: "#0e141a",
-        carddark: "#1B2731",
-        textdark: "#a6adba",
+        // Dark theme (保持兼容)
+        bgdark: "#000000",
+        carddark: "#1d1d1f",
+        textdark: "#86868b",
         carrigreen: "#58d5a3",
         carrilight: "#7ee0b8",
         carridark: "#3cb882",
       },
       fontFamily: {
         jost: ["Jost", "sans-serif"],
+      },
+      borderRadius: {
+        'card': '18px',
+        'button': '980px',
+        'tag': '20px',
+      },
+      boxShadow: {
+        'card': '0 4px 20px rgba(0, 0, 0, 0.06)',
+        'card-hover': '0 8px 30px rgba(0, 0, 0, 0.12)',
+        'card-dark': '0 4px 20px rgba(0, 0, 0, 0.3)',
+        'card-dark-hover': '0 8px 30px rgba(0, 0, 0, 0.5)',
       },
       animation: {
         bounce: "bounce 2s infinite",

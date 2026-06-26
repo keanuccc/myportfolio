@@ -13,49 +13,93 @@
 
   body {
     font-family: "Jost", sans-serif;
+    background-color: #ffffff;
+    color: #1d1d1f;
+  }
+
+  .dark body {
+    background-color: #000000;
+    color: #f5f5f7;
   }
 
   ::selection {
     background-color: #2b7a4b;
-    color: #f0f5fa;
+    color: #ffffff;
   }
 
   .dark ::selection {
     background-color: #58d5a3;
-    color: #0e141a;
+    color: #000000;
+  }
+
+  /* 自定义滚动条 */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.25);
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+  }
+
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.25);
   }
 }
 
 @layer components {
-  /* Glassmorphism nav */
+  /* Glassmorphism nav - Apple 风格 */
   .lower-glassmorphism {
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.8);
+  }
+
+  .dark .lower-glassmorphism {
+    background: rgba(0, 0, 0, 0.8);
   }
 
   .glassmorphism {
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    background: rgba(240, 245, 250, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.8);
   }
 
   .dark .glassmorphism {
-    background: rgba(27, 39, 49, 0.85);
+    background: rgba(0, 0, 0, 0.8);
   }
 
-  /* Section heading - bigger, more decorative */
+  /* Section heading - Apple 风格极简 */
   .section-heading {
-    @apply text-5xl md:text-6xl font-bold inline-block relative tracking-tight;
+    @apply text-4xl md:text-5xl font-semibold inline-block relative tracking-tight;
+    color: #1d1d1f;
+  }
+
+  .dark .section-heading {
+    color: #f5f5f7;
   }
 
   .section-heading::after {
     content: "";
-    @apply block w-16 h-1.5 bg-gradient-to-r from-marrsgreen to-carrigreen mx-auto mt-3 rounded-full;
+    @apply block w-12 h-1 bg-marrsgreen mx-auto mt-4 rounded-full;
   }
 
-  /* Section spacing */
+  /* Section spacing - 更宽敞 */
   .section {
-    @apply px-6 sm:px-10 md:px-16 lg:px-24 py-24 w-full;
+    @apply px-6 sm:px-10 md:px-16 lg:px-24 py-28 w-full;
   }
 
   /* Link focus outline */
@@ -63,9 +107,25 @@
     @apply focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-marrsgreen dark:focus-visible:outline-carrigreen rounded;
   }
 
-  /* Project card - matches satnaing.dev style */
+  /* Project card - Apple 风格无边框卡片 */
   .project-card {
-    @apply bg-cardlight dark:bg-carddark rounded-md overflow-hidden;
+    @apply bg-white rounded-card overflow-hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
+
+  .dark .project-card {
+    @apply bg-carddark;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .dark .project-card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
   }
 
   .project-image img {
@@ -77,7 +137,8 @@
   }
 
   .project-desc {
-    @apply mt-2 text-lg text-slate-600 dark:text-slate-300;
+    @apply mt-2 text-lg;
+    color: #86868b;
   }
 
   .project-tags {
@@ -621,11 +682,11 @@
   transform: translateY(0);
 }
 
-/* Project card animation */
+/* Project card animation - Apple 风格 */
 .project-card {
   opacity: 0;
   transform: translateY(30px);
-  transition: opacity 0.5s ease-out, transform 0.5s ease-out, box-shadow 0.5s ease-out;
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out, box-shadow 0.3s ease;
 }
 
 .project-card.visible {
@@ -633,16 +694,36 @@
   transform: translateY(0);
 }
 
-/* Blog card animation */
+.project-card.visible:hover {
+  transform: translateY(-4px);
+}
+
+/* Blog card animation - Apple 风格 */
 .blog-card {
+  @apply bg-white rounded-card overflow-hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   opacity: 0;
   transform: translateY(20px);
-  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out, box-shadow 0.3s ease;
+}
+
+.dark .blog-card {
+  @apply bg-carddark;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .blog-card.visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+.blog-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.dark .blog-card:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
 }
 
 /* Avatar float animation */

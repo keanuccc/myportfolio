@@ -55,18 +55,18 @@ export default function Header() {
       {/* Skip to main content */}
       <a
         role="button"
-        className="py-2 px-3 absolute left-2 opacity-95 outline-marrsgreen dark:outline-carrigreen rounded-b-lg transition-transform -translate-y-52 focus:translate-y-0 lg:text-xl z-50 bg-marrsgreen dark:bg-carrigreen text-textlight dark:text-bgdark"
+        className="py-2 px-3 absolute left-2 opacity-95 outline-marrsgreen dark:outline-carrigreen rounded-b-lg transition-transform -translate-y-52 focus:translate-y-0 lg:text-xl z-50 bg-marrsgreen dark:bg-carrigreen text-white dark:text-black"
         href="#main"
       >
         Skip to main content
       </a>
 
       <header className="md:flex">
-        <div className="main-nav lower-glassmorphism bg-bglight dark:bg-bgdark z-30 top-0 shadow-sm fixed duration-400 px-4 sm:px-8 h-24 w-full">
+        <div className="main-nav lower-glassmorphism z-30 top-0 fixed duration-400 px-4 sm:px-8 h-20 w-full border-b border-black/5 dark:border-white/5">
           <div className="w-full h-full mx-auto max-w-[1400px] flex items-center justify-between px-6 sm:px-10 md:px-16 lg:px-24">
-            {/* Logo */}
+            {/* Logo - Apple 风格 */}
             <a
-              className="text-3xl sm:text-4xl md:hover:text-marrsgreen dark:md:hover:text-carrigreen focus-visible:outline-marrsgreen dark:focus-visible:outline-carrigreen font-bold"
+              className="text-2xl sm:text-3xl md:hover:text-marrsgreen dark:md:hover:text-carrigreen focus-visible:outline-marrsgreen dark:focus-visible:outline-carrigreen font-semibold text-apple-text dark:text-white"
               href="/"
             >
               Keanuccc
@@ -75,13 +75,13 @@ export default function Header() {
 
             <nav className="flex items-center">
               {/* Nav links */}
-              <div className="glassmorphism md:bg-transparent md:dark:bg-transparent md:backdrop-blur-none fixed md:static bottom-4 z-30 left-1/2 md:left-auto transform -translate-x-1/2 md:transform-none bg-bglight dark:bg-carddark dark:text-textlight w-11/12 rounded drop-shadow-lg md:drop-shadow-none">
-                <ul className="flex justify-evenly items-center py-1">
+              <div className="glassmorphism md:bg-transparent md:dark:bg-transparent md:backdrop-blur-none fixed md:static bottom-4 z-30 left-1/2 md:left-auto transform -translate-x-1/2 md:transform-none bg-white/80 dark:bg-black/80 dark:text-white w-11/12 rounded-2xl shadow-lg md:shadow-none md:rounded-none">
+                <ul className="flex justify-evenly items-center py-2 md:py-0">
                   {navLinks.map((link) => (
                     <li key={link.href}>
                       <a
                         href={link.href}
-                        className="text-base md:text-2xl lg:text-3xl flex flex-col items-center w-[4.5rem] md:w-auto dark:fill-textlight md:mr-10 md:hover:text-marrsgreen md:dark:hover:text-carrigreen link-outline"
+                        className="text-base md:text-lg lg:text-xl flex flex-col items-center w-[4.5rem] md:w-auto md:mr-8 md:hover:text-marrsgreen md:dark:hover:text-carrigreen link-outline transition-colors duration-200"
                       >
                         <span className="md:hidden">
                           {icons[link.icon as keyof typeof icons]}
@@ -93,29 +93,29 @@ export default function Header() {
                 </ul>
               </div>
 
-              {/* Theme toggle */}
+              {/* Theme toggle - Apple 风格 */}
               <button
                 type="button"
                 title="Toggles light & dark theme"
                 aria-live="polite"
                 onClick={toggleTheme}
-                className="w-12 h-12 ml-2 rounded-lg flex justify-center items-center link-outline"
+                className="w-10 h-10 ml-4 rounded-full flex justify-center items-center link-outline hover:bg-black/5 dark:hover:bg-white/5 transition-colors duration-200"
               >
                 {/* Sun icon (shown in dark mode) */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  className="fill-textlight hidden dark:inline-block transform scale-110 md:dark:hover:fill-carrigreen"
+                  width="20"
+                  height="20"
+                  className="fill-white hidden dark:inline-block"
                 >
                   <path d="M6.993 12c0 2.761 2.246 5.007 5.007 5.007s5.007-2.246 5.007-5.007S14.761 6.993 12 6.993 6.993 9.239 6.993 12zM12 8.993c1.658 0 3.007 1.349 3.007 3.007S13.658 15.007 12 15.007 8.993 13.658 8.993 12 10.342 8.993 12 8.993zM10.998 19h2v3h-2zm0-17h2v3h-2zm-9 9h3v2h-3zm17 0h3v2h-3zM4.219 18.363l2.12-2.122 1.415 1.414-2.12 2.122zM16.24 6.344l2.122-2.122 1.414 1.414-2.122 2.122zM6.342 7.759 4.22 5.637l1.415-1.414 2.12 2.122zm13.434 10.605-1.414 1.414-2.122-2.122 1.414-1.414z" />
                 </svg>
                 {/* Moon icon (shown in light mode) */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  className="dark:hidden transform scale-90 md:hover:fill-marrsgreen"
+                  width="20"
+                  height="20"
+                  className="dark:hidden fill-apple-text"
                 >
                   <path d="M20.742 13.045a8.088 8.088 0 0 1-2.077.271c-2.135 0-4.14-.83-5.646-2.336a8.025 8.025 0 0 1-2.064-7.723A1 1 0 0 0 9.73 2.034a10.014 10.014 0 0 0-4.489 2.582c-3.898 3.898-3.898 10.243 0 14.143a9.937 9.937 0 0 0 7.072 2.93 9.93 9.93 0 0 0 7.07-2.929 10.007 10.007 0 0 0 2.583-4.491 1.001 1.001 0 0 0-1.224-1.224zm-2.772 4.301a7.947 7.947 0 0 1-5.656 2.343 7.953 7.953 0 0 1-5.658-2.344c-3.118-3.119-3.118-8.195 0-11.314a7.923 7.923 0 0 1 2.06-1.483 10.027 10.027 0 0 0 2.89 7.848 9.972 9.972 0 0 0 7.848 2.891 8.036 8.036 0 0 1-1.484 2.059z" />
                 </svg>

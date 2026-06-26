@@ -63,14 +63,14 @@ export default function Contact() {
           <h2 className="section-heading">Contact</h2>
         </span>
       </div>
-      <p className="my-6 max-w-4xl mx-auto text-2xl leading-relaxed text-slate-600 dark:text-slate-300">
+      <p className="my-6 max-w-4xl mx-auto text-xl leading-relaxed text-apple-textSecondary dark:text-textdark">
         无论是 AI 产品合作、技术交流，还是职业机会探讨，都欢迎随时联系我。
       </p>
 
-      {/* Contact Form */}
+      {/* Contact Form - Apple 风格 */}
       <form
         onSubmit={handleSubmit}
-        className="max-w-2xl mx-auto w-full mt-4 mb-10 space-y-5"
+        className="max-w-2xl mx-auto w-full mt-4 mb-12 space-y-5"
       >
         <div className="flex flex-col sm:flex-row gap-5">
           <input
@@ -79,7 +79,7 @@ export default function Contact() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            className="flex-1 px-5 py-4 rounded-lg bg-white dark:bg-[#1B2731] border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-marrsgreen dark:focus:ring-carrigreen text-lg transition-all duration-300"
+            className="flex-1 px-5 py-4 rounded-xl bg-white dark:bg-carddark border border-black/10 dark:border-white/10 text-apple-text dark:text-white placeholder:text-apple-textSecondary dark:placeholder:text-textdark focus:outline-none focus:ring-2 focus:ring-marrsgreen dark:focus:ring-carrigreen text-base transition-all duration-300"
           />
           <input
             type="email"
@@ -87,7 +87,7 @@ export default function Contact() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="flex-1 px-5 py-4 rounded-lg bg-white dark:bg-[#1B2731] border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-marrsgreen dark:focus:ring-carrigreen text-lg transition-all duration-300"
+            className="flex-1 px-5 py-4 rounded-xl bg-white dark:bg-carddark border border-black/10 dark:border-white/10 text-apple-text dark:text-white placeholder:text-apple-textSecondary dark:placeholder:text-textdark focus:outline-none focus:ring-2 focus:ring-marrsgreen dark:focus:ring-carrigreen text-base transition-all duration-300"
           />
         </div>
         <textarea
@@ -96,39 +96,40 @@ export default function Contact() {
           onChange={(e) => setMessage(e.target.value)}
           required
           rows={5}
-          className="w-full px-5 py-4 rounded-lg bg-white dark:bg-[#1B2731] border border-slate-300 dark:border-slate-600 text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-marrsgreen dark:focus:ring-carrigreen text-lg resize-none transition-all duration-300"
+          className="w-full px-5 py-4 rounded-xl bg-white dark:bg-carddark border border-black/10 dark:border-white/10 text-apple-text dark:text-white placeholder:text-apple-textSecondary dark:placeholder:text-textdark focus:outline-none focus:ring-2 focus:ring-marrsgreen dark:focus:ring-carrigreen text-base resize-none transition-all duration-300"
         />
 
         <div>
           <button
             type="submit"
             disabled={loading}
-            className="bg-gradient-to-r from-marrsgreen to-marrslight dark:from-carrigreen dark:to-carrilight hover:bg-marrslight active:bg-marrsdark dark:hover:bg-carrilight dark:active:bg-carridark text-bglight dark:text-bgdark py-4 px-14 rounded-lg text-xl font-medium outline-marrsgreen dark:outline-carrigreen focus-visible:outline-double outline-offset-2 inline-block shadow-lg hover:shadow-xl hover:shadow-marrsgreen/20 dark:hover:shadow-carrigreen/20 transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed"
+            className="bg-apple-text dark:bg-white text-white dark:text-black py-4 px-14 rounded-button text-base font-medium hover:bg-gray-800 dark:hover:bg-gray-200 transition-all duration-300 hover:-translate-y-0.5 shadow-lg hover:shadow-xl disabled:opacity-60 disabled:cursor-not-allowed"
           >
             {loading ? "Sending..." : "Send Message"}
           </button>
         </div>
 
         {success && (
-          <p className="text-marrsgreen dark:text-carrigreen text-lg">
+          <p className="text-marrsgreen dark:text-carrigreen text-base">
             Message sent successfully!
           </p>
         )}
-        {error && <p className="text-red-500 text-lg">{error}</p>}
+        {error && <p className="text-red-500 text-base">{error}</p>}
       </form>
 
-      {/* Fallback mailto link */}
-      <div className="mb-10">
+      {/* Fallback mailto link - Apple 风格 */}
+      <div className="mb-12">
         <a
           role="button"
-          className="bg-marrsgreen hover:bg-marrslight active:bg-marrsdark dark:hover:bg-carrilight dark:active:bg-carridark dark:bg-carrigreen text-bglight dark:text-bgdark py-5 px-14 rounded-lg text-2xl font-medium outline-marrsgreen dark:outline-carrigreen focus-visible:outline-double outline-offset-2 inline-block shadow-lg hover:shadow-xl transition-shadow"
+          className="inline-block bg-marrsgreen dark:bg-carrigreen text-white dark:text-black py-5 px-14 rounded-button text-xl font-medium hover:bg-marrslight dark:hover:bg-carrilight transition-all duration-300 hover:-translate-y-0.5 shadow-lg hover:shadow-xl"
           href={`mailto:${contactEmail}`}
         >
           Say Hello
         </a>
       </div>
 
-      <div className="flex justify-center items-center gap-8 mt-4">
+      {/* Social links - Apple 风格 */}
+      <div className="flex justify-center items-center gap-10 mt-4">
         {/* GitHub */}
         <a
           href={
@@ -138,12 +139,12 @@ export default function Contact() {
           target="_blank"
           rel="noreferrer"
           title="GitHub"
-          className="text-slate-500 dark:text-slate-400 hover:text-marrsgreen dark:hover:text-carrigreen transition-colors hover:scale-110 transform"
+          className="text-apple-textSecondary dark:text-textdark hover:text-marrsgreen dark:hover:text-carrigreen transition-colors hover:scale-110 transform"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="32"
-            height="32"
+            width="28"
+            height="28"
             viewBox="0 0 24 24"
             fill="currentColor"
           >
@@ -155,21 +156,21 @@ export default function Contact() {
         <div className="relative group">
           <div
             title="WeChat"
-            className="text-slate-500 dark:text-slate-400 hover:text-marrsgreen dark:hover:text-carrigreen transition-colors hover:scale-110 transform cursor-pointer"
+            className="text-apple-textSecondary dark:text-textdark hover:text-marrsgreen dark:hover:text-carrigreen transition-colors hover:scale-110 transform cursor-pointer"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="32"
-              height="32"
+              width="28"
+              height="28"
               viewBox="0 0 24 24"
               fill="currentColor"
             >
               <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05a6.937 6.937 0 0 1-.261-1.883c0-3.54 3.28-6.41 7.326-6.41.18 0 .354.014.53.025-.838-3.2-4.153-5.461-8.41-5.461zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm3.564 2.677c-3.617 0-6.554 2.536-6.554 5.668 0 3.131 2.937 5.667 6.554 5.667.72 0 1.417-.105 2.076-.296a.674.674 0 0 1 .564.076l1.36.796a.258.258 0 0 0 .13.042c.126 0 .227-.103.227-.23 0-.057-.023-.113-.038-.168l-.278-1.056a.466.466 0 0 1 .168-.524C21.022 17.406 22 15.77 22 13.923c0-3.132-2.937-5.668-6.554-5.668h-.284zm-2.32 3.16c.505 0 .914.416.914.928a.921.921 0 0 1-.914.927.921.921 0 0 1-.913-.927c0-.512.41-.928.913-.928zm4.642 0c.505 0 .913.416.913.928a.921.921 0 0 1-.913.927.921.921 0 0 1-.914-.927c0-.512.41-.928.914-.928z" />
             </svg>
           </div>
-          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-slate-800 dark:bg-slate-700 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none">
+          <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-4 py-2.5 bg-apple-text dark:bg-white text-white dark:text-black text-sm rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none shadow-lg">
             微信: xjyczh20070309
-            <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 w-2 h-2 bg-slate-800 dark:bg-slate-700 rotate-45"></div>
+            <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 w-2 h-2 bg-apple-text dark:bg-white rotate-45"></div>
           </div>
         </div>
       </div>

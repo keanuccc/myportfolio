@@ -55,10 +55,10 @@ export default function WhoAmI() {
   }, []);
 
   return (
-    <div className="about-panel bg-white dark:bg-[#1B2731] relative min-h-screen flex items-center">
+    <div className="about-panel bg-apple-bgSecondary dark:bg-carddark relative min-h-screen flex items-center">
       <section id="whoami" className="section w-full" ref={sectionRef}>
         {/* Heading */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-20">
           <span>
             <h2 className="section-heading">Who am I?</h2>
           </span>
@@ -82,18 +82,18 @@ export default function WhoAmI() {
               </svg>
 
               {/* Profile picture */}
-              <div className="profile-picture overflow-hidden md:overflow-visible rounded-2xl md:shadow-2xl">
+              <div className="profile-picture overflow-hidden md:overflow-visible rounded-card md:shadow-2xl">
                 {profile?.whoami.avatar ? (
                   <img
                     src={profile.whoami.avatar}
                     alt="Profile"
-                    className="w-full aspect-square object-cover rounded-2xl border border-marrsgreen/20 dark:border-carrigreen/20"
+                    className="w-full aspect-square object-cover rounded-card"
                   />
                 ) : (
                   <img
                     src="/image/me.jpg"
                     alt="Profile"
-                    className="w-full aspect-square object-cover rounded-2xl border border-marrsgreen/20 dark:border-carrigreen/20"
+                    className="w-full aspect-square object-cover rounded-card"
                   />
                 )}
               </div>
@@ -124,35 +124,35 @@ export default function WhoAmI() {
             </div>
           </div>
 
-          {/* Right: Bio + Education */}
+          {/* Right: Bio + Education - Apple 风格 */}
           <div className="lg:w-3/5">
-            <p className="about-intro text-2xl leading-relaxed text-slate-700 dark:text-slate-300 mb-10">
+            <p className="about-intro text-xl leading-relaxed text-apple-textSecondary dark:text-textdark mb-10">
               {profile?.whoami.bio ||
                 "2027 届本科生，主修数据科学与大数据技术。热爱 AI 技术，擅长数据分析与处理，具备从需求文档到项目部署上线的全流程开发经验。在校期间多次以团队负责人身份斩获学科竞赛奖项，兼具技术深度与团队领导力。职业发展方向为 AI 产品岗位，致力于用数据思维驱动 AI 产品落地。"}
             </p>
 
-            <p className="edu-bg text-3xl font-medium mb-6 text-slate-800 dark:text-slate-200">
+            <p className="edu-bg text-2xl font-semibold mb-8 text-apple-text dark:text-white">
               教育背景
             </p>
 
             {education.map((edu, i) => (
               <div key={i} className="edu-group mb-8">
                 <div className="overflow-hidden">
-                  <h3 className="edu-heading text-marrsgreen dark:text-carrigreen text-2xl font-semibold">
+                  <h3 className="edu-heading text-marrsgreen dark:text-carrigreen text-xl font-semibold">
                     {edu.title}
                   </h3>
                 </div>
                 <div className="overflow-hidden">
-                  <span className="edu-info text-slate-500 dark:text-slate-300 italic">
+                  <span className="edu-info text-apple-textSecondary dark:text-textdark">
                     {edu.school}
                   </span>
                 </div>
                 <ul
                   role="list"
-                  className="marker:text-marrsgreen dark:marker:text-carrigreen list-disc pl-6 space-y-1.5 mt-2"
+                  className="marker:text-marrsgreen dark:marker:text-carrigreen list-disc pl-6 space-y-2 mt-3"
                 >
                   {edu.details.map((detail, j) => (
-                    <li key={j} className="edu-list text-lg">
+                    <li key={j} className="edu-list text-base text-apple-textSecondary dark:text-textdark">
                       {detail}
                     </li>
                   ))}

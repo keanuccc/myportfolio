@@ -103,8 +103,15 @@ export default function Blog() {
     return () => observer.disconnect();
   }, [posts]); // 添加 posts 作为依赖
 
-  // 预设颜色数组
-  const colors = ["#9FD0E3", "#B4BEE0", "#A6CECE", "#C5E4E7", "#D4E2D4", "#E2D4E2"];
+  // 预设颜色数组 - Apple 风格柔和渐变
+  const colors = [
+    "linear-gradient(135deg, #9FD0E3 0%, #B4BEE0 100%)",
+    "linear-gradient(135deg, #B4BEE0 0%, #A6CECE 100%)",
+    "linear-gradient(135deg, #A6CECE 0%, #C5E4E7 100%)",
+    "linear-gradient(135deg, #C5E4E7 0%, #D4E2D4 100%)",
+    "linear-gradient(135deg, #D4E2D4 0%, #E2D4E2 100%)",
+    "linear-gradient(135deg, #E2D4E2 0%, #9FD0E3 100%)"
+  ];
 
   if (loading) {
     return (
@@ -125,10 +132,10 @@ export default function Blog() {
         <div className="text-center">
           <h2 className="section-heading">Blog</h2>
         </div>
-        <div className="text-center mb-12 text-2xl text-slate-600 dark:text-slate-300">
+        <div className="text-center mb-16 text-lg text-apple-textSecondary dark:text-textdark">
           我偶尔写一些关于 AI 产品、技术趋势和职业思考的文章
         </div>
-        <div className="text-center text-gray-500 dark:text-gray-400 py-20">
+        <div className="text-center text-apple-textSecondary dark:text-textdark py-20">
           暂无已发布的文章
         </div>
       </section>
@@ -146,7 +153,7 @@ export default function Blog() {
           <h2 className="section-heading">Blog</h2>
         </span>
       </div>
-      <div className="text-center mb-12 text-2xl text-slate-600 dark:text-slate-300">
+      <div className="text-center mb-16 text-lg text-apple-textSecondary dark:text-textdark">
         我偶尔写一些关于 AI 产品、技术趋势和职业思考的文章
       </div>
 
@@ -157,7 +164,7 @@ export default function Blog() {
           onClick={prev}
           disabled={currentIndex === 0}
           aria-label="Previous articles"
-          className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 z-20 w-16 h-16 rounded-full bg-white dark:bg-carddark shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl ${
+          className={`absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 z-20 w-14 h-14 rounded-full bg-white dark:bg-carddark shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl ${
             currentIndex === 0
               ? "opacity-0 pointer-events-none"
               : "opacity-0 group-hover/carousel:opacity-100"
@@ -165,8 +172,8 @@ export default function Blog() {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
+            width="20"
+            height="20"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -184,7 +191,7 @@ export default function Blog() {
           onClick={next}
           disabled={currentIndex >= maxIndex}
           aria-label="Next articles"
-          className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 z-20 w-16 h-16 rounded-full bg-white dark:bg-carddark shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl ${
+          className={`absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 z-20 w-14 h-14 rounded-full bg-white dark:bg-carddark shadow-lg flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-xl ${
             currentIndex >= maxIndex
               ? "opacity-0 pointer-events-none"
               : "opacity-0 group-hover/carousel:opacity-100"
@@ -192,8 +199,8 @@ export default function Blog() {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
+            width="20"
+            height="20"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -217,29 +224,23 @@ export default function Blog() {
             {posts.map((post, index) => (
               <div
                 key={post.id}
-                className="shrink-0 px-5"
+                className="shrink-0 px-4"
                 style={{ width: `${100 / cardsPerView}%` }}
               >
                 <Link href={`/blog/${post.slug}`}>
                   <div
-                    className="blog-card h-full transition-all duration-500 bg-gray-100 dark:bg-carddark p-6 rounded-2xl shadow-lg hover:shadow-2xl cursor-pointer"
+                    className="blog-card h-full cursor-pointer"
                     onMouseEnter={() => setIsHovered(index)}
                     onMouseLeave={() => setIsHovered(null)}
-                    style={{
-                      transform:
-                        isHovered === index
-                          ? "translateY(-8px) scale(1.02)"
-                          : "translateY(0) scale(1)",
-                    }}
                   >
-                  {/* Image */}
+                  {/* Image - Apple 风格渐变 */}
                   <div
-                    className="relative h-48 overflow-hidden rounded-xl"
-                    style={{ backgroundColor: colors[index % colors.length] }}
+                    className="relative h-48 overflow-hidden"
+                    style={{ background: colors[index % colors.length] }}
                   >
                     <div className="absolute inset-0 flex items-center justify-center">
                       <span
-                        className="text-7xl font-bold text-white/30 transition-transform duration-500"
+                        className="text-6xl font-bold text-white/30 transition-transform duration-500"
                         style={{
                           transform:
                             isHovered === index ? "scale(1.2)" : "scale(1)",
@@ -257,13 +258,13 @@ export default function Blog() {
                     />
                   </div>
 
-                  {/* Content */}
-                  <div>
-                    <h3 className="text-xl font-bold text-marrsgreen dark:text-carrigreen mb-2 line-clamp-2 h-14">
+                  {/* Content - Apple 风格 */}
+                  <div className="p-6">
+                    <h3 className="text-lg font-semibold text-apple-text dark:text-white mb-3 line-clamp-2 h-14">
                       {post.title}
                     </h3>
 
-                    <div className="flex items-center gap-2 mb-3 text-sm text-slate-500 dark:text-slate-400 italic">
+                    <div className="flex items-center gap-2 mb-4 text-sm text-apple-textSecondary dark:text-textdark">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-3.5 w-3.5"
@@ -281,13 +282,13 @@ export default function Blog() {
                       <span>{new Date(post.createdAt).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                     </div>
 
-                    <p className="text-base text-slate-600 dark:text-slate-300 line-clamp-3 leading-7">
+                    <p className="text-base text-apple-textSecondary dark:text-textdark line-clamp-3 leading-relaxed">
                       {post.excerpt || post.content.substring(0, 150) + '...'}
                     </p>
 
                     {/* Read more link that appears on hover */}
                     <div
-                      className="mt-3 transition-all duration-300"
+                      className="mt-4 transition-all duration-300"
                       style={{
                         opacity: isHovered === index ? 1 : 0,
                         transform:
@@ -296,7 +297,7 @@ export default function Blog() {
                             : "translateY(10px)",
                       }}
                     >
-                      <span className="inline-flex items-center gap-1.5 text-marrsgreen dark:text-carrigreen font-semibold text-sm">
+                      <span className="inline-flex items-center gap-1.5 text-marrsgreen dark:text-carrigreen font-medium text-sm">
                         Read more
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -321,7 +322,7 @@ export default function Blog() {
           </div>
         </div>
 
-        {/* Dot indicators */}
+        {/* Dot indicators - Apple 风格 */}
         <div className="flex justify-center items-center gap-3 mt-10">
           {Array.from({ length: totalPages }, (_, i) => (
             <button
@@ -330,24 +331,24 @@ export default function Blog() {
               aria-label={`Go to page ${i + 1}`}
               className={`rounded-full transition-all duration-300 ${
                 i === currentIndex
-                  ? "w-10 h-3.5 bg-marrsgreen dark:bg-carrigreen"
-                  : "w-3.5 h-3.5 bg-slate-300 dark:bg-slate-600 hover:bg-marrsgreen/50 dark:hover:bg-carrigreen/50"
+                  ? "w-8 h-2.5 bg-marrsgreen dark:bg-carrigreen"
+                  : "w-2.5 h-2.5 bg-apple-textSecondary/30 dark:bg-textdark/30 hover:bg-marrsgreen/50 dark:hover:bg-carrigreen/50"
               }`}
             />
           ))}
         </div>
       </div>
 
-      {/* Read all link */}
-      <div className="mt-10 text-center">
+      {/* Read all link - Apple 风格 */}
+      <div className="mt-12 text-center">
         <a
-          className="link text-2xl font-medium text-marrsgreen dark:text-carrigreen hover:underline inline-flex items-center gap-2"
+          className="link text-lg font-medium text-marrsgreen dark:text-carrigreen hover:underline inline-flex items-center gap-2"
           href="/blog/all"
         >
           Read all blog posts
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
+            className="h-5 w-5"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

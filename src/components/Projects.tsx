@@ -71,8 +71,15 @@ export default function Projects() {
     return () => observer.disconnect();
   }, [loading, projects]);
 
-  // 预设颜色数组
-  const colors = ["#9FD0E3", "#B4BEE0", "#A6CECE", "#C5E4E7", "#D4E2D4", "#E2D4E2"];
+  // 预设颜色数组 - Apple 风格柔和渐变
+  const colors = [
+    "linear-gradient(135deg, #9FD0E3 0%, #B4BEE0 100%)",
+    "linear-gradient(135deg, #B4BEE0 0%, #A6CECE 100%)",
+    "linear-gradient(135deg, #A6CECE 0%, #C5E4E7 100%)",
+    "linear-gradient(135deg, #C5E4E7 0%, #D4E2D4 100%)",
+    "linear-gradient(135deg, #D4E2D4 0%, #E2D4E2 100%)",
+    "linear-gradient(135deg, #E2D4E2 0%, #9FD0E3 100%)"
+  ];
 
   if (loading) {
     return (
@@ -82,7 +89,7 @@ export default function Projects() {
             <h2 className="section-heading">Featured Projects</h2>
           </span>
         </div>
-        <span className="project-desc text-center block mb-12 text-xl">
+        <span className="project-desc text-center block mb-16 text-lg text-apple-textSecondary dark:text-textdark">
           &ldquo;Talk is cheap. Show me the code&rdquo;? 作为PM，我更想说：
           <br />
           &ldquo;Show me the impact.&rdquo; 以下是我主导的部分 AI 产品项目
@@ -102,12 +109,12 @@ export default function Projects() {
             <h2 className="section-heading">Featured Projects</h2>
           </span>
         </div>
-        <span className="project-desc text-center block mb-12 text-xl">
+        <span className="project-desc text-center block mb-16 text-lg text-apple-textSecondary dark:text-textdark">
           &ldquo;Talk is cheap. Show me the code&rdquo;? 作为 AI PM，我更想说：
           <br />
           &ldquo;Show me the impact.&rdquo; 以下是我主导的部分 AI 产品项目
         </span>
-        <div className="text-center text-gray-500 dark:text-gray-400 py-20">
+        <div className="text-center text-apple-textSecondary dark:text-textdark py-20">
           暂无项目
         </div>
       </section>
@@ -121,13 +128,13 @@ export default function Projects() {
           <h2 className="section-heading">Featured Projects</h2>
         </span>
       </div>
-      <span className="project-desc text-center block mb-12 text-xl">
+      <span className="project-desc text-center block mb-16 text-lg text-apple-textSecondary dark:text-textdark">
         &ldquo;Talk is cheap. Show me the code&rdquo;? 作为 AI PM，我更想说：
         <br />
         &ldquo;Show me the impact.&rdquo; 以下是我主导的部分 AI 产品项目
       </span>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {projects.map((project, index) => (
           <div key={project.id} className="h-full flex">
             <div
@@ -135,11 +142,11 @@ export default function Projects() {
               onMouseEnter={() => setIsHovered(index)}
               onMouseLeave={() => setIsHovered(null)}
             >
-              {/* Image area */}
+              {/* Image area - Apple 风格渐变 */}
               <div className="overflow-hidden flex-shrink-0">
                 <div
                   className="project-image relative aspect-[16/10]"
-                  style={{ backgroundColor: colors[index % colors.length] }}
+                  style={{ background: colors[index % colors.length] }}
                 >
                   <div className="absolute inset-0 flex items-center justify-center">
                     <span
@@ -154,9 +161,9 @@ export default function Projects() {
                 </div>
               </div>
 
-              {/* Content */}
-              <div className="p-5 flex-1 flex flex-col">
-                <div className="flex items-center justify-between mb-2">
+              {/* Content - Apple 风格 */}
+              <div className="p-6 flex-1 flex flex-col">
+                <div className="flex items-center justify-between mb-3">
                   <h3 className="text-marrsgreen dark:text-carrigreen text-lg font-semibold">
                     {project.title}
                   </h3>
@@ -174,7 +181,7 @@ export default function Projects() {
                           xmlns="http://www.w3.org/2000/svg"
                           width="20"
                           height="20"
-                          className="opacity-70 hover:opacity-100 hover:-rotate-12 transition-all fill-black dark:fill-bglight"
+                          className="opacity-70 hover:opacity-100 hover:-rotate-12 transition-all fill-apple-text dark:fill-white"
                         >
                           <path
                             fillRule="evenodd"
@@ -195,7 +202,7 @@ export default function Projects() {
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-6 w-6 bg-cardlight dark:bg-bgdark hover:bg-marrsgreen hover:text-white dark:hover:bg-carrigreen dark:hover:text-bgdark rounded-full p-1 hover:-rotate-12 transition-all"
+                          className="h-6 w-6 bg-apple-bgSecondary dark:bg-carddark hover:bg-marrsgreen hover:text-white dark:hover:bg-carrigreen dark:hover:text-black rounded-full p-1 hover:-rotate-12 transition-all"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -212,15 +219,16 @@ export default function Projects() {
                   </div>
                 </div>
 
-                <p className="text-base leading-relaxed text-slate-600 dark:text-slate-300 mb-4 flex-grow">
+                <p className="text-base leading-relaxed text-apple-textSecondary dark:text-textdark mb-4 flex-grow">
                   {project.description}
                 </p>
 
+                {/* Tags - Apple 风格胶囊形 */}
                 <ul className="flex flex-wrap gap-2 mt-auto">
                   {project.technologies.map((tech) => (
                     <li
                       key={tech}
-                      className="text-sm bg-[#E2EFEF] dark:bg-bgdark text-marrsgreen dark:text-carrigreen py-1 px-3 rounded-md font-medium"
+                      className="text-sm bg-apple-bgSecondary dark:bg-bgdark text-marrsgreen dark:text-carrigreen py-1.5 px-3.5 rounded-tag font-medium"
                     >
                       {tech}
                     </li>
