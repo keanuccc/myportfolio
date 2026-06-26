@@ -52,9 +52,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (documentIds.length > 50) {
+    if (documentIds.length > 10) {
       return NextResponse.json(
-        { error: '最多只能同步 50 篇文档' },
+        { error: '为避免超时，单次最多同步 10 篇文档' },
         { status: 400 }
       );
     }
@@ -87,9 +87,22 @@ export async function POST(request: NextRequest) {
         // 获取文档内容（使用 userAccessToken）
         const doc = await getFeishuDocumentContent(docId, userAccessToken);
 
-        // 使用 DeepSeek 处理文档内容
+        // 使用 DeepSeek 处理文档内容（30 秒超时）
         console.log(`正在使用 DeepSeek 处理文档: ${doc.title}`);
-        const processed = await processDocumentWithDeepSeek(doc.content, doc.title);
+        let processed;
+        try {
+          processed = await processDocumentWithDeepSeek(doc.content, doc.title, 30000);
+        } catch (aiError) {
+          console.warn(`DeepSeek 处理失败，使用原始内容:`, aiError);
+          // 如果 AI 处理失败，使用原始内容
+          processed = {
+            title: doc.title,
+            content: doc.content,
+            excerpt: doc.content.substring(0, 100).replace(/[#*`\[\]()]/g, '').trim() + '...',
+            tags: [],
+            category: '未分类',
+          };
+        }
 
         // 生成 slug
         const baseSlug = generateSlug(processed.title);
