@@ -237,8 +237,8 @@ export function getFeishuAuthUrl(redirectUri: string): string {
     redirect_uri: redirectUri,
     response_type: 'code',
     state: 'feishu_sync',  // 用于验证回调
-    // 指定需要的权限范围
-    scope: 'drive:drive:readonly',
+    // 指定需要的权限范围（云文档 + 知识库）
+    scope: 'drive:drive:readonly wiki:wiki:readonly',
   });
 
   return `https://open.feishu.cn/open-apis/authen/v1/authorize?${params.toString()}`;
@@ -303,57 +303,169 @@ export async function getFeishuUserAccessToken(code: string): Promise<{
 }
 
 /**
+ * 获取知识库列表
+ */
+async function getWikiSpaces(token: string): Promise<{ spaceId: string; name: string }[]> {
+  const response = await fetch(
+    'https://open.feishu.cn/open-apis/wiki/v2/spaces?page_size=50',
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  if (!response.ok) {
+    console.error('获取知识库列表失败:', response.status);
+    return [];
+  }
+
+  const data = await response.json();
+  if (data.code !== 0) {
+    console.error('获取知识库列表失败:', data.msg);
+    return [];
+  }
+
+  return (data.data?.items || []).map((item: { space_id: string; name: string }) => ({
+    spaceId: item.space_id,
+    name: item.name,
+  }));
+}
+
+/**
+ * 获取知识库节点列表（递归获取所有文档）
+ */
+async function getWikiNodes(
+  token: string,
+  spaceId: string,
+  parentNodeToken?: string
+): Promise<FeishuDocumentItem[]> {
+  const params = new URLSearchParams({
+    page_size: '50',
+  });
+  if (parentNodeToken) {
+    params.set('parent_node_token', parentNodeToken);
+  }
+
+  const response = await fetch(
+    `https://open.feishu.cn/open-apis/wiki/v2/spaces/${spaceId}/nodes?${params.toString()}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  if (!response.ok) {
+    console.error(`获取知识库节点失败: ${spaceId}`, response.status);
+    return [];
+  }
+
+  const data = await response.json();
+  if (data.code !== 0) {
+    console.error(`获取知识库节点失败: ${spaceId}`, data.msg);
+    return [];
+  }
+
+  const nodes: FeishuDocumentItem[] = [];
+  const items = data.data?.items || [];
+
+  for (const item of items) {
+    // 只获取文档类型（docx）的节点
+    if (item.obj_type === 'docx' || item.obj_type === 'doc') {
+      nodes.push({
+        id: item.node_token,
+        title: item.title || '未命名文档',
+        updateTime: item.obj_edit_time || '',
+        size: 0,
+      });
+    }
+
+    // 递归获取子节点
+    if (item.has_child) {
+      const childNodes = await getWikiNodes(token, spaceId, item.node_token);
+      nodes.push(...childNodes);
+    }
+  }
+
+  return nodes;
+}
+
+/**
  * 获取飞书文档列表（使用 user_access_token）
+ * 同时获取云文档和知识库文档
  */
 export async function getFeishuDocumentList(
   userAccessToken: string,
-  pageSize: number = 50,
+  pageSize: number = 200,
   pageToken?: string
 ): Promise<{
   documents: FeishuDocumentItem[];
   hasMore: boolean;
   pageToken?: string;
 }> {
-  // 构建查询参数
-  const params = new URLSearchParams({
-    page_size: pageSize.toString(),
-  });
-  if (pageToken) {
-    params.set('page_token', pageToken);
+  const allDocuments: FeishuDocumentItem[] = [];
+
+  // 1. 获取云文档
+  try {
+    const params = new URLSearchParams({
+      page_size: pageSize.toString(),
+      order_by: 'EditedTime',
+      direction: 'DESC',
+    });
+    if (pageToken) {
+      params.set('page_token', pageToken);
+    }
+
+    const driveResponse = await fetch(
+      `https://open.feishu.cn/open-apis/drive/v1/files?${params.toString()}`,
+      {
+        headers: {
+          Authorization: `Bearer ${userAccessToken}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    if (driveResponse.ok) {
+      const driveData = await driveResponse.json();
+      if (driveData.code === 0) {
+        const driveFiles = (driveData.data?.files || [])
+          .filter((item: { type: string }) => item.type === 'docx' || item.type === 'doc')
+          .map((item: { token: string; name: string; modified_time?: string; size?: number }) => ({
+            id: item.token,
+            title: item.name || '未命名文档',
+            updateTime: item.modified_time || '',
+            size: item.size || 0,
+          }));
+        allDocuments.push(...driveFiles);
+      }
+    }
+  } catch (err) {
+    console.error('获取云文档失败:', err);
   }
 
-  // 调用飞书 API 获取文档列表（使用云文档列表 API）
-  const response = await fetch(
-    `https://open.feishu.cn/open-apis/drive/v1/files?${params.toString()}`,
-    {
-      headers: {
-        Authorization: `Bearer ${userAccessToken}`,
-        'Content-Type': 'application/json',
-      },
+  // 2. 获取知识库文档
+  try {
+    const spaces = await getWikiSpaces(userAccessToken);
+    for (const space of spaces) {
+      const wikiNodes = await getWikiNodes(userAccessToken, space.spaceId);
+      allDocuments.push(...wikiNodes);
     }
+  } catch (err) {
+    console.error('获取知识库文档失败:', err);
+  }
+
+  // 去重（根据 id）
+  const uniqueDocuments = allDocuments.filter(
+    (doc, index, self) => index === self.findIndex(d => d.id === doc.id)
   );
 
-  // 先检查 HTTP 状态码
-  if (!response.ok) {
-    const text = await response.text();
-    throw new Error(`HTTP 错误: ${response.status} ${response.statusText} - ${text.substring(0, 200)}`);
-  }
-
-  // 再解析 JSON
-  const data = await response.json();
-
-  if (data.code !== 0) {
-    throw new Error(`获取文档列表失败: ${data.msg} (code: ${data.code})`);
-  }
-
   return {
-    documents: (data.data?.files || []).map((item: { token: string; name: string; type: string; modified_time?: string; size?: number }) => ({
-      id: item.token,
-      title: item.name || '未命名文档',
-      updateTime: item.modified_time || '',
-      size: item.size || 0,
-    })),
-    hasMore: data.data?.has_more || false,
-    pageToken: data.data?.page_token,
+    documents: uniqueDocuments,
+    hasMore: false,  // 已经获取了所有文档
+    pageToken: undefined,
   };
 }
