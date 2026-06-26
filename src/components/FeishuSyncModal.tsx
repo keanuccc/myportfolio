@@ -151,9 +151,13 @@ export default function FeishuSyncModal({
       return;
     }
 
+    console.log('开始同步，选中的文档:', Array.from(selectedDocs));
     setSyncing(true);
     setError(null);
+    setResult(null);
+
     try {
+      console.log('发送同步请求...');
       const response = await fetch('/api/feishu/sync', {
         method: 'POST',
         headers: {
@@ -165,7 +169,9 @@ export default function FeishuSyncModal({
         }),
       });
 
+      console.log('收到响应，状态:', response.status);
       const data = await response.json();
+      console.log('响应数据:', data);
 
       if (response.ok) {
         setResult(data);
@@ -175,7 +181,7 @@ export default function FeishuSyncModal({
       }
     } catch (err) {
       console.error('Error syncing documents:', err);
-      setError('同步失败');
+      setError(`同步失败: ${err instanceof Error ? err.message : '未知错误'}`);
     } finally {
       setSyncing(false);
     }
