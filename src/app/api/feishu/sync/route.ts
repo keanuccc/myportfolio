@@ -7,6 +7,23 @@ import { verifySession } from '@/lib/auth';
 import { BlogPost, SyncResult } from '@/lib/types';
 import { nanoid } from 'nanoid';
 
+function generateExcerpt(content: string, maxLength: number = 150): string {
+  if (!content) return '...';
+
+  const cleaned = content
+    .replace(/[#*`\[\]()]/g, '')
+    .replace(/\n+/g, ' ')
+    .trim();
+
+  if (cleaned.length === 0) return '...';
+
+  if (cleaned.length <= maxLength) {
+    return cleaned;
+  }
+
+  return cleaned.substring(0, maxLength) + '...';
+}
+
 export async function POST(request: NextRequest) {
   try {
     // 验证登录状态
@@ -22,6 +39,13 @@ export async function POST(request: NextRequest) {
     if (!Array.isArray(documentIds) || documentIds.length === 0) {
       return NextResponse.json(
         { error: 'documentIds array is required' },
+        { status: 400 }
+      );
+    }
+
+    if (documentIds.length > 50) {
+      return NextResponse.json(
+        { error: '最多只能同步 50 篇文档' },
         { status: 400 }
       );
     }
@@ -67,7 +91,7 @@ export async function POST(request: NextRequest) {
           title: doc.title,
           slug,
           content: doc.content,
-          excerpt: doc.content.substring(0, 150).replace(/[#*`\[\]]/g, '') + '...',
+          excerpt: generateExcerpt(doc.content),
           coverImage: '/images/default-cover.jpg',
           category: '',
           tags,
