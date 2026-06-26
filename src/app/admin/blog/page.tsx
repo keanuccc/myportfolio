@@ -27,6 +27,9 @@ export default function BlogListPage() {
   const fetchPosts = async () => {
     try {
       const response = await fetch('/api/blog');
+      if (!response.ok) {
+        throw new Error('获取文章列表失败');
+      }
       const data = await response.json();
       setPosts(data.posts || []);
     } catch (error) {
@@ -48,9 +51,12 @@ export default function BlogListPage() {
 
       if (response.ok) {
         setPosts(posts.filter((post) => post.id !== id));
+      } else {
+        alert('删除失败，请重试');
       }
     } catch (error) {
       console.error('Error deleting post:', error);
+      alert('删除失败，请重试');
     }
   };
 
