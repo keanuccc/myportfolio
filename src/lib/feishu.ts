@@ -1,5 +1,12 @@
 // 飞书 API 服务
 
+interface FeishuDocumentItem {
+  id: string;
+  title: string;
+  updateTime: string;
+  size: number;
+}
+
 interface FeishuDocument {
   documentId: string;
   title: string;
@@ -84,14 +91,58 @@ export function extractDocumentId(url: string): string | null {
 }
 
 /**
+ * 判断是否是 wiki 文档
+ */
+function isWikiDocument(documentId: string): boolean {
+  // Wiki 文档的 token 通常以大写字母开头，长度较长
+  return /^[A-Z][a-zA-Z0-9]{20,}$/.test(documentId);
+}
+
+/**
+ * 获取 wiki 文档的实际 document_id
+ */
+async function getWikiDocumentId(wikiToken: string, token: string): Promise<string> {
+  const response = await fetch(
+    `https://open.feishu.cn/open-apis/wiki/v2/spaces/get_node?token=${wikiToken}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  const data = await response.json();
+
+  if (data.code !== 0) {
+    const hint = data.code === 99991663
+      ? '。请在飞书开放平台为应用添加 wiki:wiki:readonly 权限，并在文档中添加应用为协作者'
+      : '';
+    throw new Error(`获取 wiki 节点信息失败: ${data.msg} (code: ${data.code})${hint}`);
+  }
+
+  // 返回 obj_token 作为实际的 document_id
+  return data.data?.node?.obj_token || wikiToken;
+}
+
+/**
  * 获取飞书文档内容
  */
 export async function getFeishuDocumentContent(documentId: string): Promise<FeishuDocument> {
   const token = await getFeishuTenantAccessToken();
 
+  let actualDocId = documentId;
+
+  // 如果是 wiki 文档，先获取实际的 document_id
+  if (isWikiDocument(documentId)) {
+    console.log('检测到 wiki 文档，正在获取实际文档 ID...');
+    actualDocId = await getWikiDocumentId(documentId, token);
+    console.log('实际文档 ID:', actualDocId);
+  }
+
   // 获取文档元信息
   const metaResponse = await fetch(
-    `https://open.feishu.cn/open-apis/docx/v1/documents/${documentId}`,
+    `https://open.feishu.cn/open-apis/docx/v1/documents/${actualDocId}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -103,12 +154,15 @@ export async function getFeishuDocumentContent(documentId: string): Promise<Feis
   const metaData = await metaResponse.json();
 
   if (metaData.code !== 0) {
-    throw new Error(`获取文档信息失败: ${metaData.msg}`);
+    const hint = metaData.code === 99991663
+      ? '。请在飞书开放平台为应用添加 docx:document:readonly 权限，并在文档中添加应用为协作者'
+      : '';
+    throw new Error(`获取文档信息失败: ${metaData.msg} (code: ${metaData.code})${hint}`);
   }
 
   // 获取文档纯文本内容
   const contentResponse = await fetch(
-    `https://open.feishu.cn/open-apis/docx/v1/documents/${documentId}/raw_content`,
+    `https://open.feishu.cn/open-apis/docx/v1/documents/${actualDocId}/raw_content`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -120,7 +174,7 @@ export async function getFeishuDocumentContent(documentId: string): Promise<Feis
   const contentData = await contentResponse.json();
 
   if (contentData.code !== 0) {
-    throw new Error(`获取文档内容失败: ${contentData.msg}`);
+    throw new Error(`获取文档内容失败: ${contentData.msg} (code: ${contentData.code})`);
   }
 
   return {
@@ -167,4 +221,54 @@ export function parseFeishuEvent(body: unknown): FeishuWebhookEvent | null {
   } catch {
     return null;
   }
+}
+
+/**
+ * 获取飞书文档列表
+ */
+export async function getFeishuDocumentList(
+  pageSize: number = 50,
+  pageToken?: string
+): Promise<{
+  documents: FeishuDocumentItem[];
+  hasMore: boolean;
+  pageToken?: string;
+}> {
+  const token = await getFeishuTenantAccessToken();
+
+  // 构建查询参数
+  const params = new URLSearchParams({
+    page_size: pageSize.toString(),
+  });
+  if (pageToken) {
+    params.set('page_token', pageToken);
+  }
+
+  // 调用飞书 API 获取文档列表
+  const response = await fetch(
+    `https://open.feishu.cn/open-apis/docx/v1/documents?${params.toString()}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  const data = await response.json();
+
+  if (data.code !== 0) {
+    throw new Error(`获取文档列表失败: ${data.msg} (code: ${data.code})`);
+  }
+
+  return {
+    documents: (data.data?.items || []).map((item: { document_id: string; title: string; revision_id: string; }) => ({
+      id: item.document_id,
+      title: item.title || '未命名文档',
+      updateTime: '',
+      size: 0,
+    })),
+    hasMore: data.data?.has_more || false,
+    pageToken: data.data?.page_token,
+  };
 }
