@@ -255,11 +255,14 @@ export async function getFeishuDocumentList(
     }
   );
 
-  const data = await response.json();
-
+  // 先检查 HTTP 状态码
   if (!response.ok) {
-    throw new Error(`HTTP 错误: ${response.status} ${response.statusText}`);
+    const text = await response.text();
+    throw new Error(`HTTP 错误: ${response.status} ${response.statusText} - ${text.substring(0, 200)}`);
   }
+
+  // 再解析 JSON
+  const data = await response.json();
 
   if (data.code !== 0) {
     throw new Error(`获取文档列表失败: ${data.msg} (code: ${data.code})`);
