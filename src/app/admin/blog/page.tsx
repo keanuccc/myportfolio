@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { BlogPost } from '@/lib/types';
+import FeishuSyncModal from '@/components/FeishuSyncModal';
 import {
   PlusIcon,
   PencilSquareIcon,
@@ -10,28 +11,30 @@ import {
   DocumentTextIcon,
   CalendarDaysIcon,
   ExclamationTriangleIcon,
+  ArrowPathIcon,
 } from '@heroicons/react/24/outline';
 
 export default function BlogListPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [clearing, setClearing] = useState(false);
+  const [showSyncModal, setShowSyncModal] = useState(false);
 
   useEffect(() => {
-    async function fetchPosts() {
-      try {
-        const response = await fetch('/api/blog');
-        const data = await response.json();
-        setPosts(data.posts || []);
-      } catch (error) {
-        console.error('Error fetching posts:', error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
     fetchPosts();
   }, []);
+
+  const fetchPosts = async () => {
+    try {
+      const response = await fetch('/api/blog');
+      const data = await response.json();
+      setPosts(data.posts || []);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this post?')) {
@@ -121,6 +124,13 @@ export default function BlogListPage() {
               )}
             </button>
           )}
+          <button
+            onClick={() => setShowSyncModal(true)}
+            className="btn-brand flex items-center gap-2 bg-green-600 hover:bg-green-700"
+          >
+            <ArrowPathIcon className="h-4 w-4" />
+            同步飞书文档
+          </button>
           <Link href="/admin/blog/new" className="btn-brand flex items-center gap-2">
             <PlusIcon className="h-4 w-4" />
             New Post
@@ -215,6 +225,15 @@ export default function BlogListPage() {
           </div>
         </div>
       )}
+
+      {/* Feishu Sync Modal */}
+      <FeishuSyncModal
+        isOpen={showSyncModal}
+        onClose={() => setShowSyncModal(false)}
+        onSyncComplete={() => {
+          fetchPosts();
+        }}
+      />
     </div>
   );
 }
